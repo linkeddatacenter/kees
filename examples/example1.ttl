@@ -1,0 +1,6 @@
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix kees: <http://linkeddata.center/kees/v1#> .
+<urn:kees:kb> void:subset 
+    [ kees:source <http://data.example.com/file1.ttl> ],
+    [ kees:source <http://data.example.com/file2.ttl> ] 
+.
