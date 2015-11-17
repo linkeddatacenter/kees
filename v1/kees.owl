@@ -33,10 +33,10 @@
         <rdfs:label xml:lang="en">KEES Ontology</rdfs:label>
         <rdfs:comment xml:lang="en">An ontology to describe a knowledge base as a set of datasource and ingestion methods.</rdfs:comment>
         <dc:creator xml:lang="en">Enrico Fagnoni</dc:creator>
+        <dc:description xml:lang="en">KEES (Knowledge Exchenge Engine Schema ) ontology describes a knowledge base configuration in terms of ABox and TBox statements. KEES is entirely based on Semantic Web Architecture and on Linked (Open) Data principles.   For a pratical use  of KEES ontology see http://docs.ekb.apiary.io/#introduction/configuration, http://linkeddata.center/help/devop/kees-profile article and http://linkeddata.center/kees language profile.</dc:description>
         <dc:subject xml:lang="en">Knowledge Exchange Engine Schema ontology.</dc:subject>
         <dc:title xml:lang="en">The KEES Vocabulary for knowledge  base management</dc:title>
         <dc:rights xml:lang="en">The KEES ontology is available under the Creative Commons Attribution 3.0 Unported license; see http://creativecommons.org/licenses/by/3.0/. In a nutshell, you are free to copy, distribute and transmit the work; to remix/adapt the work (e.g. to import the ontology and create specializations of its elements), as long as you attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work). Proper Attribution: Simply include the statement &quot;This work is based on the KEES ontology, developed by Enrico Fagnoni&quot; and link back to http:/ontology.it/kees/v1</dc:rights>
-        <dc:description xml:lang="en">This ontology is related to KEES (Knowledge Exchenge Engine Service) project and describe a knowledge base configuration in terms of ABox and TBox statements. KEES is entirely based on Semantic Web Architecture and on Linked (Open) Data principles.  See http://.e-artspace.com/home/project/kees For more info. For a pratical use  of KEES ontology see http://docs.ekb.apiary.io/#introduction/configuration.</dc:description>
         <owl:versionInfo xml:lang="en">V 1.1, Release 2015-11-2</owl:versionInfo>
         <dcterms:license rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
         <foaf:homepage rdf:resource="http://linkeddata.center/kees/"/>
@@ -389,8 +389,8 @@ THEN {
         <rdfs:subClassOf rdf:resource="&sd;NamedGraph"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;onFetchingError"/>
-                <owl:onClass rdf:resource="&kees;RetentionPolicy"/>
+                <owl:onProperty rdf:resource="&kees;accrualPolicy"/>
+                <owl:onClass rdf:resource="&kees;AccrualPolicy"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -403,15 +403,15 @@ THEN {
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;accrualPolicy"/>
-                <owl:onClass rdf:resource="&kees;AccrualPolicy"/>
+                <owl:onProperty rdf:resource="&kees;updateFrequency"/>
+                <owl:onClass rdf:resource="&kees;Frequency"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;updateFrequency"/>
-                <owl:onClass rdf:resource="&kees;Frequency"/>
+                <owl:onProperty rdf:resource="&kees;onFetchingError"/>
+                <owl:onClass rdf:resource="&kees;RetentionPolicy"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -433,8 +433,8 @@ THEN {
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;updateFrequency"/>
-                <owl:onClass rdf:resource="&kees;Frequency"/>
+                <owl:onProperty rdf:resource="&kees;useAuthentication"/>
+                <owl:onClass rdf:resource="&kees;AuthenticationMethod"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -447,8 +447,8 @@ THEN {
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;useAuthentication"/>
-                <owl:onClass rdf:resource="&kees;AuthenticationMethod"/>
+                <owl:onProperty rdf:resource="&kees;updateFrequency"/>
+                <owl:onClass rdf:resource="&kees;Frequency"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -609,16 +609,16 @@ THEN {
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;useSparqlService"/>
-                <owl:onClass rdf:resource="&sd;Service"/>
-                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onProperty rdf:resource="&kees;toPage"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;toPage"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;string"/>
+                <owl:onProperty rdf:resource="&kees;useSparqlService"/>
+                <owl:onClass rdf:resource="&sd;Service"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
