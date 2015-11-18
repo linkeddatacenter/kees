@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.1//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-2.dtd"><html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:rdfa="http://www.w3.org/ns/rdfa#" version="XHTML+RDFa 1.1">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <title>KEES Language Profile</title>
+    <meta name="keywords" content="RDFa, KEES, BOTK, Semantic Web, , Business, Ontology">
+    <meta name="description" content="A Language profile for a Knowledge Exchange Engine Systems.">
+    <meta name="author" content="E.Fagnoni">
+    <link rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+    <link rel="stylesheet" type="text/css" href="css/doc.css">
+  </head>
+  <body>
+    <header>
+      <div class="jumbotron">
+        <h1 id="label">KEES Language Profile</h1>
+        <p id="subject">LinkedData.Center Knowledge Exchange Engine Schema.</p>
+      </div>
+      <div class="metadata">
+        <dl>
+          <dt>Latest published version:</dt>
+          <dd><a http="http://linkeddata.center/kees">http://LinkedData.Center/kees</a></dd>
+          <dt>This version:</dt>
+          <dd>1.1</dd>
+          <dt>Author:</dt>
+          <dd id="creator">
+            <address> Enrico Fagnoni - <a href="http://linkeddata.center/about/enrico">LinkedData.Center</a> </address>
+          </dd>
+          <dt>Source:</dt>
+          <dd>
+            <a href="https://github.com/linkeddatacenter/kees/tree/gh-pages" class="btn">View on GitHub</a>
+          </dd>
+        </dl>
+      </div>
+      <section id="abstract">
+        <h2>Abstract</h2>   
+            <p>
+            In order to let computers to work for us, they must understand data. Not only grammar and syntax (like in EDI) but the real meaning of things. When this is clear, machines can recognize, manage data and make decisions even when their provenance and quality is not totally known and data are incomplete. To enable this, we need to share knowledge using a language that is understandable both for humans and machines.
+            </p>
+            <p>
+            A language profile is a trimmed down version or an extension of a set of ontologies that trades some expressive power for the efficiency of reasoning.
+            </p> 
+            <p>
+            	This document describes vocabularies and constraints to be used to describe Knowlege Base configurations.
+            </p>
+      </section>
+      <section id="status">
+        <h2>Project Status</h2>
+        <p> The language profile described in this document is aligned with the 1.1 version of <a href="http://linkeddata.center/kees/v1">KEES Ontology</a> and it is references in LinkedData.Center knowledge base <a href="http://linkeddata.center/api">API documentation</a>. </p>
+      </section>
+    </header>
+    <h1 id="prefixes">Name spaces</h1>
+    <p>The following prefixes are defined inside this document</p>
+    <ul>
+      <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">foaf</span>:</b> <span property="rdfa:uri">http://xmlns.com/foaf/0.1/</span>
+      </li>
+      <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">dcterms</span>:</b> <span property="rdfa:uri">http://purl.org/dc/terms/</span>
+      </li>
+      <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">xsd</span>:</b> <span property="rdfa:uri">http://www.w3.org/2001/XMLSchema#</span>
+      </li>
+      <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">rdf</span>:</b> <span property="rdfa:uri">http://www.w3.org/1999/02/22-rdf-syntax-ns#</span>
+      </li>
+      <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">rdfs</span>:</b> <span property="rdfa:uri">http://www.w3.org/2000/01/rdf-schema#</span>
+      </li>
+      <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">void</span>:</b> <span property="rdfa:uri">http://rdfs.org/ns/void#</span>
+      </li>
+      <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">sd</span>:</b> <span property="rdfa:uri">http://www.w3.org/ns/sparql-service-description#</span>
+      </li>
+      <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">kees</span>:</b> <span property="rdfa:uri">http://linkeddata.center/kees/v1#</span>
+      </li>
+    </ul>
+    <p><br>
+    </p>
+    <p>Note hat this document can be imported as a RDFa 1.1 profile:</p>
+    <pre class="programcode">   &lt;<strong>div profile="http://linkeddata.center/kees"</strong>&gt;
+        ...
+   &lt;/div&gt;
+	</pre>
+    <p> This replaces a lengthy set of xmlns attributes, e.g. </p>
+    <pre class="programcode">   &lt;div xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+        xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+        xmlns:foaf="http://xmlns.com/foaf/0.1/" 
+        ... 
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema#"&gt;
+	</pre>
+    <h2>Vocabulary usage</h2>
+  
+    <p>KEES Language Profile is defined as a set of public vocabularies with some usage pattern. This chapter
+      provides info about terms that a business application compliant with KEES architecture should understand.</p>
+ 
+    <h3>KEES ontology</h3>
+    <p>The <a href="http://ontology.it/kees/v1">KEES(Knowledge Exchenge Engine Service) ontology</a> is related to <a href=" http://e-artspace.com/home/project/kees">KEES project</a> and describes a knowledge base configuration in terms of ABox and TBox statements. A KEES compliant application is supposed to understand all KEES vocabulary terms.</p> 
+   
+   
+    <h3>FOAF</h3>
+    <p>The <a href="http://www.foaf-project.org/">Friend of a Friend (FOAF) project</a> is creating a Web of
+      machine-readable pages describing people, the links between them and the things they create and do. Few properties are used, no one is required to be  to be understand by a KEES compliant application : </p>
+    <ul>
+      <li><a href="http://xmlns.com/foaf/spec/#term_homepage">homepage</a>: as inverse functional property.</li>
+      <li><a href="http://xmlns.com/foaf/spec/#term_primaryTopic">primaryTopic</a>: as the main link between a Linked
+        Data Informative resource URI&nbsp; and the "real world" object URI.</li>
+      <li><a href="http://xmlns.com/foaf/spec/#term_depiction">depiction</a> and <a href="http://xmlns.com/foaf/spec/#term_thumbnail">thumbnail</a>
+        to relate an image to an object or a thumbs to an image.</li>
+    </ul>
+ 
+    <h3>Dublin Core</h3>
+    <p>The Dublin Core Metadata Initiative, or "DCMI", is an open organization supporting innovation in metadata design
+      and best practices across the metadata ecology. No dublin core properties need to be understand but you
+      are encuraged to add as much data you can provide about your  knowlege base.</p>
+      
+    <h3>XSD schema</h3>
+    <p>Use <a href="http://www.w3.org/2001/XMLSchema">xsd schema</a> to specify data type. In knowledge base description you sholud need only:  <code>integer</code>, <code>dateTime</code>,<code>string</code></p>
+    
+    <h3>RDF and RDF schema</h3>
+    <p>RDF Schema provides a data-modelling vocabulary for RDF data. RDF Schema is an extension of the basic RDF
+      vocabulary. Only the rdf:type propery must be understand by a KEES compliant application.</p>
+      
+    <h3>VoID Vocabulary</h3>
+    <p><a href="http://www.w3.org/TR/void/">VoID</a> is an RDF Schema vocabulary for expressing metadata about RDF
+      datasets. It is intended as a bridge between the publishers and users of RDF data, with applications ranging from
+      data discovery to cataloging and archiving of datasets.</p>
+    <p>A KEES compliant application should recognize following properties aplied to the knowledge base oblject:</p>
+    <ul>
+        <li><a href="http://www.w3.org/TR/void/#vocabularies">void:vocabulary</a>: this properies specified a resource that contains TBOX statements. KEES application is supposed to process this resources during boot window.</li>
+        <li><a href="http://www.w3.org/TR/void/#dumps">void:subset</a>:  this properies specified a resource that contains ABOX statements. All KEES dumps are supposed to be stored as named graph in a graph database. KEES compliant application is supposed to process dumps during learning window.</li>
+    </ul>
+    
+    <h3>Sparql Service description </h3>
+    <p>A vocabulary for describing SPARQL services made available via the SPARQL 1.1 Protocol for RDF.
+    Only the <a href="http://www.w3.org/TR/sparql11-service-description/#sd-endpoint">sd:endpoint</a> property should be recognized by a KEES compliant application.</p>
+    
+    <section id="license">
+        <h2>License</h2>
+            <p>
+            This document is part of KEES project promoted, managed and sponsored by <a href="http://www.e-artspace.com/">E-Artspace</a> and <a href="http://LinkedData.Center/">LinkedData.Center</a>
+            as a contribute for bringing the Semantic Web to its full potential. 
+            </p>
+
+        <p id="rightsHolder"> This document is copyright © 2015 by <a href="http://LinkedData.Center/">LinkedData.Center</a>and licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+            Attribution-NonCommercial-NoDerivatives 4.0 International Unported License <img alt="Creative Commons License"
+          style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"> </a>. </p>
+    </section>
+  </body>
+</html>

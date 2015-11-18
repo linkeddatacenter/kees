@@ -1,0 +1,32 @@
+@import url(bootstrap.css);
+body {
+  padding: 2em 1em 2em 70px;
+  margin: 0;
+  background-position: top left;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-image: url(../images/bar.png);
+}
+
+nav {
+	border-bottom:1px dotted #666666; 
+}
+
+figure .image {
+    width: 100%;
+}
+
+figure {
+    text-align: center;
+    display: table;
+    max-width: 30%; 
+    margin: 2em auto;
+	font-style: italic;
+	font-size: 80%;
+}
+
+h1, h2, h3 { color: #005A9C;}
+
+a[href ^= "http"]:after {
+     content: " " url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAVklEQVR4Xn3PgQkAMQhDUXfqTu7kTtkpd5RA8AInfArtQ2iRXFWT2QedAfttj2FsPIOE1eCOlEuoWWjgzYaB/IkeGOrxXhqB+uA9Bfcm0lAZuh+YIeAD+cAqSz4kCMUAAAAASUVORK5CYII=);    
+}

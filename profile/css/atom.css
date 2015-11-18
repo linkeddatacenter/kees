@@ -1,0 +1,63 @@
+@namespace url("http://www.w3.org/2005/Atom");
+
+feed, generator, title, subtitle, entry, content, summary {
+	display: block;
+}
+
+id, name, email, uri, link, published, updated {
+	display: none;
+}
+
+/**************************************/
+
+feed {
+	font-family: sans-serif;
+	color: #000;
+	background: #fff;
+	margin: 1em;
+}
+
+generator {
+	font-size: 0.9em;
+}
+
+title {
+	text-align: center;
+	font-weight: bold;
+	font-size: 2.4em;
+}
+
+subtitle {
+	text-align: center;
+	font-size: 0.9em;
+}
+
+/**************************************/
+
+entry {
+	margin: 2em;
+	padding: 1em 0;
+	border-top: solid 1px #ddd;
+}
+
+entry title {
+	font-size: 1.6em;
+}
+
+entry updated, entry name {
+	display: block;
+	color: #999;
+	font-size: 0.8em;
+}
+
+content, summary {
+	line-height: 1.2em;
+}
+
+summary {
+	color: #666;
+	font-size: 0.9em;
+	padding: 0.5em;
+	border: 1px dotted #999;
+	margin: 0.5em 0;
+}
