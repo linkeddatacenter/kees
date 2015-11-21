@@ -9,16 +9,16 @@
 _:dataset1 a sd:NamedGraph,  kees:ABoxGraph;
 	sd:name <http://data.example.com/file1.ttl> ;
 	kees:source <http://data.example.com/file1.ttl> ;
-	kees:accrualPolicy _:loadByHttpGetPolicy 
+	kees:accrualPolicy _:simpleBulkIngestion 
 .
 
 _:dataset2 a sd:NamedGraph, kees:ABoxGraph;
 	sd:name <http://data.example.com/file2.ttl> ;
 	kees:source <http://data.example.com/file2.ttl> ;
-	kees:accrualPolicy _:loadByHttpGetPolicy 
+	kees:accrualPolicy _:simpleBulkIngestion 
 .
 		
-_:loadByHttpGetPolicy a kees:AccrualPolicy, kees:RDFLoading ;
+_:simpleBulkIngestion a kees:AccrualPolicy, kees:BulkIngestion ;
 	kees:updateFrequency _:hourly ;
 	kees:onFetchingError _:dropDataset ;
 	kees:forceAccept "text/turtle"
