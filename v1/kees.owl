@@ -16,8 +16,8 @@
 ]>
 
 
-<rdf:RDF xmlns="http://ontology.it/kees/v1#"
-     xml:base="http://ontology.it/kees/v1"
+<rdf:RDF xmlns="http://linkeddata.center/kees/v1#"
+     xml:base="http://linkeddata.center/kees/v1"
      xmlns:void="http://rdfs.org/ns/void#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
@@ -36,8 +36,8 @@
         <dc:description xml:lang="en">KEES (Knowledge Exchenge Engine Schema ) ontology describes a knowledge base configuration in terms of ABox and TBox statements. KEES is entirely based on Semantic Web Architecture and on Linked (Open) Data principles.   For a pratical use  of KEES ontology see http://docs.ekb.apiary.io/#introduction/configuration, http://linkeddata.center/help/devop/kees-profile article and http://linkeddata.center/kees language profile.</dc:description>
         <dc:subject xml:lang="en">Knowledge Exchange Engine Schema ontology.</dc:subject>
         <dc:title xml:lang="en">The KEES Vocabulary for knowledge  base management</dc:title>
-        <dc:rights xml:lang="en">The KEES ontology is available under the Creative Commons Attribution 3.0 Unported license; see http://creativecommons.org/licenses/by/3.0/. In a nutshell, you are free to copy, distribute and transmit the work; to remix/adapt the work (e.g. to import the ontology and create specializations of its elements), as long as you attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work). Proper Attribution: Simply include the statement &quot;This work is based on the KEES ontology, developed by Enrico Fagnoni&quot; and link back to http:/ontology.it/kees/v1</dc:rights>
-        <owl:versionInfo xml:lang="en">V 1.1, Release 2015-11-2</owl:versionInfo>
+        <dc:rights xml:lang="en">The KEES ontology is available under the Creative Commons Attribution 3.0 Unported license; see http://creativecommons.org/licenses/by/3.0/. In a nutshell, you are free to copy, distribute and transmit the work; to remix/adapt the work (e.g. to import the ontology and create specializations of its elements), as long as you attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work). Proper Attribution: Simply include the statement &quot;This work is based on the KEES ontology, developed by Enrico Fagnoni&quot; and link back to http:/linkeddata.center/kees/v1</dc:rights>
+        <owl:versionInfo xml:lang="en">V 1.1, Release 2015-11-22</owl:versionInfo>
         <dcterms:license rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
         <foaf:homepage rdf:resource="http://linkeddata.center/kees/"/>
         <dc:description rdf:resource="http://linkeddata.center/kees/images/cycle.png"/>
