@@ -6,8 +6,8 @@
 	void:subset 
 		[ 
 			kees:source <http://dbpedia.org#first_10_triples> ;
-			kees:accrualPeriodicity kees:monthly ;
-			kees:onFetchingError kees:keepDataset ;
+			kees:accrualPeriodicity [ kees:hasFrequencyPeriod 108000 ] ;
+			kees:onFetchingError [ kees:hasResilience 4 ] ;
 			kees:accrualPolicy [ a kees:SparqlIngestion ;
 				kees:useSparqlService [ sd:endpoint <http://dbpedia.org/sparql> ] ;
 				kees:constructQuery """

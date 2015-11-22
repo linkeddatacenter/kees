@@ -186,7 +186,7 @@
     <!-- http://linkeddata.center/kees/v1#useSparqlService -->
 
     <owl:ObjectProperty rdf:about="&kees;useSparqlService">
-        <rdfs:domain rdf:resource="&kees;SPARQLQuery"/>
+        <rdfs:domain rdf:resource="&kees;SparqlIngestion"/>
         <rdfs:range rdf:resource="&sd;Service"/>
     </owl:ObjectProperty>
     
@@ -209,7 +209,7 @@
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
         <rdfs:label xml:lang="en">construct query</rdfs:label>
         <rdfs:comment xml:lang="en">The SPARQL 1.1.  query to extract data from a SPARQL endpoint. No paging constructs allowed ( OFSET and LIMIT ), use pageSize, fromPage and toPage instead.</rdfs:comment>
-        <rdfs:domain rdf:resource="&kees;SPARQLQuery"/>
+        <rdfs:domain rdf:resource="&kees;SparqlIngestion"/>
         <rdfs:range rdf:resource="&xsd;string"/>
     </owl:DatatypeProperty>
     
@@ -231,7 +231,7 @@
     <owl:DatatypeProperty rdf:about="&kees;fromPage">
         <rdfs:label xml:lang="en">from page</rdfs:label>
         <rdfs:comment xml:lang="en">start returning page  number page in a query iteration. Defaults to 1 if not present.</rdfs:comment>
-        <rdfs:domain rdf:resource="&kees;SPARQLQuery"/>
+        <rdfs:domain rdf:resource="&kees;SparqlIngestion"/>
         <rdfs:range rdf:resource="&xsd;nonNegativeInteger"/>
     </owl:DatatypeProperty>
     
@@ -286,7 +286,7 @@
     <owl:DatatypeProperty rdf:about="&kees;queryMethod">
         <rdfs:label xml:lang="en">query method</rdfs:label>
         <rdfs:comment xml:lang="en">The http request method used in a SPARQL query. Accepted metods: &quot;POST&quot;  and &quot;GET&quot;. Defaults to &quot;POST&quot; if not specified. </rdfs:comment>
-        <rdfs:domain rdf:resource="&kees;SPARQLQuery"/>
+        <rdfs:domain rdf:resource="&kees;SparqlIngestion"/>
         <rdfs:range>
             <rdfs:Datatype>
                 <owl:oneOf>
@@ -354,7 +354,7 @@ THEN {
     <owl:DatatypeProperty rdf:about="&kees;toPage">
         <rdfs:label xml:lang="en">to page</rdfs:label>
         <rdfs:comment xml:lang="en">the page upper limit in a SPARQL query. if not present defaults to last available page in the dataset.</rdfs:comment>
-        <rdfs:domain rdf:resource="&kees;SPARQLQuery"/>
+        <rdfs:domain rdf:resource="&kees;SparqlIngestion"/>
         <rdfs:range rdf:resource="&xsd;nonNegativeInteger"/>
     </owl:DatatypeProperty>
     
@@ -389,8 +389,8 @@ THEN {
         <rdfs:subClassOf rdf:resource="&sd;NamedGraph"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;accrualPolicy"/>
-                <owl:onClass rdf:resource="&kees;AccrualPolicy"/>
+                <owl:onProperty rdf:resource="&kees;updateFrequency"/>
+                <owl:onClass rdf:resource="&kees;Frequency"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -403,8 +403,8 @@ THEN {
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;updateFrequency"/>
-                <owl:onClass rdf:resource="&kees;Frequency"/>
+                <owl:onProperty rdf:resource="&kees;accrualPolicy"/>
+                <owl:onClass rdf:resource="&kees;AccrualPolicy"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -433,8 +433,8 @@ THEN {
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;useAuthentication"/>
-                <owl:onClass rdf:resource="&kees;AuthenticationMethod"/>
+                <owl:onProperty rdf:resource="&kees;updateFrequency"/>
+                <owl:onClass rdf:resource="&kees;Frequency"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -447,8 +447,8 @@ THEN {
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;updateFrequency"/>
-                <owl:onClass rdf:resource="&kees;Frequency"/>
+                <owl:onProperty rdf:resource="&kees;useAuthentication"/>
+                <owl:onClass rdf:resource="&kees;AuthenticationMethod"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -463,6 +463,16 @@ THEN {
     <owl:Class rdf:about="&kees;AuthenticationMethod">
         <rdfs:label xml:lang="en">authentication method</rdfs:label>
         <rdfs:comment xml:lang="en">An authentication method used to access a resource</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#BulkIngestion -->
+
+    <owl:Class rdf:about="&kees;BulkIngestion">
+        <rdfs:label xml:lang="en">RDF loading</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&kees;AccrualPolicy"/>
+        <rdfs:comment xml:lang="en">Standard RDF resource loading, using eTag and lastUpdate http caching info. It manages LDP paging protocol.</rdfs:comment>
     </owl:Class>
     
 
@@ -512,14 +522,14 @@ THEN {
         <rdfs:subClassOf rdf:resource="&kees;AuthenticationMethod"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;username"/>
+                <owl:onProperty rdf:resource="&kees;password"/>
                 <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;password"/>
+                <owl:onProperty rdf:resource="&kees;username"/>
                 <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;string"/>
             </owl:Restriction>
@@ -535,16 +545,6 @@ THEN {
         <rdfs:label xml:lang="en">Knowledge Base</rdfs:label>
         <rdfs:subClassOf rdf:resource="&sd;Dataset"/>
         <rdfs:comment xml:lang="en">A  dataset  composed by ABox RDF statements organized in named graph or  TBox RDF statemens (rules and vocabularies).</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://linkeddata.center/kees/v1#RDFLoading -->
-
-    <owl:Class rdf:about="&kees;RDFLoading">
-        <rdfs:label xml:lang="en">RDF loading</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&kees;AccrualPolicy"/>
-        <rdfs:comment xml:lang="en">Standard RDF resource loading, using eTag and lastUpdate http caching info. It manages LDP paging protocol.</rdfs:comment>
     </owl:Class>
     
 
@@ -588,25 +588,21 @@ THEN {
     
 
 
-    <!-- http://linkeddata.center/kees/v1#SPARQLQuery -->
+    <!-- http://linkeddata.center/kees/v1#Source -->
 
-    <owl:Class rdf:about="&kees;SPARQLQuery">
+    <owl:Class rdf:about="&kees;Source">
+        <rdfs:label xml:lang="en">Source</rdfs:label>
+        <rdfs:comment xml:lang="en">A related resource from which the described grapgh is derived.</rdfs:comment>
+        <rdfs:seeAlso rdf:resource="&dcterms;source"/>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#SparqlIngestion -->
+
+    <owl:Class rdf:about="&kees;SparqlIngestion">
         <rdfs:label xml:lang="en">SPARQL query</rdfs:label>
         <rdfs:subClassOf rdf:resource="&kees;AccrualPolicy"/>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;fromPage"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;string"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;pageSize"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;string"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&kees;toPage"/>
@@ -628,18 +624,22 @@ THEN {
                 <owl:onDataRange rdf:resource="&xsd;string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&kees;fromPage"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&kees;pageSize"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">Load RDF resource executing a sparql query to a sparql endpoint (using POST).
 The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://linkeddata.center/kees/v1#Source -->
-
-    <owl:Class rdf:about="&kees;Source">
-        <rdfs:label xml:lang="en">Source</rdfs:label>
-        <rdfs:comment xml:lang="en">A related resource from which the described grapgh is derived.</rdfs:comment>
-        <rdfs:seeAlso rdf:resource="&dcterms;source"/>
     </owl:Class>
     
 
@@ -716,7 +716,7 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
     <!-- http://linkeddata.center/kees/v1#httpGetPagedContent -->
 
     <owl:NamedIndividual rdf:about="&kees;httpGetPagedContent">
-        <rdf:type rdf:resource="&kees;RDFLoading"/>
+        <rdf:type rdf:resource="&kees;BulkIngestion"/>
         <rdfs:comment xml:lang="en">A policy to load a simple http(s) get of a Linked Open Data resource  (with no password). Supports page traversal protocols ( link rel=next) and http cahcing.
 Used as default ingestion  policy.</rdfs:comment>
         <kees:onFetchingError rdf:resource="&kees;dropDataset"/>
