@@ -18,13 +18,13 @@
 
 <rdf:RDF xmlns="http://linkeddata.center/kees/v1#"
      xml:base="http://linkeddata.center/kees/v1"
+     xmlns:sd="http://www.w3.org/ns/sparql-service-description#"
      xmlns:void="http://rdfs.org/ns/void#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-     xmlns:sd="http://www.w3.org/ns/sparql-service-description#"
-     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:dcterms="http://purl.org/dc/terms/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:kees="http://linkeddata.center/kees/v1#"
      xmlns:foaf="http://xmlns.com/foaf/0.1/"
      xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -389,20 +389,6 @@ THEN {
         <rdfs:subClassOf rdf:resource="&sd;NamedGraph"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;updateFrequency"/>
-                <owl:onClass rdf:resource="&kees;Frequency"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;source"/>
-                <owl:onClass rdf:resource="&kees;Source"/>
-                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
                 <owl:onProperty rdf:resource="&kees;accrualPolicy"/>
                 <owl:onClass rdf:resource="&kees;AccrualPolicy"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
@@ -413,6 +399,20 @@ THEN {
                 <owl:onProperty rdf:resource="&kees;onFetchingError"/>
                 <owl:onClass rdf:resource="&kees;RetentionPolicy"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&kees;updateFrequency"/>
+                <owl:onClass rdf:resource="&kees;Frequency"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&kees;source"/>
+                <owl:onClass rdf:resource="&kees;Source"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A sparql service named graph containing onli ABox statements</rdfs:comment>
@@ -426,20 +426,6 @@ THEN {
         <rdfs:label xml:lang="en">Accrual Policy</rdfs:label>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;onFetchingError"/>
-                <owl:onClass rdf:resource="&kees;RetentionPolicy"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;updateFrequency"/>
-                <owl:onClass rdf:resource="&kees;Frequency"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
                 <owl:onProperty rdf:resource="&kees;forceAccept"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;string"/>
@@ -447,8 +433,22 @@ THEN {
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
+                <owl:onProperty rdf:resource="&kees;onFetchingError"/>
+                <owl:onClass rdf:resource="&kees;RetentionPolicy"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
                 <owl:onProperty rdf:resource="&kees;useAuthentication"/>
                 <owl:onClass rdf:resource="&kees;AuthenticationMethod"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&kees;updateFrequency"/>
+                <owl:onClass rdf:resource="&kees;Frequency"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -522,14 +522,14 @@ THEN {
         <rdfs:subClassOf rdf:resource="&kees;AuthenticationMethod"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;password"/>
+                <owl:onProperty rdf:resource="&kees;username"/>
                 <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;username"/>
+                <owl:onProperty rdf:resource="&kees;password"/>
                 <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;string"/>
             </owl:Restriction>
@@ -571,16 +571,16 @@ THEN {
         <rdfs:label>Rule</rdfs:label>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;ruleText"/>
-                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;string"/>
+                <owl:onProperty rdf:resource="&kees;ruleExecutionOrder"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;nonNegativeInteger"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;ruleExecutionOrder"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;nonNegativeInteger"/>
+                <owl:onProperty rdf:resource="&kees;ruleText"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A construction rule  according a legacy syntax derived from stardog DL entilement rules</rdfs:comment>
@@ -612,9 +612,9 @@ THEN {
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;useSparqlService"/>
-                <owl:onClass rdf:resource="&sd;Service"/>
-                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onProperty rdf:resource="&kees;pageSize"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
@@ -626,14 +626,14 @@ THEN {
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;fromPage"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;string"/>
+                <owl:onProperty rdf:resource="&kees;useSparqlService"/>
+                <owl:onClass rdf:resource="&sd;Service"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;pageSize"/>
+                <owl:onProperty rdf:resource="&kees;fromPage"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;string"/>
             </owl:Restriction>
@@ -685,7 +685,7 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
 
     <owl:NamedIndividual rdf:about="&kees;daily">
         <rdf:type rdf:resource="&kees;Frequency"/>
-        <kees:hasFrequencyPeriod rdf:datatype="&xsd;nonNegativeInteger">86400</kees:hasFrequencyPeriod>
+        <hasFrequencyPeriod rdf:datatype="&xsd;nonNegativeInteger">86400</hasFrequencyPeriod>
         <rdfs:comment xml:lang="en">Occurs every day (ie. 86400 seconds)</rdfs:comment>
     </owl:NamedIndividual>
     
@@ -696,7 +696,7 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
     <owl:NamedIndividual rdf:about="&kees;dropDataset">
         <rdf:type rdf:resource="&kees;RetentionPolicy"/>
         <rdfs:label xml:lang="en">drop dataset</rdfs:label>
-        <kees:hasResilience rdf:datatype="&xsd;nonNegativeInteger">0</kees:hasResilience>
+        <hasResilience rdf:datatype="&xsd;nonNegativeInteger">0</hasResilience>
         <rdfs:comment xml:lang="en">If KEES  learning window detects an error while fetching of a resource,  drop of the correspondent graph in the knowledge base. </rdfs:comment>
     </owl:NamedIndividual>
     
@@ -706,7 +706,7 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
 
     <owl:NamedIndividual rdf:about="&kees;hourly">
         <rdf:type rdf:resource="&kees;Frequency"/>
-        <kees:hasFrequencyPeriod rdf:datatype="&xsd;negativeInteger">3600</kees:hasFrequencyPeriod>
+        <hasFrequencyPeriod rdf:datatype="&xsd;nonNegativeInteger">3600</hasFrequencyPeriod>
         <rdfs:comment xml:lang="en">Occurs every hour (i.e. 3600 seconds)</rdfs:comment>
         <rdfs:comment xml:lang="en">hourly</rdfs:comment>
     </owl:NamedIndividual>
@@ -719,8 +719,8 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
         <rdf:type rdf:resource="&kees;BulkIngestion"/>
         <rdfs:comment xml:lang="en">A policy to load a simple http(s) get of a Linked Open Data resource  (with no password). Supports page traversal protocols ( link rel=next) and http cahcing.
 Used as default ingestion  policy.</rdfs:comment>
-        <kees:onFetchingError rdf:resource="&kees;dropDataset"/>
-        <kees:updateFrequency rdf:resource="&kees;hourly"/>
+        <onFetchingError rdf:resource="&kees;dropDataset"/>
+        <updateFrequency rdf:resource="&kees;hourly"/>
     </owl:NamedIndividual>
     
 
@@ -729,7 +729,7 @@ Used as default ingestion  policy.</rdfs:comment>
 
     <owl:NamedIndividual rdf:about="&kees;justOnce">
         <rdf:type rdf:resource="&kees;Frequency"/>
-        <kees:hasFrequencyPeriod rdf:datatype="&xsd;nonPositiveInteger">3153600000</kees:hasFrequencyPeriod>
+        <hasFrequencyPeriod rdf:datatype="&xsd;nonNegativeInteger">3153600000</hasFrequencyPeriod>
         <rdfs:comment xml:lang="en">pratically occurs only once ( that is  every 100 years..)</rdfs:comment>
     </owl:NamedIndividual>
     
@@ -740,7 +740,7 @@ Used as default ingestion  policy.</rdfs:comment>
     <owl:NamedIndividual rdf:about="&kees;keepDataset">
         <rdf:type rdf:resource="&kees;RetentionPolicy"/>
         <rdfs:label xml:lang="en">keep dataset</rdfs:label>
-        <kees:hasResilience rdf:datatype="&xsd;nonNegativeInteger">1000</kees:hasResilience>
+        <hasResilience rdf:datatype="&xsd;nonNegativeInteger">1000</hasResilience>
         <rdfs:comment xml:lang="en">If KEES  learning window detects an error while fetching of a resource it does not trigger a drop of the correspondent graph in the knowledge base. </rdfs:comment>
     </owl:NamedIndividual>
     
@@ -750,7 +750,7 @@ Used as default ingestion  policy.</rdfs:comment>
 
     <owl:NamedIndividual rdf:about="&kees;monthly">
         <rdf:type rdf:resource="&kees;Frequency"/>
-        <kees:hasFrequencyPeriod rdf:datatype="&xsd;nonNegativeInteger">2628000</kees:hasFrequencyPeriod>
+        <hasFrequencyPeriod rdf:datatype="&xsd;nonNegativeInteger">2628000</hasFrequencyPeriod>
         <rdfs:comment xml:lang="en">Occurs every month (i.e. 2628000 seconds)</rdfs:comment>
         <rdfs:comment xml:lang="en">Occurs every week (i.e. </rdfs:comment>
     </owl:NamedIndividual>
@@ -761,7 +761,7 @@ Used as default ingestion  policy.</rdfs:comment>
 
     <owl:NamedIndividual rdf:about="&kees;weekly">
         <rdf:type rdf:resource="&kees;Frequency"/>
-        <kees:hasFrequencyPeriod rdf:datatype="&xsd;nonNegativeInteger">604800</kees:hasFrequencyPeriod>
+        <hasFrequencyPeriod rdf:datatype="&xsd;nonNegativeInteger">604800</hasFrequencyPeriod>
         <rdfs:comment xml:lang="en">Occurs every week (ie 604800 seconds)</rdfs:comment>
     </owl:NamedIndividual>
     
@@ -771,7 +771,7 @@ Used as default ingestion  policy.</rdfs:comment>
 
     <owl:NamedIndividual rdf:about="&kees;yearly">
         <rdf:type rdf:resource="&kees;Frequency"/>
-        <kees:hasFrequencyPeriod rdf:datatype="&xsd;nonNegativeInteger">31536000</kees:hasFrequencyPeriod>
+        <hasFrequencyPeriod rdf:datatype="&xsd;nonNegativeInteger">31536000</hasFrequencyPeriod>
         <rdfs:comment xml:lang="en">Occurs every year (ie 31536000 seconds)</rdfs:comment>
     </owl:NamedIndividual>
 </rdf:RDF>
