@@ -4,24 +4,24 @@
 @prefix dc: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix example: <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/> .
-@prefix self: <http://linkeddata.center/a/here_your_grap_db_name#>
+@prefix : <http://linkeddata.center/a/here_your_grap_db_name#> .
 
-[] owl:sameAs self:kb ;
+[] owl:sameAs :kb ;
   kees:factSubset [
     a kees:ABoxGraph ;
     kees:accrualPolicy kees:httpGetPagedContent ;
-    kees:source examplecities.rdf
+    kees:source example:cities.rdf
   ], [
     a kees:ABoxGraph ;
     kees:accrualPolicy kees:httpGetPagedContent ;
-    kees:source examplecountries.rdf
+    kees:source example:countries.rdf
   ] .
   
-self:kb
+:kb
   a kees:KnowledgeBase ;
-  void:subset self:config , self:tbox , self:inferences ;
+  void:subset :config , :tbox , :inferences ;
   dc:identifier 0 .
 
-self:config a kees:KBConfigurationGraph ; sd:name self:config .
-self:tbox a kees:TBoxGraph ; sd:name self:tbox .
-self:inferences a kees:InferredKnowledgeGraph ; sd:name self:inferences .
+:config a kees:KBConfigurationGraph ; sd:name :config .
+:tbox a kees:TBoxGraph ; sd:name :tbox .
+:inferences a kees:InferredKnowledgeGraph ; sd:name :inferences .

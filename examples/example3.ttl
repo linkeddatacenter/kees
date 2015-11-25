@@ -4,7 +4,7 @@
 @prefix kees: <http://linkeddata.center/kees/v1#> .
 @prefix sd: <http://www.w3.org/ns/sparql-service-description#> .
 
-<urn:kees:kb>
+[]
 	### Knowlege base metadata
 	dcterms:title "demo" ;
 	dcterms:description "Contains a partial copy of dbpedia"@en ;
@@ -16,8 +16,7 @@
 		
 	### TBox
 	void:vocabulary 
-		<http://www.w3.org/2004/02/skos/core>, 
-		<http://linkeddata.center/kees/v1>
+		<http://pur.org/goodrelations/v1>
 	;
 	
 	kees:rule

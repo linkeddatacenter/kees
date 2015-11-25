@@ -1,20 +1,18 @@
-@prefix void: <http://rdfs.org/ns/void#> .
 @prefix kees: <http://linkeddata.center/kees/v1#> .
 @prefix sd: <http://www.w3.org/ns/sparql-service-description#> .
 
-<urn:kees:kb>
-	void:subset 
+[] kees:factSubset 
 		[ 
-			kees:source <http://dbpedia.org#first_10_triples> ;
-			kees:accrualPeriodicity [ kees:hasFrequencyPeriod 108000 ] ;
-			kees:onFetchingError [ kees:hasResilience 4 ] ;
-			kees:accrualPolicy [ a kees:SparqlIngestion ;
+			kees:source <http://dbpedia.org#first_10_triples> ;	
+			kees:accrualPolicy [ 
+				a kees:SparqlIngestion ;
+				kees:onFetchingError [ kees:hasResilience 4 ] ;
+				kees:updateFrequency [ kees:hasFrequencyPeriod 108000 ] ;
 				kees:useSparqlService [ sd:endpoint <http://dbpedia.org/sparql> ] ;
 				kees:constructQuery """
 					CONSTRUCT {
 						?s ?p ?o
-					}
-					WHERE {
+					} WHERE {
 						?s ?p ?o
 					}
 				""" ;
