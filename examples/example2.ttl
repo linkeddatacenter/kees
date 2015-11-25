@@ -1,33 +1,27 @@
-@prefix void: <http://rdfs.org/ns/void#> .
-@prefix sd: <http://www.w3.org/ns/sparql-service-description#> .
 @prefix kees: <http://linkeddata.center/kees/v1#> .
+@prefix sd: <http://www.w3.org/ns/sparql-service-description#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix example: <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/> .
+@prefix self: <http://linkeddata.center/a/here_your_grap_db_name#>
 
-<urn:kees:kb> a void:Dataset, sd:Dataset, kees:Knowledgebase ;
-	void:subset _:dataset1, _:dataset2
-.
+[] owl:sameAs self:kb ;
+  kees:factSubset [
+    a kees:ABoxGraph ;
+    kees:accrualPolicy kees:httpGetPagedContent ;
+    kees:source examplecities.rdf
+  ], [
+    a kees:ABoxGraph ;
+    kees:accrualPolicy kees:httpGetPagedContent ;
+    kees:source examplecountries.rdf
+  ] .
+  
+self:kb
+  a kees:KnowledgeBase ;
+  void:subset self:config , self:tbox , self:inferences ;
+  dc:identifier 0 .
 
-_:dataset1 a sd:NamedGraph,  kees:ABoxGraph;
-	sd:name <http://data.example.com/file1.ttl> ;
-	kees:source <http://data.example.com/file1.ttl> ;
-	kees:accrualPolicy _:simpleBulkIngestion 
-.
-
-_:dataset2 a sd:NamedGraph, kees:ABoxGraph;
-	sd:name <http://data.example.com/file2.ttl> ;
-	kees:source <http://data.example.com/file2.ttl> ;
-	kees:accrualPolicy _:simpleBulkIngestion 
-.
-		
-_:simpleBulkIngestion a kees:AccrualPolicy, kees:BulkIngestion ;
-	kees:updateFrequency _:hourly ;
-	kees:onFetchingError _:dropDataset ;
-	kees:forceAccept "text/turtle"
-.
-
-_:hourly a kees:Frequency ;
-	kees:hasFrequencyPeriod 3600
-.
-
-_:dropDataset a kees:RetentionPolicy ;
-	kees:hasResilience 0 
-.
+self:config a kees:KBConfigurationGraph ; sd:name self:config .
+self:tbox a kees:TBoxGraph ; sd:name self:tbox .
+self:inferences a kees:InferredKnowledgeGraph ; sd:name self:inferences .
