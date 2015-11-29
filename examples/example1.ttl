@@ -1,5 +1,3 @@
 @prefix kees: <http://linkeddata.center/kees/v1#> .
-[] kees:factSubset 
-    [ kees:source <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/cities.rdf> ],
-    [ kees:source <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/countries.rdf> ] 
-.
+[] kees:source <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/cities.rdf> .
+[] kees:source <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/countries.rdf> .

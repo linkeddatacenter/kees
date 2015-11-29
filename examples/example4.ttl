@@ -1,25 +1,17 @@
 @prefix kees: <http://linkeddata.center/kees/v1#> .
-@prefix sd: <http://www.w3.org/ns/sparql-service-description#> .
 
-[] kees:factSubset 
-		[ 
-			kees:source <http://dbpedia.org#first_10_triples> ;	
-			kees:accrualPolicy [ 
-				a kees:SparqlIngestion ;
-				kees:onFetchingError [ kees:hasResilience 4 ] ;
-				kees:updateFrequency [ kees:hasFrequencyPeriod 108000 ] ;
-				kees:useSparqlService [ sd:endpoint <http://dbpedia.org/sparql> ] ;
-				kees:constructQuery """
-					CONSTRUCT {
-						?s ?p ?o
-					} WHERE {
-						?s ?p ?o
-					}
-				""" ;
-				kees:pageSize 10 ;
-				kees:fromPage 1 ;
-				kees:toPage 1 ;
-				kees:queryMethod "POST" ;
-			]
-		] ;
-    .
+[] a kees:ConstructRule ;
+	kees:ruleText   """
+		PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+		PREFIX gr: <http://purl.org/goodrelations/v1#>
+		PREFIX :<urn:test:>
+		IF {
+			?offering gr:hasPriceSpecification ?ps .
+			?ps gr:hasCurrencyValue ?price .
+			FILTER (?price >= 200.00).
+		}
+		THEN {
+			?offering a :ExpensiveProduct .
+		}
+   """
+.

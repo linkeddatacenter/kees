@@ -1,0 +1,22 @@
+@prefix kees: <http://linkeddata.center/kees/v1#> .
+
+[]
+	kees:source <http://dbpedia.org#first_10_triples> ;	
+	kees:accrualPolicy [ 
+		a kees:SparqlIngestion ;
+		kees:onFetchingError [ kees:hasResilience 4 ] ;
+		kees:updateFrequency [ kees:hasFrequencyPeriod 108000 ] ;
+		kees:useSparqlService [ sd:endpoint <http://dbpedia.org/sparql> ] ;
+		kees:constructQuery """
+			CONSTRUCT {
+				?s ?p ?o
+			} WHERE {
+				?s ?p ?o
+			}
+		""" ;
+		kees:pageSize 10 ;
+		kees:fromPage 1 ;
+		kees:toPage 1 ;
+		kees:queryMethod "POST" ;
+	]
+.
