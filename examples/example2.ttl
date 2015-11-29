@@ -9,8 +9,8 @@ self:kb kees:hasABoxGraph
 		kees:accrualPolicy [
 			a kees:BulkIngestion ;
 			kees:source <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/cities.rdf>;
-			kees:onFetchingError kees:dropDataset ;
-			kees:updateFrequency kees:hourly 
+			kees:onFetchingError self:dropDataset ;
+			kees:updateFrequency self:hourly 
 		]
 	], [
 		a kees:ABoxGraph ;
@@ -18,8 +18,8 @@ self:kb kees:hasABoxGraph
 		kees:accrualPolicy [
 			a kees:BulkIngestion ;
 			kees:source <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/countries.rdf>;
-			kees:onFetchingError kees:dropDataset ;
-			kees:updateFrequency kees:hourly 
+			kees:onFetchingError self:dropDataset ;
+			kees:updateFrequency self:hourly 
 		]
 	]
 .
@@ -27,16 +27,16 @@ self:kb kees:hasABoxGraph
 ##################################################################
 # Here are some predefined individuals you can use in your config
 ##################################################################				
-self:kb a sd:defaultDataset ;
-	kess:hasConfigGraph [ a kees:KBConfigurationGraph ; sd:name self:config];
-	kess:hasTBoxGraph [ a kees:TBoxGraph ; sd:name self:tbox]; 
-	kess:hasInferenceGraph [ a kees:InferredKnowledgeGraph ; sd:name self:inferences ]
+self:kb a kees:KnowledgeBase ;
+	kees:hasConfigGraph [ a kees:KBConfigurationGraph ; sd:name self:config];
+	kees:hasTBoxGraph [ a kees:TBoxGraph ; sd:name self:tbox]; 
+	kees:hasInferenceGraph [ a kees:InferredKnowledgeGraph ; sd:name self:inferences ]
 .
 self:dropDataset a kees:RetentionPolicy ; kees:hasResilience 0;  .
 self:keepDataset a kees:RetentionPolicy ; kees:hasResilience 1000 .
 
-self:hourly		a kees:Frequency ; kees:hasFrequencyPeriod 3600 .
-self:weekly		a kees:Frequency ; kees:hasFrequencyPeriod 604800 .
-self:monthly	a kees:Frequency ; kees:hasFrequencyPeriod 2628000  .
-self:yearly		a kees:Frequency ; kees:hasFrequencyPeriod 31536000 .
-self:justOnce	a kees:Frequency ; kees:hasFrequencyPeriod 3153600000 .
+self:hourly a kees:Frequency ; kees:hasFrequencyPeriod 3600 .
+self:weekly a kees:Frequency ; kees:hasFrequencyPeriod 604800 .
+self:monthly a kees:Frequency ; kees:hasFrequencyPeriod 2628000  .
+self:yearly a kees:Frequency ; kees:hasFrequencyPeriod 31536000 .
+self:justOnce a kees:Frequency ; kees:hasFrequencyPeriod 3153600000 .
