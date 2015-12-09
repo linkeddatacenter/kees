@@ -2,41 +2,27 @@
 @prefix sd: <http://www.w3.org/ns/sparql-service-description#> .
 @prefix self: <http://linkeddata.center/a/here_your_grap_db_name#> .
 
-self:kb kees:hasABoxGraph
-	[
+self:kb a kees:KnowledgeBase ;
+	kees:hasConfigGraph [ a kees:KBConfigurationGraph ; sd:name self:config];
+	kees:hasTBoxGraph [ a kees:TBoxGraph ; sd:name self:tbox]; 
+	kees:hasInferenceGraph [ a kees:InferredKnowledgeGraph ; sd:name self:inferences ];
+	kees:hasABoxGraph [
 		a kees:ABoxGraph ;
 		sd:name <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/cities.rdf> ;
 		kees:accrualPolicy [
 			a kees:BulkIngestion ;
 			kees:source <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/cities.rdf>;
-			kees:onFetchingError self:dropDataset ;
-			kees:updateFrequency self:hourly 
+			kees:onFetchingError [ a kees:RetentionPolicy ; kees:hasResilience 0 ] ;
+			kees:updateFrequency [ a kees:Frequency ; kees:hasFrequencyPeriod 3600 ] ;
 		]
-	], [
+	] , [
 		a kees:ABoxGraph ;
-		sd:name <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/countries.rdf> ;
+		sd:name <https://demo.hub1.linkeddata.center.s3.amazonaws.com/data/countries.rdf> ;
 		kees:accrualPolicy [
 			a kees:BulkIngestion ;
-			kees:source <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/countries.rdf>;
-			kees:onFetchingError self:dropDataset ;
-			kees:updateFrequency self:hourly 
+			kees:source <https://demo.hub1.linkeddata.center.s3.amazonaws.com/data/countries.rdf>;
+			kees:onFetchingError [ a kees:RetentionPolicy ; kees:hasResilience 0 ] ;
+			kees:updateFrequency [ a kees:Frequency ; kees:hasFrequencyPeriod 3600 ] ;
 		]
-	]
+	] ;
 .
-
-##################################################################
-# Here are some predefined individuals you can use in your config
-##################################################################				
-self:kb a kees:KnowledgeBase ;
-	kees:hasConfigGraph [ a kees:KBConfigurationGraph ; sd:name self:config];
-	kees:hasTBoxGraph [ a kees:TBoxGraph ; sd:name self:tbox]; 
-	kees:hasInferenceGraph [ a kees:InferredKnowledgeGraph ; sd:name self:inferences ]
-.
-self:dropDataset a kees:RetentionPolicy ; kees:hasResilience 0;  .
-self:keepDataset a kees:RetentionPolicy ; kees:hasResilience 1000 .
-
-self:hourly a kees:Frequency ; kees:hasFrequencyPeriod 3600 .
-self:weekly a kees:Frequency ; kees:hasFrequencyPeriod 604800 .
-self:monthly a kees:Frequency ; kees:hasFrequencyPeriod 2628000  .
-self:yearly a kees:Frequency ; kees:hasFrequencyPeriod 31536000 .
-self:justOnce a kees:Frequency ; kees:hasFrequencyPeriod 3153600000 .
