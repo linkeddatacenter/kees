@@ -3,10 +3,15 @@
 @prefix self: <http://linkeddata.center/a/here_your_graph_db_name#> .
 
 [] a sd:Service ;
+    sd:endpoint <https://your_sparql_endpoint_url> ;
+    sd:supportedLanguage sd:SPARQL11Query ;
     sd:feature sd:RequiresDataset, kees:AutomatedBulkIngestion ;
+    sd:inputFormat format:RDF_XML, format:Turtle, format:N3, format:N_Triples, format:JSON_LD;
+	sd:resultFormat format:JSON_LD, format:SPARQL_Results_XML, format:SPARQL_Results_JSON, 
+		format:SPARQL_Results_CSV, format:RDF_XML, 	format:Turtle, 	format:N3 ,format:N_Triples; 
     sd:defaultDataset [
-		a kees:KnowledgeBase ;
-		kees:hasAccrualPolicy [
+	    a kees:KnowledgeBase ;
+	    kees:hasAccrualPolicy [
 		    a kees:BulkIngestion ;
 			kess:hasTargetGraph [ a kees:LinkedDataGraph;
 				sd:name <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/cities.rdf>;
@@ -27,5 +32,5 @@
 		];
 		kees:hasConfigGraph [ a kees:KBConfigurationGraph ; sd:name self:config];
 		kees:hasInferenceGraph [ a kees:InferredKnowledgeGraph ; sd:name self:inferences ];
-	] 
+    ] 
  .
