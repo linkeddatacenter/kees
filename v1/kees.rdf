@@ -39,7 +39,7 @@
         <dc:subject xml:lang="en">Knowledge Exchange Engine Schema ontology.</dc:subject>
         <dc:title xml:lang="en">The KEES Vocabulary for knowledge  base management</dc:title>
         <dc:rights xml:lang="en">The KEES ontology is available under the Creative Commons Attribution 3.0 Unported license; see http://creativecommons.org/licenses/by/3.0/. In a nutshell, you are free to copy, distribute and transmit the work; to remix/adapt the work (e.g. to import the ontology and create specializations of its elements), as long as you attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work). Proper Attribution: Simply include the statement &quot;This work is based on the KEES ontology, developed by Enrico Fagnoni&quot; and link back to http:/linkeddata.center/kees/v1</dc:rights>
-        <owl:versionInfo xml:lang="en">V 1.1.1, Release 2015-11-30</owl:versionInfo>
+        <owl:versionInfo xml:lang="en">V 1.1.1, Release 2015-12-11</owl:versionInfo>
         <dcterms:license rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
         <foaf:homepage rdf:resource="http://linkeddata.center/kees/"/>
         <dc:description rdf:resource="http://linkeddata.center/kees/images/cycle.png"/>
@@ -225,13 +225,24 @@
     
 
 
+    <!-- http://linkeddata.center/kees/v1#hasTargetGraph -->
+
+    <owl:ObjectProperty rdf:about="&kees;hasTargetGraph">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdf:type rdf:resource="&owl;InverseFunctionalProperty"/>
+        <rdfs:domain rdf:resource="&kees;AccrualPolicy"/>
+        <rdfs:range rdf:resource="&sd;NamedGraph"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://linkeddata.center/kees/v1#onFetchingError -->
 
     <owl:ObjectProperty rdf:about="&kees;onFetchingError">
         <rdfs:label xml:lang="en">on fetching error</rdfs:label>
         <rdfs:comment xml:lang="en">Allows to declare the policy to adopt when an error occurs during resource 
 fetching- If not present kees:keepDataset is inferred.</rdfs:comment>
-        <rdfs:domain rdf:resource="&kees;LearningPolicy"/>
+        <rdfs:domain rdf:resource="&kees;AccrualPolicy"/>
         <rdfs:range rdf:resource="&kees;RetentionPolicy"/>
     </owl:ObjectProperty>
     
@@ -254,8 +265,8 @@ fetching- If not present kees:keepDataset is inferred.</rdfs:comment>
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
         <rdfs:label xml:lang="en">update frequency</rdfs:label>
         <rdfs:comment xml:lang="en">The a time frame after witch a source is supposed  changes.  If not specified , one hour is guessed .</rdfs:comment>
+        <rdfs:domain rdf:resource="&kees;AccrualPolicy"/>
         <rdfs:range rdf:resource="&kees;Frequency"/>
-        <rdfs:domain rdf:resource="&kees;LearningPolicy"/>
         <rdfs:seeAlso rdf:resource="&dcterms;accrualPeriodicity"/>
     </owl:ObjectProperty>
     
@@ -386,6 +397,38 @@ fetching- If not present kees:keepDataset is inferred.</rdfs:comment>
     
 
 
+    <!-- http://linkeddata.center/kees/v1#hasTargetGraphName -->
+
+    <owl:DatatypeProperty rdf:about="&kees;hasTargetGraphName">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:label xml:lang="en">has target graph name</rdfs:label>
+        <rdfs:comment xml:lang="en">This attribute states that the accrual policy subject  is about the creation/maintenance of a graph named as the referenced object.</rdfs:comment>
+        <rdfs:domain rdf:resource="&kees;AccrualPolicy"/>
+        <rdfs:range rdf:resource="&xsd;anyURI"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#hasTargetGraphType -->
+
+    <owl:DatatypeProperty rdf:about="&kees;hasTargetGraphType">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#includes -->
+
+    <owl:DatatypeProperty rdf:about="&kees;includes">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:label xml:lang="en">include</rdfs:label>
+        <rdfs:comment xml:lang="en">the URL of a web resource exposing a Kees configuration data.  It is a shortcut for kees:hasTargetGraph [ a kees:KBConfigGraph; sd:name &lt;configSource&gt; ].</rdfs:comment>
+        <rdfs:domain rdf:resource="&kees;ConfigIngestion"/>
+        <rdfs:range rdf:resource="&xsd;anyURI"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://linkeddata.center/kees/v1#pageSize -->
 
     <owl:DatatypeProperty rdf:about="&kees;pageSize">
@@ -471,8 +514,8 @@ THEN {
     <owl:DatatypeProperty rdf:about="&kees;source">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
         <rdfs:label xml:lang="en">source</rdfs:label>
-        <rdfs:comment xml:lang="en">the URL of a web resource exposing RDF data.</rdfs:comment>
-        <rdfs:domain rdf:resource="&kees;BulkIngestion"/>
+        <rdfs:comment xml:lang="en">the URL of a web resource exposing RDF data.  It is a shortcut for kees:hasTargetGraph [ a kees:LinkedDataGraph; sd:name &lt;source&gt; }</rdfs:comment>
+        <rdfs:domain rdf:resource="&kees;LinkedDataResourceIngestion"/>
         <rdfs:range rdf:resource="&xsd;anyURI"/>
         <rdfs:subPropertyOf rdf:resource="&owl;topDataProperty"/>
     </owl:DatatypeProperty>
@@ -530,6 +573,8 @@ THEN {
 
     <owl:DatatypeProperty rdf:about="&kees;vocabulary">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:label xml:lang="en">vocabulary</rdfs:label>
+        <rdfs:comment xml:lang="en">It&apos;s a shortcut for kees:hasTargetGraph [ a TBoxGraph; sd:name &lt;vocabulary&gt; ]</rdfs:comment>
         <rdfs:domain rdf:resource="&kees;TBoxIngestion"/>
         <rdfs:range rdf:resource="&xsd;anyURI"/>
         <rdfs:subPropertyOf rdf:resource="&owl;topDataProperty"/>
@@ -555,13 +600,6 @@ THEN {
         <rdfs:subClassOf rdf:resource="&sd;NamedGraph"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;accrualPolicy"/>
-                <owl:onClass rdf:resource="&kees;LearningPolicy"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
                 <owl:onProperty rdf:resource="&kees;hadLastModified"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;dateTime"/>
@@ -582,7 +620,35 @@ THEN {
     <!-- http://linkeddata.center/kees/v1#AccrualPolicy -->
 
     <owl:Class rdf:about="&kees;AccrualPolicy">
-        <rdfs:label xml:lang="en">Accrual Policy</rdfs:label>
+        <rdfs:label xml:lang="en">Abstract Accrual Policy</rdfs:label>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&kees;forceAccept"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&kees;onFetchingError"/>
+                <owl:onClass rdf:resource="&kees;RetentionPolicy"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&kees;updateFrequency"/>
+                <owl:onClass rdf:resource="&kees;Frequency"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&kees;hasTargetGraph"/>
+                <owl:onClass rdf:resource="&sd;NamedGraph"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&kees;requiresAuthentication"/>
@@ -590,14 +656,7 @@ THEN {
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;forceAccept"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;success"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:comment xml:lang="en">The policy governing the addition of an ABox Graph to a knowledge base. If not specified same behaviour of kees:RDFLoading is expeced</rdfs:comment>
+        <rdfs:comment xml:lang="en">The superclass for the policies that describe how to  learn facts from the web 3.0. The Accrual policy plan  the creation and the mainntenance  of graph to a knowledge base.</rdfs:comment>
     </owl:Class>
     
 
@@ -615,14 +674,7 @@ THEN {
 
     <owl:Class rdf:about="&kees;BulkIngestion">
         <rdfs:label xml:lang="en">Bulk Ingestion</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&kees;LearningPolicy"/>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;source"/>
-                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;anyURI"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&kees;AccrualPolicy"/>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&kees;supportsLDPPP"/>
@@ -648,7 +700,31 @@ THEN {
     <owl:Class rdf:about="&kees;BulkIngestor">
         <rdfs:label xml:lang="en">BulkIngestor</rdfs:label>
         <rdfs:subClassOf rdf:resource="&prov;SoftwareAgent"/>
-        <rdfs:comment xml:lang="en">This processor manages kees:BulkIngestion accrual policies in pending ingestion activities.</rdfs:comment>
+        <rdfs:comment xml:lang="en">This processor processes kees:BulkIngestion accrual policies.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#ConfigIngestion -->
+
+    <owl:Class rdf:about="&kees;ConfigIngestion">
+        <rdfs:label xml:lang="en">config ingestion</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&kees;BulkIngestion"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&kees;includes"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;anyURI"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&kees;hasTargetGraph"/>
+                <owl:onClass rdf:resource="&sd;NamedGraph"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:qualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="en">An accrual policy that creates a KBConfigGraph.</rdfs:comment>
     </owl:Class>
     
 
@@ -759,7 +835,7 @@ THEN {
 
     <owl:Class rdf:about="&kees;InferredKnowledgeGraph">
         <rdfs:label xml:lang="en">Inferred knowledge graph</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&sd;NamedGraph"/>
+        <rdfs:subClassOf rdf:resource="&kees;ABoxGraph"/>
         <rdfs:comment xml:lang="en">A named graph containing inferred facts (by axioms or rules)</rdfs:comment>
     </owl:Class>
     
@@ -779,7 +855,7 @@ THEN {
 
     <owl:Class rdf:about="&kees;IngestionActivityReportGraph">
         <rdfs:label xml:lang="en">Ingestion activity report graph</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&sd;NamedGraph"/>
+        <rdfs:subClassOf rdf:resource="&kees;ABoxGraph"/>
         <rdfs:comment xml:lang="en">A named graph that stores statements about an ingestion activity.  By default all report about  completed  activities older tha 24 hours are purged away,</rdfs:comment>
     </owl:Class>
     
@@ -799,8 +875,8 @@ THEN {
 
     <owl:Class rdf:about="&kees;KBConfigGraph">
         <rdfs:label xml:lang="en">KB config graph</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&sd;NamedGraph"/>
-        <rdfs:comment xml:lang="en">A named graph that contains knowlege base configuration data.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="&kees;ABoxGraph"/>
+        <rdfs:comment xml:lang="en">A named graph that contains knowlege base configuration data. Data consist in instances of Accrual Policies.</rdfs:comment>
     </owl:Class>
     
 
@@ -810,6 +886,13 @@ THEN {
     <owl:Class rdf:about="&kees;KnowledgeBase">
         <rdfs:label xml:lang="en">Knowledge Base</rdfs:label>
         <rdfs:subClassOf rdf:resource="&sd;Dataset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&kees;hasInferenceGraph"/>
+                <owl:onClass rdf:resource="&kees;InferredKnowledgeGraph"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&kees;hasConfigGraph"/>
@@ -824,38 +907,41 @@ THEN {
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;hasInferenceGraph"/>
-                <owl:onClass rdf:resource="&kees;InferredKnowledgeGraph"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A  dataset  composed by ABox RDF statements organized in named graph or  TBox RDF statemens (rules and vocabularies).</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://linkeddata.center/kees/v1#LearningPolicy -->
+    <!-- http://linkeddata.center/kees/v1#LinkedDataGraph -->
 
-    <owl:Class rdf:about="&kees;LearningPolicy">
-        <rdfs:label xml:lang="en">learnin policy</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&kees;AccrualPolicy"/>
+    <owl:Class rdf:about="&kees;LinkedDataGraph">
+        <rdfs:label xml:lang="en">Linked Data Graph</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&kees;ABoxGraph"/>
+        <rdfs:comment xml:lang="en">A named graph that stores linked data learned from web 3.0 resources.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#LinkedDataResourceIngestion -->
+
+    <owl:Class rdf:about="&kees;LinkedDataResourceIngestion">
+        <rdfs:label xml:lang="en">linked data resource ingestion</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&kees;BulkIngestion"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;onFetchingError"/>
-                <owl:onClass rdf:resource="&kees;RetentionPolicy"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onProperty rdf:resource="&kees;source"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;anyURI"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;updateFrequency"/>
-                <owl:onClass rdf:resource="&kees;Frequency"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onProperty rdf:resource="&kees;hasTargetGraph"/>
+                <owl:onClass rdf:resource="&sd;NamedGraph"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:qualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
-        <rdfs:comment xml:lang="en">The superclass for the policies to learn facts from the web 3.0.</rdfs:comment>
+        <rdfs:comment xml:lang="en">An accrual policy that creates a Linked Data graph.</rdfs:comment>
     </owl:Class>
     
 
@@ -912,16 +998,16 @@ THEN {
         <rdfs:label xml:lang="en">rule</rdfs:label>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;executionOrder"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;nonNegativeInteger"/>
+                <owl:onProperty rdf:resource="&kees;ruleText"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;success"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;ruleText"/>
-                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;success"/>
+                <owl:onProperty rdf:resource="&kees;executionOrder"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;nonNegativeInteger"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A construction rule  according a legacy syntax derived from stardog DL entilement rules</rdfs:comment>
@@ -933,19 +1019,26 @@ THEN {
 
     <owl:Class rdf:about="&kees;SparqlIngestion">
         <rdfs:label xml:lang="en">SPARQL query</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&kees;LearningPolicy"/>
+        <rdfs:subClassOf rdf:resource="&kees;AccrualPolicy"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;constructQuery"/>
-                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onProperty rdf:resource="&kees;pageSize"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;success"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;fromPage"/>
+                <owl:onProperty rdf:resource="&kees;toPage"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&kees;usesSparqlService"/>
+                <owl:onClass rdf:resource="&sd;Service"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
@@ -973,21 +1066,14 @@ THEN {
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;usesSparqlService"/>
-                <owl:onClass rdf:resource="&sd;Service"/>
+                <owl:onProperty rdf:resource="&kees;constructQuery"/>
                 <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;toPage"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;success"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&kees;pageSize"/>
+                <owl:onProperty rdf:resource="&kees;fromPage"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;success"/>
             </owl:Restriction>
@@ -1020,7 +1106,7 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
-        <rdfs:comment xml:lang="en">A named graph that contains vocabularies and taxonomies used in ABox graph</rdfs:comment>
+        <rdfs:comment xml:lang="en">A named graph that contains vocabularies and taxonomies used in ABox graphs</rdfs:comment>
     </owl:Class>
     
 
@@ -1029,7 +1115,7 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
 
     <owl:Class rdf:about="&kees;TBoxIngestion">
         <rdfs:label xml:lang="en">vocabulary ingestion</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&kees;AccrualPolicy"/>
+        <rdfs:subClassOf rdf:resource="&kees;BulkIngestion"/>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&kees;vocabulary"/>
@@ -1037,7 +1123,14 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
                 <owl:onDataRange rdf:resource="&xsd;anyURI"/>
             </owl:Restriction>
         </rdfs:subClassOf>
-        <rdfs:comment xml:lang="en">A Tbox resource ingestion. It is functional similar to kees:BulkIngestion but without update and retention policies.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&kees;hasTargetGraph"/>
+                <owl:onClass rdf:resource="&sd;NamedGraph"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:qualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="en">An accrual policy that creates a TBox graph.</rdfs:comment>
     </owl:Class>
     
 
@@ -1076,6 +1169,12 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
     
 
 
+    <!-- http://www.w3.org/ns/sparql-service-description#Feature -->
+
+    <owl:Class rdf:about="&sd;Feature"/>
+    
+
+
     <!-- http://www.w3.org/ns/sparql-service-description#NamedGraph -->
 
     <owl:Class rdf:about="&sd;NamedGraph">
@@ -1093,19 +1192,48 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#AutomatedBulkIngestion -->
+
+    <owl:NamedIndividual rdf:about="&kees;AutomatedBulkIngestion">
+        <rdf:type rdf:resource="&sd;Feature"/>
+        <rdfs:label>Automated bulk ingestion</rdfs:label>
+        <rdfs:comment xml:lang="en">kess:AutomatedIngestion, when used as the object of the sd:feature property, indicates that the SPARQL service supports kees:BulkIngestion accrual policy for Knowledge base population and maintenance.</rdfs:comment>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#AutomatedLODLaundromatIngestion -->
+
+    <owl:NamedIndividual rdf:about="&kees;AutomatedLODLaundromatIngestion">
+        <rdf:type rdf:resource="&sd;Feature"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#AutomatedSparqlIngestion -->
+
+    <owl:NamedIndividual rdf:about="&kees;AutomatedSparqlIngestion">
+        <rdf:type rdf:resource="&sd;Feature"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
     // General axioms
     //
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    <rdf:Description>
-        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="&kees;IndexingByInsertDataActivity"/>
-            <rdf:Description rdf:about="&kees;IndexingBySparqlLoadActivity"/>
-            <rdf:Description rdf:about="&kees;IndexingFromStreamActivity"/>
-        </owl:members>
-    </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
@@ -1122,6 +1250,22 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
             <rdf:Description rdf:about="&kees;IngestionActivityReportGraph"/>
             <rdf:Description rdf:about="&kees;KBConfigGraph"/>
             <rdf:Description rdf:about="&kees;TBoxGraph"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&kees;ConfigIngestion"/>
+            <rdf:Description rdf:about="&kees;LinkedDataResourceIngestion"/>
+            <rdf:Description rdf:about="&kees;TBoxIngestion"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&kees;IndexingByInsertDataActivity"/>
+            <rdf:Description rdf:about="&kees;IndexingBySparqlLoadActivity"/>
+            <rdf:Description rdf:about="&kees;IndexingFromStreamActivity"/>
         </owl:members>
     </rdf:Description>
 </rdf:RDF>

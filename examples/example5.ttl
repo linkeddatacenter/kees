@@ -1,6 +1,9 @@
 @prefix kees: <http://linkeddata.center/kees/v1#> .
-[]  
-	kees:useGraphName <http://dbpedia.org/sparql#1_200K_dump>
+[]  a kees:SparqlIngestion
+	kees:hasTargetGraph [
+		a kees:LinkedDataGraph ;
+		sd:name <http://dbpedia.org/#first_200K_triples>
+	] ;
 	kees:useSparqlService [ sd:endpoint <http://dbpedia.org/sparql> ] ;
 	kees:constructQuery """
 		CONSTRUCT {
