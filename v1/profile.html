@@ -46,15 +46,18 @@
       </section>
       <section id="status">
         <h2>Project Status</h2>
-        <p> The language profile described in this document is aligned with the 1.1 version of <a href="http://linkeddata.center/kees/v1">KEES Ontology</a> and it is references in LinkedData.Center knowledge base <a href="http://linkeddata.center/api">API documentation</a>. </p>
+        <p> The language profile described in this document is aligned with the 1.1 version of <a href="http://linkeddata.center/kees/v1">KEES Ontology</a>. 
+        	Examples are available in <a href="hhttp://linkeddata.center/help/devop/kees-profile">Knowledge base configuration handbook</a>. </p>
       </section>
     </header>
     <h1 id="prefixes">Name spaces</h1>
     <p>The following prefixes are defined inside this document</p>
     <ul>
+      <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">prov</span>:</b> <span property="rdfa:uri">http://www.w3.org/ns/prov#</span>
+      </li>
       <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">foaf</span>:</b> <span property="rdfa:uri">http://xmlns.com/foaf/0.1/</span>
       </li>
-      <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">dcterms</span>:</b> <span property="rdfa:uri">http://purl.org/dc/terms/</span>
+      <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">dct</span>:</b> <span property="rdfa:uri">http://purl.org/dc/terms/</span>
       </li>
       <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">xsd</span>:</b> <span property="rdfa:uri">http://www.w3.org/2001/XMLSchema#</span>
       </li>
@@ -67,8 +70,6 @@
       <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">sd</span>:</b> <span property="rdfa:uri">http://www.w3.org/ns/sparql-service-description#</span>
       </li>
       <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">kees</span>:</b> <span property="rdfa:uri">http://linkeddata.center/kees/v1#</span>
-      </li>
-      <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">ldcns</span>:</b> <span property="rdfa:uri">http://linkeddata.center/a/</span>
       </li>
     </ul>
     <p><br>
@@ -85,14 +86,47 @@
         ... 
         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"&gt;
 	</pre>
-    <h2>Vocabulary usage</h2>
+	
+    <h2>KEES ontology</h2>
+    <p>The <a href="http://ontology.it/kees/v1">KEES(Knowledge Exchenge Engine Schema) ontology</a> is related to
+    	 <a href=" http://e-artspace.com/home/project/kees">KEES project</a> and describes a knowledge base configuration in terms of ABox and TBox statements together with 
+    	 their accrual policies. <strong>A KEES compliant application is supposed to understand all KEES vocabulary terms</strong>.</p> 
+	<p>On following chapter, we are collecting optional rules and axioms and linksets for KEES  that are not part of the formal ontology specification but can be helpful 
+		in many cases.</p>
+	<p>Such rules are not part of the core KEES ontology for two reasons:</p>
+	<ul>
+		<li>For semantic aligments with other vocabularies ("ontology mappings"), the problem is that the candidate vocabularies are often defined 
+			in different ontology languages or language fragments, e.g. RDF-S, OWL DL, and OWL Full. 
+			Including such alignments in KEES directly will turn KEES into OWL Full, which is something we want to avoid as much as we can. 
+			The reason is that there are applications for KEES both<br />
+			<ul>
+				<li>in the "open, wild Web", where OWL Full will anyway be the likely language fragment, and incomplete, lightweight reasoning be sufficient, and
+				<li>in controlled, corporate settings, where staying within OWL DL is an important feature for consistent DL reasoning.
+					 Also, those alignments that are useful in practice are often broader than correct. 
+					 While they are good in 90% of the cases, they will have unwanted side-effects in 10% of the cases. 
+					 Thus, including them must be optional 
+				</li>
+			</ul>
+		</li>
+		<li>For additional rules and axioms, the problem is that they raise the bar for computing the full entailment, 
+			which may slow down reasoner performance. Also, they are very promising topics for further research and fine-tuning, 
+			so the examples given in here will be initial sketches only. 
+			Practitioners will be able to improve them a lot in terms of computational efficiency and quality.
+			If you are working on business applications that consume  KEES data, this is what you should dedicate resources to.
+		</li>
+	</ul>
+	
+    <h2>Friend vocabularies</h2>
   
     <p>KEES Language Profile is defined as a set of public vocabularies with some usage pattern. This chapter
       provides info about terms that a business application compliant with KEES architecture should understand.</p>
- 
-    <h3>KEES ontology</h3>
-    <p>The <a href="http://ontology.it/kees/v1">KEES(Knowledge Exchenge Engine Service) ontology</a> is related to <a href=" http://e-artspace.com/home/project/kees">KEES project</a> and describes a knowledge base configuration in terms of ABox and TBox statements. A KEES compliant application is supposed to understand all KEES vocabulary terms.</p> 
-   
+
+    <h3>PROV</h3>
+    <p>The <a href="http://www.w3.org/TR/prov-o/">PROV ontology</a> (PROV-O) expresses the PROV Data Model
+    	using the OWL2 Web Ontology Language (OWL2). It provides a set of classes, properties, 
+    	and restrictions that can be used to represent and interchange provenance information generated in different systems and under different contexts. 
+    	It can also be specialized to create new classes and properties to model provenance information for different applications and domains. </p>
+     <p>KEES ontology is an extension of PROV Ontology.</p>
    
     <h3>FOAF</h3>
     <p>The <a href="http://www.foaf-project.org/">Friend of a Friend (FOAF) project</a> is creating a Web of
@@ -111,28 +145,55 @@
       are encuraged to add as much data you can provide about your  knowlege base.</p>
       
     <h3>XSD schema</h3>
-    <p>Use <a href="http://www.w3.org/2001/XMLSchema">xsd schema</a> to specify data type. In knowledge base description you sholud need only:  <code>integer</code>, <code>dateTime</code>,<code>string</code></p>
+    <p>Use <a href="http://www.w3.org/2001/XMLSchema">xsd schema</a> to specify data type. 
+    In knowledge base description you sholud need only:  <code>integer</code>, <code>dateTime</code>,<code>string</code></p>
     
     <h3>RDF and RDF schema</h3>
     <p>RDF Schema provides a data-modelling vocabulary for RDF data. RDF Schema is an extension of the basic RDF
-      vocabulary. Only the rdf:type propery must be understand by a KEES compliant application.</p>
+      vocabulary. The rdf:type propery must be understand by a KEES compliant application.</p>
       
     <h3>VoID Vocabulary</h3>
     <p><a href="http://www.w3.org/TR/void/">VoID</a> is an RDF Schema vocabulary for expressing metadata about RDF
       datasets. It is intended as a bridge between the publishers and users of RDF data, with applications ranging from
       data discovery to cataloging and archiving of datasets.</p>
-    <p>A KEES compliant application should recognize following properties aplied to the knowledge base oblject:</p>
-    <ul>
-        <li><a href="http://www.w3.org/TR/void/#vocabularies">void:vocabulary</a>: this properies specified a resource that contains TBOX statements. KEES application is supposed to process this resources during boot window.</li>
-        <li><a href="http://www.w3.org/TR/void/#dumps">void:subset</a>:  this properies specified a resource that contains ABOX statements. All KEES dumps are supposed to be stored as named graph in a graph database. KEES compliant application is supposed to process dumps during learning window.</li>
-    </ul>
+    <p>KEES ontology is an extension of VoID Ontology.</p>
     
     <h3>Sparql Service description </h3>
-    <p>A vocabulary for describing SPARQL services made available via the SPARQL 1.1 Protocol for RDF.
-    Only the <a href="http://www.w3.org/TR/sparql11-service-description/#sd-endpoint">sd:endpoint</a> property should be recognized by a KEES compliant application.</p>
+    <p>A vocabulary for describing SPARQL services made available via the SPARQL 1.1 Protocol for RDF.KEES ontology is an extension of Void Ontology.</p>
 
-    <h3>LinkedData.Center resource namespace </h3>
-    <p>A namespace for LinkedData.Center resource.</p>
+	<h2>Ontology mappings</h2>
+
+    <p>The following mapping rules are very much recommended and should practically have no unwanted side-effects, other than turning your data into OWL Full:</p>
+    
+    <pre><code>
+
+# DC
+kees:Policy rdfs:subClassOf dct:Policy .
+kees:accrualPolicy rdfs:subPropertyOf dct:accrualPolicy .
+
+
+# PROV
+kees:Plan rdfs:subClassOf prov:Plan .
+kees:Entity rdfs:subClassOf prov:Entity .
+kees:Activity rdfs:subClassOf prov:Activity .
+
+
+# VOID
+kees:KnowledgeBase rdfs:subClassOf void:Dataset .
+kees:ABoxGraph rdfs:subClassOf void:Dataset .
+kees:TBoxGraph rdfs:subClassOf void:Dataset .
+
+
+# SD
+kees:KnowledgeBase rdfs:subClassOf sd:Dataset .
+kees:ABoxGraph rdfs:subClassOf sd:NamedGraph .
+kees:TBoxGraph rdfs:subClassOf sd:NamedGraph .
+kees:hasABoxGraph rdfs:subPropertyOf sd:namedGraph .
+kees:hasTBoxGraph rdfs:subPropertyOf sd:namedGraph .
+kees:hasInferenceGraph rdfs:subPropertyOf sd:namedGraph .
+kees:hasIngestionActivtyReportGraph rdfs:subPropertyOf sd:namedGraph .
+kees:hasConfigGraph rdfs:subPropertyOf sd:namedGraph .
+</code></pre>
     
     <section id="license">
         <h2>License</h2>
