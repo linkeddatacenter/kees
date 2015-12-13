@@ -1,0 +1,14 @@
+@prefix kees: <http://linkeddata.center/kees/v1#> .
+[] a kees:BulkIngestion ;
+	kees:source <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/cities.rdf> ;
+	kees:onFetchingError [ a kees:RetentionPolicy ; kees:hasResilience 0 ] ;
+	kees:hasUpdatePolicy [ a kees:UpdatePolicy ; kees:hasFrequencyPeriod 3600 ] ;
+	kees:supportsHttpCaching false ;
+	kees:supportsLDPPP false .
+	
+[] a kees:BulkIngestion ;
+	kees:source <https://demo.hub1.linkeddata.center.s3.amazonaws.com/data/countries.rdf> ;
+	kees:onFetchingError [ a kees:RetentionPolicy ; kees:hasResilience 0 ] ;
+	kees:hasUpdatePolicy [ a kees:UpdatePolicy ; kees:hasFrequencyPeriod 3600 ] ;
+	kees:supportsHttpCaching false ;
+	kees:supportsLDPPP false .

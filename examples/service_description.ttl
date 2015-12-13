@@ -3,7 +3,7 @@
 @prefix self: <http://linkeddata.center/a/here_your_graph_db_name#> .
 
 [] a sd:Service ;
-    sd:endpoint <https://your_sparql_endpoint_url> ;
+    sd:endpoint <your_sparql_endpoint_url> ;
     sd:supportedLanguage sd:SPARQL11Query ;
     sd:feature sd:RequiresDataset, kees:AutomatedBulkIngestion ;
     sd:inputFormat format:RDF_XML, format:Turtle, format:N3, format:N_Triples, format:JSON_LD;
@@ -12,21 +12,17 @@
     sd:defaultDataset [
 	    a kees:KnowledgeBase ;
 	    kees:hasAccrualPolicy [
-		    a kees:BulkIngestion ;
-			kess:hasTargetGraph [ a kees:LinkedDataGraph;
-				sd:name <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/cities.rdf>;
-			];
+			a kees:BulkIngestion ;
+			kees:source <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/cities.rdf> ;
 			kees:onFetchingError [ a kees:RetentionPolicy ; kees:hasResilience 0 ] ;
-			kees:updateFrequency [ a kees:Frequency ; kees:hasFrequencyPeriod 3600 ] ;
+			kees:hasUpdatePolicy [ a kees:UpdatePolicy ; kees:hasFrequencyPeriod 3600 ] ;
 			kees:supportsHttpCaching false ;
 			kees:supportsLDPPP false ;
 		] , [
 			a kees:BulkIngestion ;
-			kess:hasTargetGraph [ a kees:LinkedDataGraph;
-				sd:name <https://demo.hub1.linkeddata.center.s3.amazonaws.com/data/countries.rdf>;
-			];
+			kees:source <https://demo.hub1.linkeddata.center.s3.amazonaws.com/data/countries.rdf> ;
 			kees:onFetchingError [ a kees:RetentionPolicy ; kees:hasResilience 0 ] ;
-			kees:updateFrequency [ a kees:Frequency ; kees:hasFrequencyPeriod 3600 ] ;
+			kees:hasUpdatePolicy [ a kees:UpdatePolicy ; kees:hasFrequencyPeriod 3600 ] ;
 			kees:supportsHttpCaching false ;
 			kees:supportsLDPPP false ;
 		];

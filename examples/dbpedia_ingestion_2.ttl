@@ -1,15 +1,14 @@
 @prefix kees: <http://linkeddata.center/kees/v1#> .
 []  a kees:SparqlIngestion
-	kees:hasTargetGraph [
-		a kees:LinkedDataGraph ;
-		sd:name <http://dbpedia.org/#first_200K_triples>
-	] ;
-	kees:useSparqlService [ sd:endpoint <http://dbpedia.org/sparql> ] ;
+	kees:queryName <urn:citynames> ;
+	kees:sparqlEndpoint [ sd:endpoint <http://dbpedia.org/sparql> ] ;
 	kees:constructQuery """
+		PREFIX yago: <http://dbpedia.org/class/yago/>
 		CONSTRUCT {
-			?s ?p ?o
+			?s <urn:city:name> ?label
 		} WHERE {
-			?s ?p ?o
+			?s a yago:Municipality108626283 ; rdfs:label ?label
+			FILTER(LANGMATCHES(LANG(?label), 'en'))
 		}
 	""" ;
 	kees:pageSize 50000 ;
