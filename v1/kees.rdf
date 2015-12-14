@@ -299,6 +299,18 @@
     
 
 
+    <!-- http://linkeddata.center/kees/v1#createsGraphName -->
+
+    <owl:DatatypeProperty rdf:about="&v1;createsGraphName">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:label>creates graph name</rdfs:label>
+        <rdfs:comment xml:lang="en">The related uri is used as as the name of the graph produced according the described accrual policy. If not specified the same value of kees:url is inferred.</rdfs:comment>
+        <rdfs:domain rdf:resource="&v1;KnowledgeAccrualPolicy"/>
+        <rdfs:range rdf:resource="&xsd;anyURI"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://linkeddata.center/kees/v1#cycleDescription -->
 
     <owl:DatatypeProperty rdf:about="&v1;cycleDescription">
@@ -494,6 +506,7 @@
         <rdfs:label xml:lang="en">query name</rdfs:label>
         <rdfs:comment xml:lang="en">The name of the graph that will contain a sparql query result. If not specfied hinerit the sparql service endpoint url.</rdfs:comment>
         <rdfs:domain rdf:resource="&v1;SparqlServiceAccrualPolicy"/>
+        <rdfs:subPropertyOf rdf:resource="&v1;createsGraphName"/>
         <rdfs:range rdf:resource="&xsd;anyURI"/>
     </owl:DatatypeProperty>
     
@@ -918,6 +931,13 @@ THEN {
                 <owl:onProperty rdf:resource="&v1;hasUpdatePolicy"/>
                 <owl:onClass rdf:resource="&v1;UpdatePolicy"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&v1;createsGraphName"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;anyURI"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
