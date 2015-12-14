@@ -126,7 +126,19 @@
     	using the OWL2 Web Ontology Language (OWL2). It provides a set of classes, properties, 
     	and restrictions that can be used to represent and interchange provenance information generated in different systems and under different contexts. 
     	It can also be specialized to create new classes and properties to model provenance information for different applications and domains. </p>
-     <p>KEES ontology is an extension of PROV Ontology.</p>
+     <p>KEES ontology is an extension of the PROV Ontology.</p>
+ 
+       
+    <h3>VoID Vocabulary</h3>
+    <p><a href="http://www.w3.org/TR/void/">VoID</a> is an RDF Schema vocabulary for expressing metadata about RDF
+      datasets. It is intended as a bridge between the publishers and users of RDF data, with applications ranging from
+      data discovery to cataloging and archiving of datasets.</p>
+    <p>KEES ontology is an extension of VoID Ontology.</p>
+    
+    <h3>Sparql Service description </h3>
+    <p>A vocabulary for describing SPARQL services made available via the SPARQL 1.1 Protocol for RDF.KEES ontology is an extension of Void Ontology.</p>
+    <p>KEES ontology is an extension of Sparql Service description Ontology.</p>
+    
    
     <h3>FOAF</h3>
     <p>The <a href="http://www.foaf-project.org/">Friend of a Friend (FOAF) project</a> is creating a Web of
@@ -151,31 +163,17 @@
     <h3>RDF and RDF schema</h3>
     <p>RDF Schema provides a data-modelling vocabulary for RDF data. RDF Schema is an extension of the basic RDF
       vocabulary. The rdf:type propery must be understand by a KEES compliant application.</p>
-      
-    <h3>VoID Vocabulary</h3>
-    <p><a href="http://www.w3.org/TR/void/">VoID</a> is an RDF Schema vocabulary for expressing metadata about RDF
-      datasets. It is intended as a bridge between the publishers and users of RDF data, with applications ranging from
-      data discovery to cataloging and archiving of datasets.</p>
-    <p>KEES ontology is an extension of VoID Ontology.</p>
-    
-    <h3>Sparql Service description </h3>
-    <p>A vocabulary for describing SPARQL services made available via the SPARQL 1.1 Protocol for RDF.KEES ontology is an extension of Void Ontology.</p>
 
 	<h2>Ontology mappings</h2>
 
-    <p>The following mapping rules are very much recommended and should practically have no unwanted side-effects, other than turning your data into OWL Full:</p>
-    
+    <p>The following mapping rules are required and safe:</p>
+       
     <pre><code>
-
-# DC
-kees:Policy rdfs:subClassOf dct:Policy .
-kees:accrualPolicy rdfs:subPropertyOf dct:accrualPolicy .
-
-
 # PROV
 kees:Plan rdfs:subClassOf prov:Plan .
 kees:Entity rdfs:subClassOf prov:Entity .
 kees:Activity rdfs:subClassOf prov:Activity .
+kees:Processor rdfs:subClassOf prov:SoftwareAgent .
 
 
 # VOID
@@ -186,15 +184,47 @@ kees:TBoxGraph rdfs:subClassOf void:Dataset .
 
 # SD
 kees:KnowledgeBase rdfs:subClassOf sd:Dataset .
-kees:ABoxGraph rdfs:subClassOf sd:NamedGraph .
-kees:TBoxGraph rdfs:subClassOf sd:NamedGraph .
+kees:KnowledgeGraph rdfs:subClassOf sd:NamedGraph .
 kees:hasABoxGraph rdfs:subPropertyOf sd:namedGraph .
 kees:hasTBoxGraph rdfs:subPropertyOf sd:namedGraph .
 kees:hasInferenceGraph rdfs:subPropertyOf sd:namedGraph .
 kees:hasIngestionActivtyReportGraph rdfs:subPropertyOf sd:namedGraph .
 kees:hasConfigGraph rdfs:subPropertyOf sd:namedGraph .
+
 </code></pre>
-    
+
+<p>The following mapping rules are very much recommended and should practically have no unwanted side-effects, other than turning your data into OWL Full:</p>
+    <pre><code>
+
+# DC
+kees:Policy rdfs:subClassOf dct:Policy .
+kees:hasAccrualPolicy rdfs:subPropertyOf dct:accrualPolicy .
+
+</code></pre>
+
+<h2>Rules and axioms</h2>
+
+<pre><code>
+#All subject of type kees:KnowledgeBase in the same graph database are the same
+CONSTRUCT { ?a owl:sameAs ?b }
+WHERE
+{
+	GRAPH ?g1 {?a a kees:KnowledgeBase} 
+	GRAPH ?g2 {?b a kees:KnowledgeBase }
+} ;
+
+
+
+#All accrual policies are related to the knowledge base (RDFS entailment profile for reasoning required)
+CONSTRUCT { ?kb kees:hasAccrual ?accrualPolicy }
+WHERE
+{
+	GRAPH ?g1 {?kb a kees:KnowledgeBase} 
+	GRAPH ?g2 {?accrualPolicy a kees:AccrualPolicy }
+}
+</code></pre>
+
+
     <section id="license">
         <h2>License</h2>
             <p>
