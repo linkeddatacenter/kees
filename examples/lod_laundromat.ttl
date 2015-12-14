@@ -1,0 +1,5 @@
+@prefix kees: <http://linkeddata.center/kees/v1#> .
+[]  kees:lodLaundromatUrl <http://cordis.rkbexplorer.com/models/dump.tgz> ;
+	kees:createsGraphType kees:TBox ;
+    kees:createsGraphName <urn:mymodels> .
+	
