@@ -1,0 +1,22 @@
+#######################################################
+# List of generated or modified graphs 
+#######################################################
+prefix kees: <http://linkeddata.center/kees/v1#> 
+prefix prov: <http://www.w3.org/ns/prov#> 
+prefix sd: <http://www.w3.org/ns/sparql-service-description#> 
+
+SELECT ?graph ?type ?modified ?result ?comment  WHERE {
+	GRAPH ?graph {
+		?x sd:name ?graph;
+		   a ?type ;
+           kees:modified ?modified . 
+        ?x ?result ?y 
+        FILTER ( ?result = prov:wasGeneratedBy || ?result = prov:wasInvalidatedBy) 
+	}
+    OPTIONAL {
+      GRAPH ?g {
+          ?y prov:wasEndedBy ?r .
+          ?r a ?reportType  ; rdfs:comment ?comment
+      }
+    }
+} ORDER BY ?modified
