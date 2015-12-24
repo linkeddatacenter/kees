@@ -37,11 +37,11 @@
         <rdfs:label xml:lang="en">KEES Ontology</rdfs:label>
         <rdfs:comment xml:lang="en">An ontology to describe  a knowledge base  in terms of ABox and TBox statements together with their accrual policies.</rdfs:comment>
         <dc:creator xml:lang="en">Enrico Fagnoni</dc:creator>
-        <dc:description xml:lang="en">KEES (Knowledge Exchenge Engine Schema ) ontology describes a knowledge base configuration in terms of ABox and TBox statements. KEES is entirely based on Semantic Web Architecture and on Linked (Open) Data principles.   For a pratical use  of KEES ontology see  http://linkeddata.center/help/devop/kees-profile article.</dc:description>
+        <dc:description xml:lang="en">KEES (Knowledge Exchenge Engine Schema ) ontology describes a knowledge base configuration in terms of ABox and TBox statements. KEES is entirely based on Semantic Web Architecture and on Linked (Open) Data principles.  For a pratical use  of KEES ontology see  http://linkeddata.center/help/devop/kees-profile article.</dc:description>
         <dc:subject xml:lang="en">Knowledge Exchange Engine Schema ontology.</dc:subject>
         <dc:title xml:lang="en">The KEES Vocabulary for knowledge  base management</dc:title>
         <dc:rights xml:lang="en">The KEES ontology is available under the Creative Commons Attribution 3.0 Unported license; see http://creativecommons.org/licenses/by/3.0/. In a nutshell, you are free to copy, distribute and transmit the work; to remix/adapt the work (e.g. to import the ontology and create specializations of its elements), as long as you attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work). Proper Attribution: Simply include the statement &quot;This work is based on the KEES ontology, developed by Enrico Fagnoni&quot; and link back to http:/linkeddata.center/kees/v1</dc:rights>
-        <owl:versionInfo xml:lang="en">V 1.1.7, Release 2015-24-12</owl:versionInfo>
+        <owl:versionInfo xml:lang="en">V 1.1.8, Release 2015-24-12</owl:versionInfo>
         <dcterms:license rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
         <rdfs:seeAlso rdf:resource="http://linkeddata.center/help/devop/kees-profile"/>
         <foaf:homepage rdf:resource="http://linkeddata.center/kees/"/>
@@ -182,6 +182,7 @@
 
     <owl:ObjectProperty rdf:about="&v1;hasConfigGraph">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:label xml:lang="en">has config graph</rdfs:label>
         <rdfs:comment xml:lang="en">The related resource is one of the configuration graph that caracterize the described knowledge base.</rdfs:comment>
         <rdfs:range rdf:resource="&v1;KBConfigGraph"/>
         <rdfs:domain rdf:resource="&v1;KnowledgeBase"/>
@@ -194,7 +195,8 @@
 
     <owl:ObjectProperty rdf:about="&v1;hasInferenceGraph">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-        <rdfs:comment xml:lang="en">The related resource is the graph where are placed all materialized triples in the related Knowledge base can ave a graph.</rdfs:comment>
+        <rdfs:label xml:lang="en">has inference graph</rdfs:label>
+        <rdfs:comment xml:lang="en">The related resource is the graph where reasoners places all materialized triples.</rdfs:comment>
         <rdfs:range rdf:resource="&v1;InferredKnowledgeGraph"/>
         <rdfs:domain rdf:resource="&v1;KnowledgeBase"/>
         <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
@@ -206,7 +208,8 @@
 
     <owl:ObjectProperty rdf:about="&v1;hasIngestionActivityReportGraph">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-        <rdfs:comment xml:lang="en">The related resource is one of the graph used to store facts about a kees cycle executions for the described knowlegde base.</rdfs:comment>
+        <rdfs:label xml:lang="en">has ingestion activity report graph</rdfs:label>
+        <rdfs:comment xml:lang="en">The related resource is a graph used to store logs  about a kees cycle executions.</rdfs:comment>
         <rdfs:range rdf:resource="&v1;IngestionActivityReportGraph"/>
         <rdfs:domain rdf:resource="&v1;KnowledgeBase"/>
         <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
@@ -218,7 +221,8 @@
 
     <owl:ObjectProperty rdf:about="&v1;hasTBoxGraph">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-        <rdfs:comment xml:lang="en">The related resource is one of the ABox graphs that contain vocabularies and taxonomies osed in the described  knowlege base.</rdfs:comment>
+        <rdfs:label xml:lang="en">has TBox graph</rdfs:label>
+        <rdfs:comment xml:lang="en">The related resource is one of the ABox graphs that contain vocabularies and taxonomies used in the described  knowlege base.</rdfs:comment>
         <rdfs:domain rdf:resource="&v1;KnowledgeBase"/>
         <rdfs:range rdf:resource="&v1;TBoxGraph"/>
         <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
@@ -245,7 +249,7 @@
     <owl:ObjectProperty rdf:about="&v1;onFetchingError">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
         <rdfs:label xml:lang="en">on fetching error</rdfs:label>
-        <rdfs:comment xml:lang="en">The related resource declare the policy to adopt when an error occurs during the execution of the described accrual policy. If not present any error in data loading removes the related graph the in knowledge base.</rdfs:comment>
+        <rdfs:comment xml:lang="en">The related resource declares the policy to adopt when an error occurs during the execution of the described accrual policy. If not present any error in data loading removes the related graph the in knowledge base.</rdfs:comment>
         <rdfs:domain rdf:resource="&v1;KnowledgeAccrualPolicy"/>
         <rdfs:range rdf:resource="&v1;RetentionPolicy"/>
     </owl:ObjectProperty>
@@ -257,7 +261,7 @@
     <owl:ObjectProperty rdf:about="&v1;requiresAuthentication">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
         <rdfs:label xml:lang="en">requires authentication</rdfs:label>
-        <rdfs:comment xml:lang="en">The related resource is an an authentication method to be used to access dataset during the execution of the described accrual policy. If not present no authentication required.</rdfs:comment>
+        <rdfs:comment xml:lang="en">The related resource is an authentication method to be used to access dataset during the execution of the described accrual policy. If not present, no authentication required.</rdfs:comment>
         <rdfs:range rdf:resource="&v1;AuthenticationPolicy"/>
         <rdfs:domain rdf:resource="&v1;KnowledgeAccrualPolicy"/>
     </owl:ObjectProperty>
@@ -675,7 +679,7 @@ THEN {
 
     <owl:Class rdf:about="&v1;Agent">
         <rdfs:label xml:lang="en">Agent</rdfs:label>
-        <rdfs:comment xml:lang="en">A software agent is running kees compliant software. It is a subclass of prov:SoftwareAgent</rdfs:comment>
+        <rdfs:comment xml:lang="en">A software agent running kees compliant software. It is a subclass of prov:SoftwareAgent</rdfs:comment>
     </owl:Class>
     
 
@@ -1048,7 +1052,7 @@ THEN {
     <owl:Class rdf:about="&v1;LinkedDataGraph">
         <rdfs:label xml:lang="en">Linked Data Graph</rdfs:label>
         <rdfs:subClassOf rdf:resource="&v1;ABoxGraph"/>
-        <rdfs:comment xml:lang="en">A named graph that stores linked data learned from web 3.0 resources.</rdfs:comment>
+        <rdfs:comment xml:lang="en">An ABox named graph that stores facts from  linked data learned from web 3.0 resources.</rdfs:comment>
     </owl:Class>
     
 
@@ -1176,7 +1180,7 @@ THEN {
     <owl:Class rdf:about="&v1;RootKBConfigGraph">
         <rdfs:label xml:lang="en">Root Kb Config Graph</rdfs:label>
         <rdfs:subClassOf rdf:resource="&v1;KBConfigGraph"/>
-        <rdfs:comment xml:lang="en">The related resource is special config graph that can include olther config graph.</rdfs:comment>
+        <rdfs:comment xml:lang="en">A special KB config graph that can include olther config graph.</rdfs:comment>
     </owl:Class>
     
 
@@ -1316,7 +1320,7 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
     <owl:Class rdf:about="&v1;TBoxGraph">
         <rdfs:label xml:lang="en">TBox Graph</rdfs:label>
         <rdfs:subClassOf rdf:resource="&v1;KnowledgeGraph"/>
-        <rdfs:comment xml:lang="en">A named graph that contains vocabularies and taxonomies used in ABox graphs</rdfs:comment>
+        <rdfs:comment xml:lang="en">A named graph that contains vocabularies and taxonomies.</rdfs:comment>
     </owl:Class>
     
 
