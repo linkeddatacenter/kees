@@ -1,3 +1,0 @@
-@prefix kees: <http://linkeddata.center/kees/v1#> .
-[] kees:vocabulary <http://purl.org/goodrelations/v1> .
-[] kees:vocabulary <http://linkeeddata.center/kees/v1> .

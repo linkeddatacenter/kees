@@ -1,2 +1,11 @@
 @prefix kees: <http://linkeddata.center/kees/v1#> .
-[] kees:includes <http://data.example.com/kees.ttl> .
+[] a kees:LDPRSAccrualPolicy ;
+	kees:generatesGraphType kees:KBConfigGraph ;
+	kees:createsGraphName <http://data.example.com/kees.ttl> ;
+	kees:url <http://data.example.com/kees.ttl> ;
+	kees:forceAccept "application/n-triples,application/ld+json,application/rdf+xml,text/turtle,*/*;q=0.4" ;
+	kees:onFetchingError [ a kees:RetentionPolicy ; kees:hasResilience 0 ] ;
+	kees:hasUpdatePolicy [ a kees:UpdatePolicy ; kees:hasFrequencyPeriod 3600 ] ;
+	kees:supportsHttpCaching false ;
+	kees:supportsLDPPP false .
+	
