@@ -18,4 +18,3 @@
 	kees:hasUpdatePolicy [ a kees:UpdatePolicy ; kees:hasFrequencyPeriod 3600 ] ;
 	kees:supportsHttpCaching false ;
 	kees:supportsLDPPP false .
-	
