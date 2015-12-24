@@ -136,13 +136,15 @@
     <p>KEES ontology is an extension of VoID Ontology.</p>
     
     <h3>Sparql Service description </h3>
-    <p>A vocabulary for describing SPARQL services made available via the SPARQL 1.1 Protocol for RDF.KEES ontology is an extension of Void Ontology.</p>
-    <p>KEES ontology is an extension of Sparql Service description Ontology.</p>
+    <p><a href="http://www.w3.org/TR/sparql11-service-description/">A vocabulary for describing SPARQL services</a>.
+    These descriptions provide a mechanism by which a client or end user can discover information about the SPARQL service such as supported extension 
+    functions and details about the available dataset.</p>
+    <p>KEES applications are specialization of Sparql Services.</p>
     
    
     <h3>FOAF</h3>
     <p>The <a href="http://www.foaf-project.org/">Friend of a Friend (FOAF) project</a> is creating a Web of
-      machine-readable pages describing people, the links between them and the things they create and do. Few properties are used, no one is required to be  to be understand by a KEES compliant application : </p>
+      machine-readable pages describing people, the links between them and the things they create and do. Few properties should be used, no one is required to be  to be understand by a KEES compliant application : </p>
     <ul>
       <li><a href="http://xmlns.com/foaf/spec/#term_homepage">homepage</a>: as inverse functional property.</li>
       <li><a href="http://xmlns.com/foaf/spec/#term_primaryTopic">primaryTopic</a>: as the main link between a Linked
@@ -152,17 +154,14 @@
     </ul>
  
     <h3>Dublin Core</h3>
-    <p>The Dublin Core Metadata Initiative, or "DCMI", is an open organization supporting innovation in metadata design
+    <p>The <a href="http://dublincore.org/documents/dcmi-terms/">Dublin Core Metadata Initiative</a>, or "DCMI", is an open organization supporting innovation in metadata design
       and best practices across the metadata ecology. No dublin core properties need to be understand but you
-      are encuraged to add as much data you can provide about your  knowlege base.</p>
+      are encuraged to add as much data you can provide about your knowlege base.</p>
       
     <h3>XSD schema</h3>
     <p>Use <a href="http://www.w3.org/2001/XMLSchema">xsd schema</a> to specify data type. 
     In knowledge base description you sholud need only:  <code>integer</code>, <code>dateTime</code>,<code>string</code></p>
     
-    <h3>RDF and RDF schema</h3>
-    <p>RDF Schema provides a data-modelling vocabulary for RDF data. RDF Schema is an extension of the basic RDF
-      vocabulary. The rdf:type propery must be understand by a KEES compliant application.</p>
 
 	<h2>Ontology mappings</h2>
 
