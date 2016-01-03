@@ -169,11 +169,11 @@
        
     <pre><code>
 # PROV
-kees:Plan owl:subClassOf prov:Plan .
-kees:Entity owl:subClassOf prov:Entity .
-kees:Activity owl:subClassOf prov:Activity .
-kees:Agent owl:subClassOf prov:SoftwareAgent .
-
+kees:Plan rdfs:subClassOf prov:Plan .
+kees:Entity rdfs:subClassOf prov:Entity .
+kees:Activity rdfs:subClassOf prov:Activity .
+kees:Agent rdfs:subClassOf prov:SoftwareAgent .
+kees:modified rdfs:subPropertyOf prov:generatedAtTime .
 
 # VOID
 kees:KnowledgeBase rdfs:subClassOf void:Dataset .
@@ -190,6 +190,18 @@ kees:hasInferenceGraph rdfs:subPropertyOf sd:namedGraph .
 kees:hasIngestionActivtyReportGraph rdfs:subPropertyOf sd:namedGraph .
 kees:hasConfigGraph rdfs:subPropertyOf sd:namedGraph .
 
+# Linked Data Platform
+@prefix ldp: &lt;http://www.w3.org/ns/ldp#&gt; .
+kees:Page rdfs:subClassOf ldp:Page .
+
+# LOD Laundromat
+@prefix lld: &lt;http://lodlaundromat.org/ontology/&gt; .
+@prefix lldm: &lt;http://lodlaundromat.org/metrics/ontology/&gt; .
+kees:MetricsDataset rdfs:subClassOf lldm:Dataset .
+kees:lodLaundromatUrl rdfs:subPropertyOf lld:url .
+kees:byteCount rdfs:subPropertyOf lldm:byteCount .
+kees:tripleCount rdfs:subPropertyOf lldm:lineCount .				
+
 </code></pre>
 
 <p>The following mapping rules are very much recommended and should practically have no unwanted side-effects, other than turning your data into OWL Full:</p>
@@ -199,6 +211,7 @@ kees:hasConfigGraph rdfs:subPropertyOf sd:namedGraph .
 kees:Policy rdfs:subClassOf dct:Policy .
 kees:hasAccrualPolicy rdfs:subPropertyOf dct:accrualPolicy .
 kees:modified rdfs:subPropertyOf dct:modified .
+kees:etag rdfs:subPropertyOf dct:identifier .
 
 </code></pre>
 
