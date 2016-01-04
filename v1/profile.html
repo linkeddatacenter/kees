@@ -69,6 +69,12 @@
       </li>
       <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">sd</span>:</b> <span property="rdfa:uri">http://www.w3.org/ns/sparql-service-description#</span>
       </li>
+      <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">ldp</span>:</b> <span property="rdfa:uri">http://www.w3.org/ns/ldp#</span>
+      </li>
+      <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">lld</span>:</b> <span property="rdfa:uri">http://lodlaundromat.org/ontology/</span>
+      </li>
+      <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">ldp</span>:</b> <span property="rdfa:uri">http://lodlaundromat.org/metrics/ontology/</span>
+      </li>
       <li typeof="rdfa:PrefixMapping"> <b><span property="rdfa:prefix">kees</span>:</b> <span property="rdfa:uri">http://linkeddata.center/kees/v1#</span>
       </li>
     </ul>
@@ -121,19 +127,72 @@
     <p>KEES Language Profile is defined as a set of public vocabularies with some usage pattern. This chapter
       provides info about terms that a business application compliant with KEES architecture should understand.</p>
 
-    <h3>PROV</h3>
+    <h3>PROV Ontology</h3>
     <p>The <a href="http://www.w3.org/TR/prov-o/">PROV ontology</a> (PROV-O) expresses the PROV Data Model
     	using the OWL2 Web Ontology Language (OWL2). It provides a set of classes, properties, 
     	and restrictions that can be used to represent and interchange provenance information generated in different systems and under different contexts. 
     	It can also be specialized to create new classes and properties to model provenance information for different applications and domains. </p>
-     <p>KEES ontology is an extension of the PROV Ontology.</p>
- 
+     <p>KEES ontology is an extension of the PROV Ontology. You should understand:</p>
+     <ul>
+     	<li>prov:generatedAtTime  when used to annotate the named graph metadata, it should be used to drive http caching:
+  <pre><code>
+[] a sd:NamedGraph, prov:Entity, kees:LinkedDataGraph ; 
+	sd:name &lt;http://data.example.com/a_dataset&gt; ;
+	prov:wasDerivedFrom &lt;http://data.example.com/a_dataset.rdf&gt;  ;
+	prov:wasGeneratedBy [ a kees:IngestionFromLDPRS ] ;
+	# dct:identifier is used to save a reference eTag for the named graph.
+	dct:identifier '''"mtETag"/W''' ;
+	prov:generatedAtTime "2016-01-04T17:27:14Z"^^xsd:dateTime  
+.
+</code></pre>
+     		
+     	</li>
+     	<li>prov:invalidatedAtTime should be used in named graph metadata to drive resilience to errors (i.e. when the count of prov:invalidatedAtTime triples  > kees:resilience
+     		the named grhaph sholud be removed).
+     	</li>
+     	<li>prov:wasInformedBy in a kees:IngestionCycle should be used to link specific ingestion activities:
+  <pre><code>
+[] a prov:Activity, kees:IngestionCycle ;
+	prov:wasInformedBy [a kees:IngestionFromLDPRS], [kees:ReasoningActivity]
+.  	
+</code></pre>
+     	</li>
+     	
+     	<li>prov:wasEndedBy should be used to link a result report with a processing activity:
+ <pre><code>
+[] a prov:Activity, kees:IngestionFromLDPRS;
+  prov:wasEndedBy [
+    a kees:SuccessReport ;
+    kees:byteCount 288815 ;
+    kees:transactionCount 1 ;
+    kees:tripleCount 1835 ;
+    kees:usedMemory 117792
+  ] .
+.     	
+</code></pre>
+     	</li>
+     	
+     	<li>prov:hasPlan should be used in ingestion cycle descriptions to link the required ingestion workflow (see kees:Workflow class and kees:workflowStructure property):
+<pre><code>
+[] a prov:Activity, kees:IngestionCycle ;
+	prov:qualifiedAssociation [
+		prov:hadPlan [
+			a kees:Workflow ;
+			kees:workflowStructure "booting =&gt; learning =&gt; reasoning"
+		]
+	] 
+.     	
+</code></pre>
+     	</li>
+     </ul>
+
        
     <h3>VoID Vocabulary</h3>
     <p><a href="http://www.w3.org/TR/void/">VoID</a> is an RDF Schema vocabulary for expressing metadata about RDF
       datasets. It is intended as a bridge between the publishers and users of RDF data, with applications ranging from
       data discovery to cataloging and archiving of datasets.</p>
     <p>KEES ontology is an extension of VoID Ontology.</p>
+
     
     <h3>Sparql Service description </h3>
     <p><a href="http://www.w3.org/TR/sparql11-service-description/">A vocabulary for describing SPARQL services</a>.
@@ -155,8 +214,9 @@
  
     <h3>Dublin Core</h3>
     <p>The <a href="http://dublincore.org/documents/dcmi-terms/">Dublin Core Metadata Initiative</a>, or "DCMI", is an open organization supporting innovation in metadata design
-      and best practices across the metadata ecology. No dublin core properties need to be understand but you
-      are encuraged to add as much data you can provide about your knowlege base.</p>
+      and best practices across the metadata ecology. Few DC  terms should be recognized. dct:dateSubmitted should be used to annotate the date when an activity is planned.
+      dct:identifier is used to store version identifier. In particular it is used to annotate the unique verision of a kees:KnowledgeBase and kees:KnowledgeGraph</p>
+	<p>Prefer to use PROV-O properties to annotate resource provenance metadata (see <a href="http://www.w3.org/TR/prov-dc/">Dublin Core to PROV Mapping</a> document)</p>
       
     <h3>XSD schema</h3>
     <p>Use <a href="http://www.w3.org/2001/XMLSchema">xsd schema</a> to specify data type. 
@@ -165,7 +225,7 @@
 
 	<h2>Ontology mappings</h2>
 
-    <p>The following mapping rules are required and safe:</p>
+    <p>The following mapping rules are safe:</p>
        
     <pre><code>
 # PROV
@@ -191,12 +251,9 @@ kees:hasIngestionActivtyReportGraph rdfs:subPropertyOf sd:namedGraph .
 kees:hasConfigGraph rdfs:subPropertyOf sd:namedGraph .
 
 # Linked Data Platform
-@prefix ldp: &lt;http://www.w3.org/ns/ldp#&gt; .
 kees:Page rdfs:subClassOf ldp:Page .
 
 # LOD Laundromat
-@prefix lld: &lt;http://lodlaundromat.org/ontology/&gt; .
-@prefix lldm: &lt;http://lodlaundromat.org/metrics/ontology/&gt; .
 kees:MetricsDataset rdfs:subClassOf lldm:Dataset .
 kees:lodLaundromatUrl rdfs:subPropertyOf lld:url .
 kees:byteCount rdfs:subPropertyOf lldm:byteCount .
@@ -210,8 +267,6 @@ kees:tripleCount rdfs:subPropertyOf lldm:lineCount .
 # DC
 kees:Policy rdfs:subClassOf dct:Policy .
 kees:hasAccrualPolicy rdfs:subPropertyOf dct:accrualPolicy .
-kees:modified rdfs:subPropertyOf dct:modified .
-kees:etag rdfs:subPropertyOf dct:identifier .
 
 </code></pre>
 
