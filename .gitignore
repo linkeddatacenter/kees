@@ -1,0 +1,6 @@
+tmp/
+.kitchen/
+.vagrant/
+.stardog/
+.project
+.settings
