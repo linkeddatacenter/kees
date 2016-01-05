@@ -135,54 +135,21 @@
      <p>KEES ontology is an extension of the PROV Ontology. You should understand:</p>
      <ul>
      	<li>prov:generatedAtTime  when used to annotate the named graph metadata, it should be used to drive http caching:
-  <pre><code>
-[] a sd:NamedGraph, prov:Entity, kees:LinkedDataGraph ; 
-	sd:name &lt;http://data.example.com/a_dataset&gt; ;
-	prov:wasDerivedFrom &lt;http://data.example.com/a_dataset.rdf&gt;  ;
-	prov:wasGeneratedBy [ a kees:IngestionFromLDPRS ] ;
-	# dct:identifier is used to save a reference eTag for the named graph.
-	dct:identifier '''"mtETag"/W''' ;
-	prov:generatedAtTime "2016-01-04T17:27:14Z"^^xsd:dateTime  
-.
-</code></pre>
-     		
+		<script src="https://gist.github.com/ecow/b3cc7d66b7e864382968.js"></script>		
      	</li>
      	<li>prov:invalidatedAtTime should be used in named graph metadata to drive resilience to errors (i.e. when the count of prov:invalidatedAtTime triples  > kees:resilience
      		the named grhaph sholud be removed).
      	</li>
      	<li>prov:wasInformedBy in a kees:IngestionCycle should be used to link specific ingestion activities:
-  <pre><code>
-[] a prov:Activity, kees:IngestionCycle ;
-	prov:wasInformedBy [a kees:IngestionFromLDPRS], [kees:ReasoningActivity]
-.  	
-</code></pre>
+		<script src="https://gist.github.com/ecow/3c158c02d602c27af53c.js"></script>
      	</li>
      	
      	<li>prov:wasEndedBy should be used to link a result report with a processing activity:
- <pre><code>
-[] a prov:Activity, kees:IngestionFromLDPRS;
-  prov:wasEndedBy [
-    a kees:SuccessReport ;
-    kees:byteCount 288815 ;
-    kees:transactionCount 1 ;
-    kees:tripleCount 1835 ;
-    kees:usedMemory 117792
-  ] .
-.     	
-</code></pre>
+		<script src="https://gist.github.com/ecow/ac30a547b87334984560.js"></script>
      	</li>
      	
      	<li>prov:hasPlan should be used in ingestion cycle descriptions to link the required ingestion workflow (see kees:Workflow class and kees:workflowStructure property):
-<pre><code>
-[] a prov:Activity, kees:IngestionCycle ;
-	prov:qualifiedAssociation [
-		prov:hadPlan [
-			a kees:Workflow ;
-			kees:workflowStructure "booting =&gt; learning =&gt; reasoning"
-		]
-	] 
-.     	
-</code></pre>
+		<script src="https://gist.github.com/ecow/2b0a38312734bea6eb17.js"></script>
      	</li>
      </ul>
 
@@ -225,72 +192,13 @@
 
 	<h2>Ontology mappings</h2>
 
+
     <p>The following mapping rules are safe:</p>
-       
-    <pre><code>
-# PROV
-kees:Plan rdfs:subClassOf prov:Plan .
-kees:Entity rdfs:subClassOf prov:Entity .
-kees:Activity rdfs:subClassOf prov:Activity .
-kees:Agent rdfs:subClassOf prov:SoftwareAgent .
-kees:modified rdfs:subPropertyOf prov:generatedAtTime .
+<script src="https://gist.github.com/ecow/4b6f8713d5a05a90bd09.js"></script>       
 
-# VOID
-kees:KnowledgeBase rdfs:subClassOf void:Dataset .
-kees:ABoxGraph rdfs:subClassOf void:Dataset .
-kees:TBoxGraph rdfs:subClassOf void:Dataset .
-
-
-# SD
-kees:KnowledgeBase rdfs:subClassOf sd:Dataset .
-kees:KnowledgeGraph rdfs:subClassOf sd:NamedGraph .
-kees:hasABoxGraph rdfs:subPropertyOf sd:namedGraph .
-kees:hasTBoxGraph rdfs:subPropertyOf sd:namedGraph .
-kees:hasInferenceGraph rdfs:subPropertyOf sd:namedGraph .
-kees:hasIngestionActivtyReportGraph rdfs:subPropertyOf sd:namedGraph .
-kees:hasConfigGraph rdfs:subPropertyOf sd:namedGraph .
-
-# Linked Data Platform
-kees:Page rdfs:subClassOf ldp:Page .
-
-# LOD Laundromat
-kees:MetricsDataset rdfs:subClassOf lldm:Dataset .
-kees:lodLaundromatUrl rdfs:subPropertyOf lld:url .
-kees:byteCount rdfs:subPropertyOf lldm:byteCount .
-kees:tripleCount rdfs:subPropertyOf lldm:lineCount .				
-
-</code></pre>
-
-<p>The following mapping rules are very much recommended and should practically have no unwanted side-effects, other than turning your data into OWL Full:</p>
-    <pre><code>
-
-# DC
-kees:Policy rdfs:subClassOf dct:Policy .
-kees:hasAccrualPolicy rdfs:subPropertyOf dct:accrualPolicy .
-
-</code></pre>
 
 <h2>Rules and axioms</h2>
-
-<pre><code>
-#All subject of type kees:KnowledgeBase in the same graph database are the same
-CONSTRUCT { ?a owl:sameAs ?b }
-WHERE
-{
-	GRAPH ?g1 {?a a kees:KnowledgeBase} 
-	GRAPH ?g2 {?b a kees:KnowledgeBase }
-} ;
-
-
-
-#All accrual policies are related to the knowledge base (RDFS entailment profile for reasoning required)
-CONSTRUCT { ?kb kees:hasAccrual ?accrualPolicy }
-WHERE
-{
-	GRAPH ?g1 {?kb a kees:KnowledgeBase} 
-	GRAPH ?g2 {?accrualPolicy a kees:AccrualPolicy }
-}
-</code></pre>
+<script src="https://gist.github.com/ecow/3218fe35c265e2d8dbb7.js"></script>
 
 
     <section id="license">
