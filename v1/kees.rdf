@@ -40,7 +40,7 @@
         <dc:subject xml:lang="en">Knowledge Exchange Engine Schema Ontology.</dc:subject>
         <dc:title xml:lang="en">The KEES Vocabulary for knowledge  base management</dc:title>
         <dc:rights xml:lang="en">The KEES ontology is available under the Creative Commons Attribution 3.0 Unported license; see http://creativecommons.org/licenses/by/3.0/. In a nutshell, you are free to copy, distribute and transmit the work; to remix/adapt the work (e.g. to import the ontology and create specializations of its elements), as long as you attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work). Proper Attribution: Simply include the statement &quot;This work is based on the KEES ontology, developed by Enrico Fagnoni&quot; and link back to http:/linkeddata.center/kees/v1</dc:rights>
-        <owl:versionInfo xml:lang="en">V 1.1.11, Release 2016-01-04</owl:versionInfo>
+        <owl:versionInfo xml:lang="en">V 1.1.12, Release 2016-01-10</owl:versionInfo>
         <dcterms:license rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
         <rdfs:seeAlso rdf:resource="http://linkeddata.center/help/devop/kees-profile"/>
         <foaf:homepage rdf:resource="http://linkeddata.center/kees/"/>
@@ -350,11 +350,11 @@
     
 
 
-    <!-- http://linkeddata.center/kees/v1#executionOrder -->
+    <!-- http://linkeddata.center/kees/v1#executionPriority -->
 
-    <owl:DatatypeProperty rdf:about="&v1;executionOrder">
+    <owl:DatatypeProperty rdf:about="&v1;executionPriority">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-        <rdfs:label xml:lang="en">rule execution order</rdfs:label>
+        <rdfs:label xml:lang="en">execution priority</rdfs:label>
         <rdfs:comment xml:lang="en">An optional integer that determine the ordere of execution of a rule ( ascending).</rdfs:comment>
         <rdfs:domain rdf:resource="&v1;ReasoningPolicy"/>
         <rdfs:range rdf:resource="&xsd;integer"/>
@@ -819,15 +819,15 @@ THEN {
         <rdfs:subClassOf rdf:resource="&v1;LDPRSAccrualPolicy"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&v1;includes"/>
-                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onProperty rdf:resource="&v1;generatesGraphType"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:qualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;anyURI"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&v1;generatesGraphType"/>
-                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:qualifiedCardinality>
+                <owl:onProperty rdf:resource="&v1;includes"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;anyURI"/>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -872,6 +872,26 @@ THEN {
     <owl:Class rdf:about="&v1;Entity">
         <rdfs:label xml:lang="en">Entity</rdfs:label>
         <rdfs:comment xml:lang="en">An kees entity is a something about the  Knowledge Base.   It is a subclass of prov:Entity Class</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#FactsCleansingPlan -->
+
+    <owl:Class rdf:about="&v1;FactsCleansingPlan">
+        <rdfs:label xml:lang="en">Facts Cleansing Plan</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&v1;Plan"/>
+        <rdfs:comment xml:lang="en">A reasoning plan concerning the destruction of some facts according a defined rule.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#FactsMaterializationPlan -->
+
+    <owl:Class rdf:about="&v1;FactsMaterializationPlan">
+        <rdfs:label xml:lang="en">Facts Materialization Plan</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&v1;Plan"/>
+        <rdfs:comment xml:lang="en">A  plan for a reasoning activity  that concens the creation of new  facts from a production rule.</rdfs:comment>
     </owl:Class>
     
 
@@ -935,7 +955,6 @@ THEN {
     <owl:Class rdf:about="&v1;IngestionCycle">
         <rdfs:label xml:lang="en">Ingestion Cycle</rdfs:label>
         <rdfs:subClassOf rdf:resource="&v1;Activity"/>
-        <owl:disjointWith rdf:resource="&v1;KnowledgeAccrual"/>
         <rdfs:comment xml:lang="en">The kees cycle window processing activity ( ie.  Booting, Learning, reasoning)</rdfs:comment>
     </owl:Class>
     
@@ -967,8 +986,7 @@ THEN {
     <owl:Class rdf:about="&v1;IngestionPlan">
         <rdfs:label xml:lang="en">Ingestion Plan</rdfs:label>
         <rdfs:subClassOf rdf:resource="&v1;Plan"/>
-        <owl:disjointWith rdf:resource="&v1;Workflow"/>
-        <rdfs:comment xml:lang="en">A plan that describe the objective  for an ingestion activity.</rdfs:comment>
+        <rdfs:comment xml:lang="en">A plan that describe the objective  for a data ingestion activity.</rdfs:comment>
     </owl:Class>
     
 
@@ -1000,6 +1018,13 @@ THEN {
         <rdfs:subClassOf rdf:resource="&v1;Policy"/>
         <rdfs:subClassOf>
             <owl:Restriction>
+                <owl:onProperty rdf:resource="&v1;forceAccept"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
                 <owl:onProperty rdf:resource="&v1;createsGraphName"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;anyURI"/>
@@ -1007,16 +1032,9 @@ THEN {
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&v1;url"/>
+                <owl:onProperty rdf:resource="&v1;generatesGraphType"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;anyURI"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&v1;forceAccept"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
@@ -1028,7 +1046,7 @@ THEN {
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&v1;generatesGraphType"/>
+                <owl:onProperty rdf:resource="&v1;url"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;anyURI"/>
             </owl:Restriction>
@@ -1089,14 +1107,14 @@ THEN {
         <rdfs:subClassOf rdf:resource="&v1;KnowledgeAccrualPolicy"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&v1;supportsLDPPP"/>
+                <owl:onProperty rdf:resource="&v1;supportsHttpCaching"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;boolean"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&v1;supportsHttpCaching"/>
+                <owl:onProperty rdf:resource="&v1;supportsLDPPP"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;boolean"/>
             </owl:Restriction>
@@ -1188,6 +1206,13 @@ THEN {
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
+                <owl:onProperty rdf:resource="&v1;nextPage"/>
+                <owl:onClass rdf:resource="&v1;Page"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
                 <owl:onProperty rdf:resource="&v1;prevPage"/>
                 <owl:onClass rdf:resource="&v1;Page"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
@@ -1198,13 +1223,6 @@ THEN {
                 <owl:onProperty rdf:resource="&v1;pageNum"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;positiveInteger"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&v1;nextPage"/>
-                <owl:onClass rdf:resource="&v1;Page"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">Page sequence info</rdfs:comment>
@@ -1242,11 +1260,21 @@ THEN {
     
 
 
-    <!-- http://linkeddata.center/kees/v1#ReasoningActivity -->
+    <!-- http://linkeddata.center/kees/v1#Reasoner -->
 
-    <owl:Class rdf:about="&v1;ReasoningActivity">
-        <rdfs:label xml:lang="en">Reasoning Activity</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&v1;KnowledgeAccrual"/>
+    <owl:Class rdf:about="&v1;Reasoner">
+        <rdfs:label xml:lang="en">reasoner</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&v1;Agent"/>
+        <rdfs:comment xml:lang="en">A processor that create new facts using inference, rules and axioms.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#Reasoning -->
+
+    <owl:Class rdf:about="&v1;Reasoning">
+        <rdfs:label xml:lang="en">Reasoning</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&v1;Activity"/>
         <rdfs:comment xml:lang="en">The activity of materializing RDF statements from rules and axioms.</rdfs:comment>
     </owl:Class>
     
@@ -1259,9 +1287,9 @@ THEN {
         <rdfs:subClassOf rdf:resource="&v1;Policy"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&v1;executionOrder"/>
+                <owl:onProperty rdf:resource="&v1;executionPriority"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;nonNegativeInteger"/>
+                <owl:onDataRange rdf:resource="&xsd;integer"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
@@ -1330,21 +1358,21 @@ THEN {
         <rdfs:subClassOf rdf:resource="&v1;KnowledgeAccrualPolicy"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&v1;queryName"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;anyURI"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&v1;fromPage"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;positiveInteger"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
                 <owl:onProperty rdf:resource="&v1;pageSize"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;nonNegativeInteger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&v1;constructQuery"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&v1;toPage"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;nonNegativeInteger"/>
             </owl:Restriction>
@@ -1358,9 +1386,16 @@ THEN {
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&v1;constructQuery"/>
+                <owl:onProperty rdf:resource="&v1;queryName"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;success"/>
+                <owl:onDataRange rdf:resource="&xsd;anyURI"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&v1;fromPage"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;positiveInteger"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
@@ -1386,13 +1421,6 @@ THEN {
                 </owl:onDataRange>
             </owl:Restriction>
         </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&v1;toPage"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;nonNegativeInteger"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">Load RDF resource executing a sparql query to a sparql endpoint (using POST).
 The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
     </owl:Class>
@@ -1406,6 +1434,13 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
         <rdfs:subClassOf rdf:resource="&v1;ProcessingReport"/>
         <rdfs:subClassOf>
             <owl:Restriction>
+                <owl:onProperty rdf:resource="&v1;transactionCount"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;nonNegativeInteger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
                 <owl:onProperty rdf:resource="&v1;tripleCount"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;nonNegativeInteger"/>
@@ -1414,13 +1449,6 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&v1;byteCount"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="&xsd;nonNegativeInteger"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&v1;transactionCount"/>
                 <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="&xsd;nonNegativeInteger"/>
             </owl:Restriction>
@@ -1545,23 +1573,6 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
      -->
 
     <rdf:Description>
-        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="&v1;InferredKnowledgeGraph"/>
-            <rdf:Description rdf:about="&v1;IngestionActivityReportGraph"/>
-            <rdf:Description rdf:about="&v1;KBConfigGraph"/>
-            <rdf:Description rdf:about="&v1;LinkedDataGraph"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="&v1;Activity"/>
-            <rdf:Description rdf:about="&v1;Agent"/>
-            <rdf:Description rdf:about="&v1;Entity"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
         <rdf:type rdf:resource="&owl;AllDisjointProperties"/>
         <owl:members rdf:parseType="Collection">
             <rdf:Description rdf:about="&v1;includes"/>
@@ -1574,17 +1585,10 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
     <rdf:Description>
         <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="&v1;LDPRSAccrualPolicyProcessor"/>
-            <rdf:Description rdf:about="&v1;LodLaundromatAgent"/>
-            <rdf:Description rdf:about="&v1;SparqlIngestor"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="&v1;BulkIngestor"/>
-            <rdf:Description rdf:about="&v1;ConfigImporter"/>
-            <rdf:Description rdf:about="&v1;TBoxIngestor"/>
+            <rdf:Description rdf:about="&v1;FactsCleansingPlan"/>
+            <rdf:Description rdf:about="&v1;FactsMaterializationPlan"/>
+            <rdf:Description rdf:about="&v1;IngestionPlan"/>
+            <rdf:Description rdf:about="&v1;Workflow"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
@@ -1598,18 +1602,41 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
     <rdf:Description>
         <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="&v1;IngestionFromLDPRS"/>
-            <rdf:Description rdf:about="&v1;IngestionFromLodLaundromat"/>
-            <rdf:Description rdf:about="&v1;ReasoningActivity"/>
-            <rdf:Description rdf:about="&v1;SimplifiedResourceIngestion"/>
+            <rdf:Description rdf:about="&v1;FailureReport"/>
+            <rdf:Description rdf:about="&v1;NoChangeReport"/>
+            <rdf:Description rdf:about="&v1;SuccessReport"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="&v1;FailureReport"/>
-            <rdf:Description rdf:about="&v1;NoChangeReport"/>
-            <rdf:Description rdf:about="&v1;SuccessReport"/>
+            <rdf:Description rdf:about="&v1;Activity"/>
+            <rdf:Description rdf:about="&v1;Agent"/>
+            <rdf:Description rdf:about="&v1;Entity"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&v1;LDPRSAccrualPolicyProcessor"/>
+            <rdf:Description rdf:about="&v1;LodLaundromatAgent"/>
+            <rdf:Description rdf:about="&v1;SparqlIngestor"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&v1;BulkAccrualPolicy"/>
+            <rdf:Description rdf:about="&v1;ConfigAccrualPolicy"/>
+            <rdf:Description rdf:about="&v1;TBoxAccrualPolicy"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&v1;BulkIngestor"/>
+            <rdf:Description rdf:about="&v1;ConfigImporter"/>
+            <rdf:Description rdf:about="&v1;TBoxIngestor"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
@@ -1625,9 +1652,10 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
     <rdf:Description>
         <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="&v1;BulkAccrualPolicy"/>
-            <rdf:Description rdf:about="&v1;ConfigAccrualPolicy"/>
-            <rdf:Description rdf:about="&v1;TBoxAccrualPolicy"/>
+            <rdf:Description rdf:about="&v1;InferredKnowledgeGraph"/>
+            <rdf:Description rdf:about="&v1;IngestionActivityReportGraph"/>
+            <rdf:Description rdf:about="&v1;KBConfigGraph"/>
+            <rdf:Description rdf:about="&v1;LinkedDataGraph"/>
         </owl:members>
     </rdf:Description>
 </rdf:RDF>

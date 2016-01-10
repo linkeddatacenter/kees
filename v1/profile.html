@@ -176,17 +176,23 @@
         to relate an image to an object or a thumbs to an image.</li>
     </ul>
  
-    <h3>Dublin Core</h3>
-    <p>The <a href="http://dublincore.org/documents/dcmi-terms/">Dublin Core Metadata Initiative</a>, or "DCMI", is an open organization supporting innovation in metadata design
-      and best practices across the metadata ecology. Few DC  terms should be recognized. dct:dateSubmitted should be used to annotate the date when an activity is planned.
-      dct:identifier is used to store version identifier. In particular it is used to annotate the unique verision of a kees:KnowledgeBase and kees:KnowledgeGraph</p>
-	<p>Prefer to use PROV-O properties to annotate resource provenance metadata (see <a href="http://www.w3.org/TR/prov-dc/">Dublin Core to PROV Mapping</a> document)</p>
+    <h3>Linked Data Platform Paging</h3>
+    <p>The <a href="http://www.w3.org/TR/ldp-paging/">Linked Data Platform Paging</a> specification provides a 
+    	widely re-usable pattern to make the state of a large paged HTTP resource available as a list of smaller subset resources (pages) 
+    	whose representations are less burdensome for servers to form. 
+    	Paged resources must be LDP Resources (LDPRs) define according Linked Data Platform vocabulary and protocols.</p>
+	<p>A KEES application should understand at last the "next" rel link in http headers and should be aware of ldp:Page concept.</p>
       
     <h3>XSD schema</h3>
     <p>Use <a href="http://www.w3.org/2001/XMLSchema">xsd schema</a> to specify data type. 
     In knowledge base description you sholud need only:  <code>integer</code>, <code>dateTime</code>,<code>string</code></p>
     
-
+    <h3>Dublin Core</h3>
+    <p>The <a href="http://dublincore.org/documents/dcmi-terms/">Dublin Core Metadata Initiative</a>, or "DCMI", is an open organization supporting innovation in metadata design
+      and best practices across the metadata ecology. Few DC  terms should be recognized. dct:dateSubmitted should be used to annotate the date when an activity is planned.
+      dct:identifier is used to store version identifier. In particular it is used to annotate the unique verision of a kees:KnowledgeBase and kees:KnowledgeGraph</p>
+	<p>Prefer to use PROV-O properties to annotate resource provenance metadata (see <a href="http://www.w3.org/TR/prov-dc/">Dublin Core to PROV Mapping</a> document)</p>
+	
 	<h2>Ontology mappings</h2>
 
 
