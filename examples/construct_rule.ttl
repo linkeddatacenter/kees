@@ -1,17 +1,16 @@
 @prefix kees: <http://linkeddata.center/kees/v1#> .
 
-[] a kees:ConstructRule ;
-	kees:ruleText   """
-		PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+[] kees:ruleText """
 		PREFIX gr: <http://purl.org/goodrelations/v1#>
-		PREFIX :<urn:test:>
+		PREFIX : <urn:test:>
 		IF {
-			?offering gr:hasPriceSpecification ?ps .
-			?ps gr:hasCurrencyValue ?price .
-			FILTER (?price >= 200.00).
+			GRAPH ?g {
+				?offering gr:hasPriceSpecification ?ps .
+				?ps gr:hasCurrencyValue ?price .
+				FILTER ( ?price >= 200.00 )
+			}
 		}
 		THEN {
 			?offering a :ExpensiveProduct .
 		}
-   """
-.
+""" .

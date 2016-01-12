@@ -6,7 +6,7 @@
 	kees:forceAccept "application/n-triples,application/ld+json,application/rdf+xml,text/turtle,*/*;q=0.4" ;
 	kees:onFetchingError [ a kees:RetentionPolicy ; kees:hasResilience 0 ] ;
 	kees:hasUpdatePolicy [ a kees:UpdatePolicy ; kees:hasFrequencyPeriod 3600 ] ;
-	kees:supportsHttpCaching false ;
+	kees:supportsHttpCaching true ;
 	kees:supportsLDPPP false .
 	
 [] a kees:LDPRSAccrualPolicy ;
@@ -16,5 +16,5 @@
 	kees:forceAccept "application/n-triples,application/ld+json,application/rdf+xml,text/turtle,*/*;q=0.4" ;
 	kees:onFetchingError [ a kees:RetentionPolicy ; kees:hasResilience 0 ] ;
 	kees:hasUpdatePolicy [ a kees:UpdatePolicy ; kees:hasFrequencyPeriod 3600 ] ;
-	kees:supportsHttpCaching false ;
+	kees:supportsHttpCaching true ;
 	kees:supportsLDPPP false .
