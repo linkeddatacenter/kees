@@ -1,2 +1,2 @@
 @prefix kees: <http://linkeddata.center/kees/v1#> .
-[] kees:sparqlEndpoint <http://dbpedia.org/sparql> .
+[] kees:queryName <urn:myquery>; kees:sparqlEndpoint <http://dbpedia.org/sparql> .

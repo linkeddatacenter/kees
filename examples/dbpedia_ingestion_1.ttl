@@ -1,6 +1,6 @@
 @prefix kees: <http://linkeddata.center/kees/v1#> .
 []  a kees:SparqlIngestion ;
-	kees:queryName <http://dbpedia.org/sparql> ;
+	kees:queryName <urn:myquery> ;
 	kees:sparqlEndpoint <http://dbpedia.org/sparql> ;
 	kees:constructQuery """
 		CONSTRUCT { ?s ?p ?o } 

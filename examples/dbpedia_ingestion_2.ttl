@@ -1,7 +1,7 @@
 @prefix kees: <http://linkeddata.center/kees/v1#> .
 []  a kees:SparqlIngestion
 	kees:queryName <urn:citynames> ;
-	kees:sparqlEndpoint [ sd:endpoint <http://dbpedia.org/sparql> ] ;
+	kees:sparqlEndpoint <http://dbpedia.org/sparql>  ;
 	kees:constructQuery """
 		PREFIX yago: <http://dbpedia.org/class/yago/>
 		CONSTRUCT {
