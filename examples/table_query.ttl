@@ -1,0 +1,15 @@
+[]  a kees:TableQuery ;
+	dct:identifier "mygraphs" ;
+	rdfs:label "Graphs Catalog" ;
+	rdfs:comment "All defined data sources in the knowledge base with last update and failure count." ;
+	kees:queryText """
+		SELECT ?name ?lastUpdated (COUNT(?failDate) AS ?failureCount) WHERE {
+		    GRAPH ?name {
+		        ?graphMetadata a kees:%type=LinkedDataGraph%; sd:name ?name 
+		        
+		        OPTIONAL { ?graphMetadata prov:generatedAtTime ?lastUpdated }
+		        OPTIONAL { ?graphMetadata prov:invalidatedAtTime ?failDate }
+		    }
+		} GROUP BY ?name ?lastUpdated
+	"""
+.

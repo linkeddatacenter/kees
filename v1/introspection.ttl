@@ -1,0 +1,36 @@
+# This file describes the introspection knowledge about a KEES v1.1 compliant knowledge base.
+# To enable it just add to your kb configuration:
+# [] kees:includes <http://linkeddata.center/knowledge/introspection.ttl>
+
+
+[] kees:vocabulary <http://linkeddata.center/kees/v1>
+
+
+
+[] a kees:Table ; dct:identifier "mygraphs" ;
+
+rdfs:label "Graphs Catalog" ;
+
+rdfs:comment """
+Returns all defined data sources in the knowledge base with last update and failure count. 
+Accepts the paramether 'type' (default=LinkedDataGraph) to filter the returned data.
+By default shows all graphs extracted from linked data sources. 
+The 'type' parameter can be one of: 
+	InferredKnowledgeGraph, 
+	IngestionActivityReportGraph,
+	KBConfigGraph,
+	LinkedDataGraph,
+	TBoxGraph
+""" ;
+
+kees:queryText """
+SELECT ?name ?lastUpdated (COUNT(?failDate) AS ?failureCount) WHERE {
+    GRAPH ?name {
+        ?graphMetadata a kees:%type=LinkedDataGraph%; sd:name ?name 
+        
+        OPTIONAL { ?graphMetadata prov:generatedAtTime ?lastUpdated }
+        OPTIONAL { ?graphMetadata prov:invalidatedAtTime ?failDate }
+    }
+} GROUP BY ?name ?lastUpdated
+"""
+.

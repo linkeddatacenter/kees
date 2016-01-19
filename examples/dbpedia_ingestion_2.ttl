@@ -11,9 +11,9 @@
 			FILTER(LANGMATCHES(LANG(?label), 'en'))
 		}
 	""" ;
-	kees:pageSize 50000 ;
+	kees:pageSize 10000 ;
 	kees:fromPage 1 ;
-	kees:toPage 4 ;
+	kees:toPage 20 ;
 	kees:queryMethod "POST" ;
 	kees:onFetchingError [ kees:hasResilience 4 ] ;
 	kees:updateFrequency [ kees:hasFrequencyPeriod 604800 ] ;
