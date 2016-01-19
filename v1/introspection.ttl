@@ -1,10 +1,16 @@
 # This file describes the introspection knowledge about a KEES v1.1 compliant knowledge base.
 # To enable it just add to your kb configuration:
-# [] kees:includes <http://linkeddata.center/knowledge/introspection.ttl>
+# [] kees:includes <http://linkeddata.center/knowledge/introspection.ttl> .
 
 
-[] kees:vocabulary <http://linkeddata.center/kees/v1>
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix kees: <http://linkeddata.center/kees/v1#> .
+@prefix sd: <http://www.w3.org/ns/sparql-service-description#> .
 
+
+
+[] kees:vocabulary <http://linkeddata.center/kees/v1> .
 
 
 [] a kees:Table ; dct:identifier "mygraphs" ;
