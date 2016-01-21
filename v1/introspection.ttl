@@ -13,30 +13,38 @@
 [] kees:vocabulary <http://linkeddata.center/kees/v1> .
 
 
-[] a kees:Table ; dct:identifier "mygraphs" ;
+[] a kees:Table ; dct:identifier "kb:graphs" ;
 
-rdfs:label "Graphs Catalog" ;
+rdfs:label 		"Graphs Catalog" ;
 
-rdfs:comment """
-Returns all defined data sources in the knowledge base with last update and failure count. 
-Accepts the paramether 'type' (default=LinkedDataGraph) to filter the returned data.
-By default shows all graphs extracted from linked data sources. 
-The 'type' parameter can be one of: 
-	InferredKnowledgeGraph, 
-	IngestionActivityReportGraph,
-	KBConfigGraph,
-	LinkedDataGraph,
-	TBoxGraph
-""" ;
+rdfs:comment 	"Returns all defined data sources in the knowledge base with last update and failure count." ;
 
 kees:queryText """
-SELECT ?name ?lastUpdated (COUNT(?failDate) AS ?failureCount) WHERE {
-    GRAPH ?name {
-        ?graphMetadata a kees:%type=LinkedDataGraph%; sd:name ?name 
+SELECT ?type ?graph_name ?last_updated (COUNT(?failure_date) AS ?failure_count) WHERE {
+	GRAPH  <http://linkeddata.center/kees/v1> {
+		{?typeClass rdfs:subClassOf kees:ABoxGraph} UNION {?typeClass rdfs:subClassOf kees:TBoxGraph}
+		?typeClass rdfs:label ?type .
+	}
+    GRAPH ?graph_name {
+        ?graphMetadata a ?typeClass; sd:name ?graph_name .
         
-        OPTIONAL { ?graphMetadata prov:generatedAtTime ?lastUpdated }
-        OPTIONAL { ?graphMetadata prov:invalidatedAtTime ?failDate }
+        OPTIONAL { ?graphMetadata prov:generatedAtTime ?last_updated }
+        OPTIONAL { ?graphMetadata prov:invalidatedAtTime ?failure_date }
     }
-} GROUP BY ?name ?lastUpdated
+} GROUP BY ?type ?graph_name ?last_updated ORDER BY ?type
+"""
+.
+
+
+[] a kees:Table ; dct:identifier "kb:size" ;
+
+rdfs:label 		"Graphs by size" ;
+
+rdfs:comment 	"Returns all graphs in knowledge base order by size (triples)." ;
+
+kees:queryText """
+SELECT ?graph_name (COUNT(*) AS ?no)  WHERE {  
+    GRAPH ?graph_name {?s ?p ?o}
+} GROUP BY ?graph_name ORDER BY DESC(?no)
 """
 .
