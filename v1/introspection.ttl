@@ -48,3 +48,18 @@ SELECT ?graph_name (COUNT(*) AS ?no)  WHERE {
 } GROUP BY ?graph_name ORDER BY DESC(?no)
 """
 .
+
+[] a kees:Table ; dct:identifier "kb:queries" ;
+
+rdfs:label 		"Get query sparql definitions" ;
+
+rdfs:comment 	"Returns all defined sparql query. Similar to /{kb}/queries api but returns also the query text " ;
+
+kees:queryText """
+SELECT DISTINCT ?graph ?id ?queryText WHERE {
+	GRAPH ?graph {
+		?query dct:identifier ?id ;  kees:queryText ?queryText .	
+	}
+}
+"""
+.
