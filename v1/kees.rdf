@@ -1409,7 +1409,6 @@ THEN {
     <!-- http://linkeddata.center/kees/v1#Query -->
 
     <owl:Class rdf:about="&v1;Query">
-        <rdfs:label xml:lang="en">A generic query expressed by a SPARQL construct,</rdfs:label>
         <rdfs:label xml:lang="en">Query</rdfs:label>
         <rdfs:subClassOf rdf:resource="&v1;Entity"/>
         <rdfs:subClassOf>
@@ -1419,6 +1418,7 @@ THEN {
                 <owl:onDataRange rdf:resource="&xsd;string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment xml:lang="en">A generic query expressed by a SPARQL construct.</rdfs:comment>
     </owl:Class>
     
 
@@ -1721,33 +1721,6 @@ The query must be contained (unencoded) in accrualOption propery</rdfs:comment>
         </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A plan for a kees Cycle processing.</rdfs:comment>
     </owl:Class>
-    
-
-
-    <!-- http://www.w3.org/ns/sparql-service-description#Feature -->
-
-    <owl:Class rdf:about="&sd;Feature"/>
-    
-
-
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Individuals
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-    
-
-
-    <!-- http://linkeddata.center/kees/v1#AutomatedIngestion -->
-
-    <owl:NamedIndividual rdf:about="&v1;AutomatedIngestion">
-        <rdf:type rdf:resource="&sd;Feature"/>
-        <rdfs:label xml:lang="en">Kees Automated Ingestion</rdfs:label>
-        <rdfs:comment xml:lang="en">When used as the object of the sd:feature property, indicates that the SPARQL service supports kees ingestion policies for Knowledge base population and maintenance.</rdfs:comment>
-    </owl:NamedIndividual>
     
 
 

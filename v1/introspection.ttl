@@ -1,4 +1,4 @@
-# This file describes the introspection knowledge about a KEES v1.1 compliant knowledge base.
+	# This file describes the introspection knowledge about a KEES v1.1 compliant knowledge base.
 # To enable it just add to your kb configuration:
 # [] kees:includes <http://linkeddata.center/knowledge/introspection.ttl> .
 
@@ -15,7 +15,7 @@
 
 [] a kees:Table ; dct:identifier "kb:graphs" ;
 
-rdfs:label 		"Graphs Catalog" ;
+rdfs:label 		"Graphs catalog" ;
 
 rdfs:comment 	"Returns all defined data sources in the knowledge base with last update and failure count." ;
 
@@ -38,7 +38,7 @@ SELECT ?type ?graph_name ?last_updated (COUNT(?failure_date) AS ?failure_count) 
 
 [] a kees:Table ; dct:identifier "kb:size" ;
 
-rdfs:label 		"Graphs by size" ;
+rdfs:label 		"Graphs size" ;
 
 rdfs:comment 	"Returns all graphs in knowledge base order by size (triples)." ;
 
@@ -51,9 +51,9 @@ SELECT ?graph_name (COUNT(*) AS ?no)  WHERE {
 
 [] a kees:Table ; dct:identifier "kb:queries" ;
 
-rdfs:label 		"Get query sparql definitions" ;
+rdfs:label 		"Queries as SPARQL" ;
 
-rdfs:comment 	"Returns all defined sparql query. Similar to /{kb}/queries api but returns also the query text " ;
+rdfs:comment 	"Returns all defined sparql queries " ;
 
 kees:queryText """
 SELECT DISTINCT ?graph ?id ?queryText WHERE {
