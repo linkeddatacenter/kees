@@ -1,4 +1,4 @@
-	# This file describes the introspection knowledge about a KEES v1.1 compliant knowledge base.
+# This file describes the introspection knowledge about a KEES v1.1 compliant knowledge base.
 # To enable it just add to your kb configuration:
 # [] kees:includes <http://linkeddata.center/knowledge/introspection.ttl> .
 

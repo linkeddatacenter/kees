@@ -4,6 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [changelog
 
 ## [Unreleased]
 
+## 1.2.0 
+
+### Change
+- complete refactory of specifications
+
 ## 1.1.19 - 2016-02-04
 ### Added
 - Initial release of ekb
