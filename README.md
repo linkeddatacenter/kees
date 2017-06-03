@@ -1,16 +1,16 @@
 KEES: Knowledge Exchange Engine Schema 
 =======================================
 
-*** WARNING THIS SPECIFICATION IS STILL ON WORKING ***
+** WARNING: WORKING IN PROGRESS **
 
 In order to let computers to work for us, they must understand data. 
 Not only grammar and syntax (like in EDI) but the real meaning of things. 
 When this is clear, machines can recognize, manage data and make decisions even when their provenance and 
-quality is not totally known and data are incomplete. 
-To enable this, we need to share knowledge using a language that is understandable both for humans and machines.
+quality is not totally known and data are incomplete.
+The same concerns apply to the knowledge itself: to share knowledge we need a language that is understandable both for humans and machines.
 
-This is the source code repository for the KEES language profile that is used to describe a knowledge base configurations.
-Semantic web agents and umans can use this description to populate,, merge and share a domain specific knowledge. 
+This is the source code repository for the KEES language profile that is used to describe a knowledge configurations.
+Semantic web agents and humans can use shuch descriptions to populate, merge and share a domain specific knowledge bases. 
 
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
@@ -35,13 +35,6 @@ A **Named graph** is nn RDF dataset as defined in [RDF specifications](http://ww
 
 A **Knowledge Base** is a semantic system where information is described as a set of statements according with the W3C standard 
 Resource Description Framework (RDF). A  Knowledge Base is composed by two disjoint set of statements: *TBox* and *ABox*. 
-Knowledge Base is implemented as a set of named graph
-
-A **Rule** describes how to generate/validate RDF statemensts using an algoritmic approach
-
-An **Axiom** describes how to generate/validate RDF statemensts using a declarative approach
-
-**Reasoning** is the process of inferring new RDF statements from existing RDF statements using rules and axioms.
 
 **TBox statements** describe a system in terms of controlled vocabularies, rules and axioms. TBox statements sometimes associate with object-oriented classes.
 TBox statements tend to be more permanent within a knowledge base and are often grouped in "ontologies" that describe a specific 
@@ -50,13 +43,21 @@ knowledge domain (e.g. business entities, people, goods, friendship, offering, g
 **ABox statements** associate with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and 
 are populated from datasets available in the web or by reasonings.
 
-**TBox graph** is a named graph tah contains only TBox statements.
+A **Rule** describes how to generate/validate knowledge statemensts using an algoritmic approach
 
-**ABox graph** is a named graph tah contains only ABox statements.
+An **Axiom** describes how to generate/validate RDF statemensts using a declarative approach
 
-**Configuration graph** is an ABoxGraph that contains statements that describe a knowledge base.
+**Reasoning** is the process of inferring new RDF statements from existing RDF statements using rules and axioms.
 
-**Inferred data graph** is an ABoxGraph that contains statements derived from a reasoning
+**Graph database**: a database that implements a Knowledge Base  as a set of ABox graphs and ABox graphs
+
+**TBox graph** is a named graph tah contains only TBox statements as RDF triples.
+
+**ABox graph** is a named graph tah contains only ABox statements as RDF triples.
+
+**Configuration graph** is an ABoxGraph that contains statements that describe a knowledge base as RDF triples.
+
+**Inferred data graph** is an ABoxGraph that contains statements derived from a reasoning as RDF triples
 
 A **KEES agent** is a semantic web agent that knows KEES language profile and is able to do actions on a 
 knowledge base taking into account the statements contained in all configuration graphs.
@@ -150,7 +151,6 @@ INSERT DATA {
 }
 ```
 
-Note that the property `kees:supportsLDPPP false` means that the support of Linked Data Platform Paging Protocol MUST be disabled.
 
 ### simple protected web resource (re)loading
 
