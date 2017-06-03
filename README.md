@@ -111,8 +111,8 @@ These two RDF triples MUST be equivalent to:
 	]
 .
 
-[]	void:Dataset ;
-	void:dataDump <http://data.example.com/dataset1.ttl>;
+[]	dcat:Distribution, void:Dataset ;
+	dcat:accessURL <http://data.example.com/dataset1.ttl> 
 .
 
 [] a qb:Observation ;
@@ -156,6 +156,7 @@ INSERT DATA {
 
 This states that an ABoxGraph SHOULD exist in the knowledge base and that graph should be loaded with the content of the web 
 resource "http://data.example.com/dataset1.ttl" that is protected with a basic http autentication.
+Note that the dataset require two datadump to be loaded
 
 ```
 _:myCredentials a kees:BasicHttpAuthentication ;
@@ -168,7 +169,12 @@ _:myAccrualPolicy a kees:UpdateGraphPolicy ;
 	]
 .
 
-[] a kees:ABoxGraph; dct:source <http://data.example.com/dataset1.ttl> ; dct:accrualPolicy _:myAccrualPolicy .
+[] a kees:ABoxGraph; dct:source <http://data.example.com/dataset1> ; dct:accrualPolicy _:myAccrualPolicy .
+[] dcat:Distribution,	
+	dcat:accessURL <http://data.example.com/dataset1> ;
+	void:dataDump <http://data.example.com/dataset1.ttl?page=1>;
+	void:dataDump <http://data.example.com/dataset1.ttl?page=2>
+.
 ```
 
 These triples MUST be equivalent to:
@@ -191,8 +197,10 @@ _:myAccrualPolicy a kees:UpdateGraphPolicy ;
 	dct:accrualPolicy _:myAccrualPolicy
 .
 
-[]	void:Dataset ;
-	void:dataDump <http://data.example.com/dataset1.ttl>;
+[]	dcat:Distribution, void:Dataset ;
+	dcat:accessURL <http://data.example.com/dataset1> ;
+	void:dataDump <http://data.example.com/dataset1.ttl?page=1>;
+	void:dataDump <http://data.example.com/dataset1.ttl?page=2>
 .
 
 [] a qb:Observation ;
@@ -206,9 +214,9 @@ _:myAccrualPolicy a kees:UpdateGraphPolicy ;
 
 A KEES compliant agent SHOULD get someway the username and password required by the http basic authentication;
 it could use rdfs:label and rdfs:comment to ask these data to user.
-Than, using such credentials, check if <http://data.example.com/dataset1.ttl> resource is newer than the creationd date of the
-<http://data.example.com/dataset1.ttl> named graph in the knowledge base.
-If yes it SHOULD load the resouce in a temporary directory and load it in some way to the graph db 
+Than, using such credentials, check if <http://data.example.com/dataset1> resource is newer than the creationd date of the
+<http://data.example.com/dataset1> named graph in the knowledge base.
+If yes it SHOULD load the two datadump resources in a temporary directory and load ithem in some way to the same graph in kb 
 
 ### simple web resource incremental loading
 
@@ -231,7 +239,8 @@ These two RDF triples MUST be equivalent to:
 	]
 .
 
-[]	void:Dataset ;
+[]	dcat:Distribution, void:Dataset ;
+	dcat:accessURL <http://data.example.com/dataset1.ttl> ;
 	void:dataDump <http://data.example.com/dataset1.ttl>;
 .
 
@@ -271,6 +280,60 @@ WHERE {
 }
 ```
 
+## A complete example
+
+These RDF statements describe a knowledge base build up from two dataset
+
+```
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix kees: <http://linkeddata.center/kees/v1#> .
+@prefix sd: <http://www.w3.org/ns/sparql-service-description#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix lodmap: <https://bitbucket.org/linkeddatacenter/lodmap/raw/master/data/> .
+
+#######################################################
+# Facts
+#######################################################
+[] a kees:ABoxGraph ; dct:source <https://www.dati.lombardia.it/resource/48pe-a97y.rdf> .
+[] a kees:ABoxGraph ; dct:source <https://www.dati.lombardia.it/resource/x4dw-9y9x.rdf> .
+
+#######################################################
+# Dataset catalogues according DCAT-AP ONTOLOGY
+#######################################################
+[] a dcat:Catalog ;
+    dct:title "Open Data Regione lombardia"@it;
+    dct:description "Il portale dei dati aperti della Lombardia"@it;
+    dct:publisher [ a foaf:Agent; foaf:name "Regione Lombardia"; foaf:homepage <http:://www.lombardia.it/> ] ;
+    foaf:homepage <http://www.dati.lombardia.it/>
+    dcat:dataset 
+    [ 
+        dtc:title "Qualità acque sotterranee"@it ;
+        dct:description "Valori analitici rete di monitoraggio"@it ;
+        dcat:landingPage <https://www.dati.lombardia.it/Ambiente/QUALITA-ACQUE-SOTTERRANEE/48pe-a97y> ;
+        dct:modified  "2015-01-30"^^xsd:date ;
+        dcat:distribution  [
+            dcat:accessURL <https://www.dati.lombardia.it/resource/48pe-a97y.rdf> ; 
+            dct:format "application/rdf+xml; charset=utf-8" ;
+            void:dataDump <https://www.dati.lombardia.it/resource/48pe-a97y.rdf?$limit=50000$offset=0> ;
+            void:dataDump <https://www.dati.lombardia.it/resource/48pe-a97y.rdf?$limit=50000&$offset=50000> ;
+            dct:license <http://www.dati.gov.it/iodl/2.0/>
+        ]
+    ] , [
+        a dcat:Dataset ;
+        dtc:title "Qualità dell'aria"@it ;
+        dtc:description  "Stazioni campionamento qualita aria in lombardia"@it ;
+        dcat:landingPage <https://www.dati.lombardia.it/Ambiente/QUALITA-DELL-ARIA/x4dw-9y9x> ;
+        dct:modified  "2015-01-30"^^xsd:date ;
+        dcat:distribution [
+            dcat:accessURL <https://www.dati.lombardia.it/resource/x4dw-9y9x.rdf> ; 
+            void:dataDump <https://www.dati.lombardia.it/resource/x4dw-9y9x.rdf?$limit=50000> ;
+            dct:format "application/rdf+xml; charset=utf-8" ;
+            dct:license <http://www.dati.gov.it/iodl/2.0/>
+        ]
+    ] 
+.
+```
 
 ## Contributing to the site
 
