@@ -90,7 +90,7 @@ namespaces:
 
 ### simple web resource (re)loading
 
-This states that a n ABoxGraph SHOULD exists in the knowledge base and that graph should be loaded with the content of the web 
+This states that an ABoxGraph SHOULD exist in the knowledge base and that graph should be loaded with the content of the web 
 resource "http://data.example.com/dataset1.ttl"
 
 ```
@@ -154,8 +154,8 @@ Note that the property `kees:supportsLDPPP false` means that the support of Link
 
 ### simple protected web resource (re)loading
 
-This states that an ABoxGraph SHOULD exists in the knowledge base and that graph should be loaded with the content of the web 
-resource "http://data.example.com/dataset1.ttl" that is protected with a basic http autentication
+This states that an ABoxGraph SHOULD exist in the knowledge base and that graph should be loaded with the content of the web 
+resource "http://data.example.com/dataset1.ttl" that is protected with a basic http autentication.
 
 ```
 _:myCredentials a kees:BasicHttpAuthentication ;
@@ -204,8 +204,8 @@ _:myAccrualPolicy a kees:UpdateGraphPolicy ;
 
 ```
 
-A KEES compliant agent SHOULD get someway the username and password required by http basi authentication;
-it can use rdfs:label and rdfs:comment in UI.
+A KEES compliant agent SHOULD get someway the username and password required by the http basic authentication;
+it could use rdfs:label and rdfs:comment to ask these data to user.
 Than, using such credentials, check if <http://data.example.com/dataset1.ttl> resource is newer than the creationd date of the
 <http://data.example.com/dataset1.ttl> named graph in the knowledge base.
 If yes it SHOULD load the resouce in a temporary directory and load it in some way to the graph db 
