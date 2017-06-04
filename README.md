@@ -1,7 +1,7 @@
 KEES: Knowledge Exchange Engine Schema 
 =======================================
 
-** WARNING: WORKING IN PROGRESS **
+**WARNING: WORKING IN PROGRESS**
 
 In order to let computers to work for us, they must understand data. 
 Not only grammar and syntax (like in EDI) but the real meaning of things. 
@@ -72,6 +72,7 @@ namespaces:
 - adms: http://www.w3.org/ns/adms#
 - dcat: http://www.w3.org/ns/dcat#
 - dct: http://purl.org/dc/terms/
+- dcmitype: http://purl.org/dc/dcmitype/
 - foaf: http://xmlns.com/foaf/0.1/
 - owl: http://www.w3.org/2002/07/owl#
 - rdfs: http://www.w3.org/2000/01/rdf-schema#
@@ -79,7 +80,6 @@ namespaces:
 - skos: http://www.w3.org/2004/02/skos/core#
 - spdx: http://spdx.org/rdf/terms#
 - xsd: http://www.w3.org/2001/XMLSchema#
-- vcard: http://www.w3.org/2006/vcard/ns#
 - qb: http://purl.org/linked-data/cube#
 - daq: http://purl.org/eis/vocab/daq# 
 - prov: http://www.w3.org/ns/prov#
@@ -98,21 +98,21 @@ resource "http://data.example.com/dataset1.ttl"
 [] a kees:ABoxGraph; dct:source <http://data.example.com/dataset1.ttl> .
 ```
 
-These two RDF triples MUST be equivalent to:
+These two RDF triples are equivalent to:
 
 ```
-[] a kees:ABoxGraph, sd:namedGraph;
+[] a kees:ABoxGraph, sd:namedGraph, dcmitype:Collection;
 	sd:name  <http://data.example.com/dataset1.ttl> ;
 	dct:source <http://data.example.com/dataset1.ttl> ;
-	dct:accrualPolicy [	
-		a kees:UpdateGraphPolicy;
-		dct:accrualMethod [ a kees:SparqlUpload ] ;
+	dct:accrualPolicy [ a  dct:Policy, kees:UpdateGraphPolicy;
 		kees:onFetchingError [ a kees:RetentionPolicy ; kees:hasResilience 0 ] ;
-	]
+	] ;
+	dct:accrualMethod [  a dct:MethodOfAccrual, kees:SparqlLoad ] ;
 .
 
 []	dcat:Distribution, void:Dataset ;
-	dcat:accessURL <http://data.example.com/dataset1.ttl> 
+	dcat:accessURL <http://data.example.com/dataset1.ttl>
+	void:dataDump <http://data.example.com/dataset1.ttl>
 .
 
 [] a qb:Observation ;
@@ -124,8 +124,7 @@ These two RDF triples MUST be equivalent to:
 
 ```
 
-For example a KEES compliant agent SHOULD check if <http://data.example.com/dataset1.ttl> resource is newer than 
- <http://data.example.com/dataset1.ttl> named graph in the knowledge base; if yes it COULD execute the following sparql update statements:
+A KEES compliant agent SHOULD check if <http://data.example.com/dataset1.ttl> resource is newer than  <http://data.example.com/dataset1.ttl> named graph in the knowledge base; if yes it COULD execute the following sparql update statements:
 
 ```
 DROP SILENT GRAPH <http://data.example.com/dataset1.ttl> ;
@@ -152,71 +151,31 @@ INSERT DATA {
 ```
 
 
-### simple protected web resource (re)loading
-
-This states that an ABoxGraph SHOULD exist in the knowledge base and that graph should be loaded with the content of the web 
-resource "http://data.example.com/dataset1.ttl" that is protected with a basic http autentication.
-Note that the dataset require two datadump to be loaded
+### simple protected dataset (re)loading
+This states that an ABoxGraph named *http://data.example.com/dataset1* SHOULD exist in the knowledge base and that graph should be loaded with the content of the web 
+resources *http://data.example.com/dataset1.ttl?page=1* and *http://data.example.com/dataset1.ttl?page=2* that are protected with a basic http autentication.
 
 ```
-_:myCredentials a kees:BasicHttpAuthentication ;
-	rdfs:label "reader credential"
-	rdfs:comment "Please enter username and password for protected resources"
+[] a kees:ABoxGraph; 
+    sd:name <http://data.example.com/dataset1> ; 
+    dct:source <http://data.example.com/dataset1.rdf> ; 
+    dct:accrualMethod [ a kees:BufferedUpload ;
+    	kees:requiresAuthentication [ a kees:BasicHttpAuthentication ;
+        	rdfs:label "reader credential"
+        	rdfs:comment "Please enter username and password for protected resources"
+    	]
+    ] 
 .
-_:myAccrualPolicy a kees:UpdateGraphPolicy ;
-	dct:accrualMethod [ a kees:BufferedUpload ;
-		kees:requiresAuthentication _:myCredentials 
-	]
-.
-
-[] a kees:ABoxGraph; dct:source <http://data.example.com/dataset1> ; dct:accrualPolicy _:myAccrualPolicy .
-[] dcat:Distribution,	
-	dcat:accessURL <http://data.example.com/dataset1> ;
-	void:dataDump <http://data.example.com/dataset1.ttl?page=1>;
-	void:dataDump <http://data.example.com/dataset1.ttl?page=2>
+[]  dcat:accessURL <http://data.example.com/dataset1.rdf> ;
+	void:dataDump 
+	    <http://data.example.com/dataset1.ttl?page=1>,
+        <http://data.example.com/dataset1.ttl?page=2>
 .
 ```
-
-These triples MUST be equivalent to:
-
-```
-_:myCredentials a kees:BasicHttpAuthentication ;
-	rdfs:label "reader credential"
-	rdfs:comment "Please enter username and password for protected resources"
-.
-_:myAccrualPolicy a kees:UpdateGraphPolicy ;
-	dct:accrualMethod [ a kees:BufferedUpload ;
-		kees:requiresAuthentication _:myCredentials 
-	] ;
-	kees:onFetchingError [ a kees:RetentionPolicy ; kees:hasResilience 0 ] ;
-.
-
-[] a kees:ABoxGraph, sd:namedGraph;
-	sd:name  <http://data.example.com/dataset1.ttl> ;
-	dct:source <http://data.example.com/dataset1.ttl> ;
-	dct:accrualPolicy _:myAccrualPolicy
-.
-
-[]	dcat:Distribution, void:Dataset ;
-	dcat:accessURL <http://data.example.com/dataset1> ;
-	void:dataDump <http://data.example.com/dataset1.ttl?page=1>;
-	void:dataDump <http://data.example.com/dataset1.ttl?page=2>
-.
-
-[] a qb:Observation ;
-	daq:computedOn [ a sd:NamedGraph; sd:name <http://data.example.com/dataset1.ttl> ] ; 
-    daq:metric kees:trustRank;
-    daq:value "0.5"^^xsd:double;
-	daq:isEstimated true .
-.
-
-```
-
-A KEES compliant agent SHOULD get someway the username and password required by the http basic authentication;
-it could use rdfs:label and rdfs:comment to ask these data to user.
-Than, using such credentials, check if <http://data.example.com/dataset1> resource is newer than the creationd date of the
+A KEES compliant agent SHOULD get someway the username and password required by the http basic authentication; it could use rdfs:label and rdfs:comment to ask these data to user.
+Than, using such credentials, check if <http://data.example.com/dataset1.rdf> resource is newer than the creation date of the
 <http://data.example.com/dataset1> named graph in the knowledge base.
-If yes it SHOULD load the two datadump resources in a temporary directory and load ithem in some way to the same graph in kb 
+If yes it SHOULD load the two datadump resources in a cache and loads them in the same graph in kb.
 
 ### simple web resource incremental loading
 
@@ -227,58 +186,9 @@ resource "http://data.example.com/dataset1.ttl"
 [] a kees:ABoxGraph; dct:source <http://data.example.com/dataset1.ttl> ; dct:accrualPolicy [ a kees:AppendDataPolicy ] .
 ```
 
-These two RDF triples MUST be equivalent to:
 
-```
-[] a kees:ABoxGraph, sd:namedGraph;
-	sd:name  <http://data.example.com/dataset1.ttl> ;
-	dct:source <http://data.example.com/dataset1.ttl> ;
-	dct:accrualPolicy [	
-		a kees:AppendDataPolicy;
-		dct:accrualMethod [ a kees:SparqlUpload ] 
-	]
-.
+A KEES compliant agent SHOULD check if <http://data.example.com/dataset1.ttl> resource is newer than <http://data.example.com/dataset1.ttl> named graph in the knowledge base; if yes it COULD execute the following sparql update statements:
 
-[]	dcat:Distribution, void:Dataset ;
-	dcat:accessURL <http://data.example.com/dataset1.ttl> ;
-	void:dataDump <http://data.example.com/dataset1.ttl>;
-.
-
-[] a qb:Observation ;
-	daq:computedOn [ a sd:NamedGraph; sd:name <http://data.example.com/dataset1.ttl> ] ; 
-    daq:metric kees:trustRank;
-    daq:value "0.5"^^xsd:double;
-	daq:isEstimated true .
-.
-
-```
-
-For example a KEES compliant agent SHOULD check if <http://data.example.com/dataset1.ttl> resource is newer than 
- <http://data.example.com/dataset1.ttl> named graph in the knowledge base; if yes it COULD execute the following sparql update statements:
-
-```
-LOAD <http://data.example.com/dataset1.ttl> INTO GRAPH <http://data.example.com/dataset1.ttl> ;
-WITH <http://data.example.com/dataset1.ttl>
-DELETE { ?g dct:modified ?anydate  }
-INSERT  {
-	?g  dct:modified "here current date^xsd:date ;
-		prov:wasGeneratedBy [ 
-			a prov:Activity , kees:SparqlUploadActivity ;
-			prov:wasAssociatedWith [ a kees:Agent ] ;
-			prov:used <http://data.example.com/dataset1.ttl>
-		] ;
-	.
-	# following properties COULD be inferred from http "Last-Modified:", "ETAG" and content type headers
-	<http://data.example.com/dataset1.ttl> a prov:Entity , foaf:Document ;
-		dct:modified  "2017-03-30"^^xsd:date ;
-		dct:identifier "123456789" ;
-	    dct:format "text/turtle" ;
-	.	
-}
-WHERE {
-	?g sd:name <http://data.example.com/dataset1.ttl> 
-}
-```
 
 ## A complete example
 
