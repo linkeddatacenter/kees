@@ -14,7 +14,7 @@ Semantic web agents and humans can use shuch descriptions to populate, merge and
 
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
-{google_docs}https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000|width:200|height:200|border:1|border_style:solid|border_color:#000000{/google_docs}
+{google_docs}https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ{/google_docs}
 
 
 ## Introduction
