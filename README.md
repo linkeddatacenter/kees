@@ -15,61 +15,12 @@ Semantic web agents and humans can use shuch descriptions to populate, merge and
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
 
-## Introduction
+## The KEES language profile
 
-This document describes vocabularies and constraints to be used to describe Knowlege Base.
+To describe a knowledge base, KEES reuses terms from various existing specifications adding some restrictions
+by identifying mandatory, recommended and optional elements, properties cardinalities etc..etc.
 
-## Terminology used in the KEES language profile
-
-An **Language Profile** is a specification that re-uses terms from one or more base
-standards, adding more specificity by identifying mandatory, recommended and
-optional elements to be used for a particular application, as well as recommendations
-for controlled vocabularies to be used.
-
-A **Dataset** is a collection of data, published or curated by a single source, and
-available for access or download in one or more formats.
-
-A **Trust map** is a rank about the quality of a dataset.
-
-A **Named graph** is nn RDF dataset as defined in [RDF specifications](http://www.w3.org/TR/rdf11-primer/)
-
-A **Knowledge Base** is a semantic system where information is described as a set of statements according with the W3C standard 
-Resource Description Framework (RDF). A  Knowledge Base is composed by two disjoint set of statements: *TBox* and *ABox*. 
-
-**TBox statements** describe a system in terms of controlled vocabularies, rules and axioms. TBox statements sometimes associate with object-oriented classes.
-TBox statements tend to be more permanent within a knowledge base and are often grouped in "ontologies" that describe a specific 
-knowledge domain (e.g. business entities, people, goods, friendship, offering, geocoding, etc, etc).
-
-**ABox statements** associate with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and 
-are populated from datasets available in the web or by reasonings.
-
-A **Rule** describes how to generate/validate knowledge statemensts using an algoritmic approach
-
-An **Axiom** describes how to generate/validate RDF statemensts using a declarative approach
-
-**Reasoning** is the process of inferring new rules from existing data.
-
-**Graph database**: a database that implements a Knowledge Base  as a set of ABox graphs and ABox graphs
-
-**TBox graph** is a named graph tah contains only TBox statements as RDF triples.
-
-**ABox graph** is a named graph tah contains only ABox statements as RDF triples.
-
-**Configuration graph** is an ABoxGraph that contains statements that describe a knowledge base as RDF triples.
-
-**Inferred data graph** is an ABoxGraph that contains statements derived from a reasoning as RDF triples.
-
-**Linked Data data graph** is an ABoxGraph that contains statements derived from dastasets (i.e. facts).
-
-A **KEES agent** is a semantic web agent that knows KEES language profile and is able to do actions on a 
-knowledge base taking into account the statements contained in all configuration graphs.
-
-A special type of ABox statements are those that are inferred through an automatic reasoning process, 
-that is the evaluation of rules and/or axioms explicitly asserted or derived from TBox.
-
-To describe a knowledge base, the KEES Language Profile reuses terms from various existing specifications. Classes and
-properties specified in the next sections have been taken from the following
-namespaces:
+Classes and properties have been taken from the following namespaces:
 
 - adms: http://www.w3.org/ns/adms#
 - dcat: http://www.w3.org/ns/dcat#
@@ -87,7 +38,49 @@ namespaces:
 - prov: http://www.w3.org/ns/prov#
 - void: http://rdfs.org/ns/void#
 - sd: http://www.w3.org/ns/sparql-service-description#
+
+Beside these, kees defines its own vocabulary
 - kees: http://linkeddata.center/kees/v1#
+
+## The main KEES entities 
+
+A **Trust map** is a rank about the quality of a dataset.
+
+A **Knowledge Base** is a semantic system where information is described as a set of statements according with the W3C standard 
+Resource Description Framework (RDF). A  Knowledge Base is composed by two disjoint set of statements: *TBox* and *ABox*. 
+
+**TBox statements** describe a system in terms of controlled vocabularies. TBox statements sometimes associate with object-oriented classes.
+TBox statements tend to be more permanent within a knowledge base and are often grouped in "ontologies" that describe a specific 
+knowledge domain (e.g. business entities, people, goods, friendship, offering, geocoding, etc, etc).
+
+**TBox graph** is a named graph that contains only TBox statements as RDF triples.
+
+**ABox statements** associate with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and 
+are populated from datasets available in the web or by reasonings.
+
+**Graph database**: a database that implements a Knowledge Base  as a set of ABox graphs and ABox graphs
+
+A **Rule** describes how to generate/validate knowledge statemensts using an algoritmic approach. For example a rule could be implemented with some
+sparql insert statements.
+
+An **Axiom** describes how to generate/validate RDF statemensts using a declarative approach. For instance an axiom is represented with
+a sparql construct or with a  SHACL restriction or embedded in a owl vocabulary.
+
+**Reasoning** is the process of evaluating Rules and Axioms.
+
+**ABox graph** is a named graph that contains only ABox statements as RDF triples. Acts as a superclass of
+
+- **Configuration graph** is an ABoxGraph that contains statements that describe a knowledge base as RDF triples.
+- **Inferred data graph** is an ABoxGraph that contains statements derived from a reasoning as RDF triples.
+- **Linked Data data graph** is an ABoxGraph that contains statements derived from dastasets (i.e. facts).
+
+A **KEES agent** is a semantic web agent that knows KEES language profile and is able to do actions on a 
+knowledge base taking into account the statements contained in all configuration graphs.
+
+A formal definition of kees vocabulary is availabe as a [RDFS file](v1/kees.rdf).
+
+TODO: KEES language profile restrictions is formally expressed in [SHACL constraints file](v1/kees-profile.rdf)
+
 
 ## KEES by examples
 
@@ -106,7 +99,7 @@ These two RDF triples are equivalent to:
 [] a kees:LinkedDataGraph,kees:ABoxGraph, sd:namedGraph, dcmitype:Collection;
 	sd:name  <http://data.example.com/dataset1.ttl> ;
 	dct:source <http://data.example.com/dataset1.ttl> ;
-	dct:accrualPolicy kees:on_source_change ;
+	dct:accrualPolicy kees:reload_on_source_change ;
 	dct:accrualMethod kees:load_resource;
 .
 
@@ -135,7 +128,7 @@ INSERT DATA {
 			sd:name <http://data.example.com/dataset1.ttl> ;
 			dct:modified "here current date"^xsd:date ;
 			prov:wasGeneratedBy [ 
-				a prov:Activity , kees:sparql_upload_activity ;
+				a prov:Activity;
 				prov:wasAssociatedWith kees:load_resource_processor ;
 				prov:used <http://data.example.com/dataset1.ttl>
 			] ;
@@ -173,21 +166,132 @@ Than, using such credentials, check if <http://data.example.com/dataset1.rdf> re
 <http://data.example.com/graph/dataset> named graph in the knowledge base.
 If yes it SHOULD load the two datadump resources in a cache and loads them in the same graph in kb.
 
+### simple reasoning chain
+
+This states that a some InferredKnowledgeGraph SHOULD created on a knowledge base when some facts changes 
+
+```
+[
+	a kees:ReasoningActivity ;
+	keees:onEvent kees:facts_change ;
+	kees:builds (
+		[
+			a kees:InferredKnowledgeGraph ;
+			dct:title "Inferred alternate names" ;
+			dct:source <axioms/alternateNames.constructor> ;
+			kees:accrualMethod kees:eval_sparql_constructor
+		]
+	
+		[
+			a kees:InferredKnowledgeGraph ;
+			dct:title "Inferred links to Cities"  ;
+			dct:source <axioms/linkCities.update> ;
+			kees:accrualMethod kees:sparql_update
+		]
+	) 
+] .
+
+
+<axioms/alternateNames.constructor> dct:format "application/sparql-query".
+<axioms/linkCities.update> dct:format "application/sparql-update".
+```
+
 ### simple web resource incremental loading
 
-This states that a n ABoxGraph SHOULD exists in the knowledge base and that graph should updated appending the content of the web 
+This states that an ABoxGraph SHOULD exists in the knowledge base and that graph should updated weekly appending the content of the web 
 resource "http://data.example.com/dataset1.ttl"
 
-TODO:
+```
+[
+	a kees:LinkedDataGraph; 
+	dct:source <http://data.example.com/dataset1.ttl> ;
+	dct:accrualPeriodicity <http://purl.org/linked-data/sdmx/2009/code#freq-W>
+	dct:accrualPolicy kees:append 
+].
+```
+
+In order to express frequency of update in the example above, use an instance from the [Content-Oriented Guidelines](http://www.w3.org/TR/vocab-data-cube/#dsd-cog) 
+developed as part of the W3C Data Cube Vocabulary efforts. 
+
+If some error occur during incremental append accrual policy, the graph is not updated else following changes to medatata SHOULD happen:
+
+```
+WITH <http://data.example.com/dataset1.ttl>  
+DELETE { ?g dct:modified ?old }
+INSERT { ?g dct:modified "here current date"^xsd:date}
+WHERE { ?g sd:name <http://data.example.com/dataset.ttl> ; dct:modified ?old }
+```
 
 ### simple web resource with custom accrual policy
 
-TODO:
+This states that an ABoxGraph SHOULD exists in the knowledge base and that graph should created when a fact change. If errors occurs
+during the accrual process, old data are retained but only till three consecutive errors, at forth failure of the accrual process
+the graph is deleted.
 
+```
+[
+	a kees:LinkedDataGraph; 
+	dct:source <http://data.example.com/dataset.ttl> ;
+	dct:accrualPolicy [ a  kees:AccrualPolicy;
+		kees:onFetchingError [ a kees:RetentionPolicy ; kees:hasResilience 3 ] ;
+	] 
+]
+```
+
+On accrual error, the  following metadata SOULD be added to the named graph:
+
+```
+INSERT DATA {
+	GRAPH <http://data.example.com/dataset.ttl> {
+		[] a prov:Entity, sd:NamedGraph ; 
+			sd:name <http://data.example.com/dataset1.ttl> ;
+			prov:wasInvalidatedBy [ 
+				a prov:Activity;
+				prov:endedAtTime  "here the error date"^xsd:date ;
+				prov:wasAssociatedWith kees:load_resource_processor ;
+			] ;
+	}
+}
+```
 
 ### simple web resource with custom accrual method
 
-TODO:
+This states that an ABoxGraph SHOULD exists in the knowledge base and that graph should updated using a custom method that 
+requires two additional parameters:
+
+```
+[
+	a kees:LinkedDataGraph ;
+	sd:name graph:dataset ;
+	kees:accrualMethod ( sdaas:etl "csv1_gateway" "gateqay paramethers") ;
+	dct:source <http://data.example.com/dataset1.csv>
+] .
+```
+
+A KEES compliant agent SHOULD  know how to generate the graph named graph:dataset using <http://data.example.com/dataset1.csv> and the string "csv1_gateway".
+The AGENT shoud generate at least the following metadata:
+
+```
+INSERT DATA {
+	GRAPH graph:dataset {
+		[] a prov:Entity, sd:NamedGraph ; 
+			sd:name graph:dataset ;
+			dct:modified "here current date"^xsd:date ;
+			prov:wasGeneratedBy [ 
+				a prov:Activity  ;
+				prov:used [ a prov:Entity (sdaas:etl <http://data.example.com/dataset1.csv> "csv1_gateway") "gateqay paramethers"]
+			] ;
+		.
+		# following properties COULD be inferred from http "Last-Modified:", "ETAG" and content type headers
+		<http://data.example.com/dataset1.csv> a prov:Entity , foaf:Document ;
+			dct:modified  "2017-03-30"^^xsd:date ;
+			dct:identifier "123456721289" ;
+		    dct:format "text/csv" ;
+		.	
+	}
+}
+```
+
 
 ## A complete example
 
