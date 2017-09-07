@@ -1,2 +1,0 @@
-@prefix kees: <http://linkeddata.center/kees/v1#> .
-[] kees:includes <http://data.example.com/kees.ttl> .

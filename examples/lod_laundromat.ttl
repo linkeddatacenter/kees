@@ -1,7 +1,0 @@
-@prefix kees: <http://linkeddata.center/kees/v1#> . 
-[] a kees:LodLaundromatAccrualPolicy ;
-	kees:generatesGraphType kees:TBoxGraph ;
-	kees:createsGraphName <urn:mymodels> ;
-	kees:url <http://cordis.rkbexplorer.com/models/dump.tgz> ;
-	kees:onFetchingError [ a kees:RetentionPolicy ; kees:hasResilience 0 ] ;
-	kees:hasUpdatePolicy [ a kees:UpdatePolicy ; kees:hasFrequencyPeriod 3600 ] ;

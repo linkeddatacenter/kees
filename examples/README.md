@@ -1,1 +1,0 @@
-See the [introductory article in LinkedData.Center documentation portal](http://linkeddata.center/help/devop/kees-profile) for examples explanation.

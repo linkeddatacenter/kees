@@ -1,3 +1,0 @@
-@prefix kees: <http://linkeddata.center/kees/v1#> .
-[] kees:source <http://demo.hub1.linkeddata.center.s3.amazonaws.com/data/cities.rdf> .
-[] kees:vocabulary <http://linkeddata.center/kees/v1> .
