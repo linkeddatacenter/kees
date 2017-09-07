@@ -9,8 +9,9 @@ When this is clear, machines can recognize, manage data and make decisions even 
 quality is not totally known and data are incomplete.
 The same concerns apply to the knowledge itself: to share knowledge we need a language that is understandable both for humans and machines.
 
-This is the source code repository for the KEES language profile that is used to describe a knowledge configurations.
-Semantic web agents and humans can use shuch descriptions to populate, merge and share a domain specific knowledge bases. 
+This is the source code repository for the KEES language profile specifications that is used to describe a knowledge configurations.
+
+Semantic web agents and humans can use these specificationa to populate, merge and share a domain specific knowledge base. 
 
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
@@ -96,28 +97,21 @@ resource "http://data.example.com/dataset1.ttl"
 These two RDF triples are equivalent to:
 
 ```
-[] a kees:LinkedDataGraph,kees:ABoxGraph, sd:namedGraph, dcmitype:Collection;
+[] a kees:LinkedDataGraph,kees:ABoxGraph, sd:NamedGraph;
 	sd:name  <http://data.example.com/dataset1.ttl> ;
 	dct:source <http://data.example.com/dataset1.ttl> ;
 	dct:accrualPolicy kees:reload_on_source_change ;
-	dct:accrualMethod kees:load_resource;
 .
 
 []	dcat:Distribution, void:Dataset ;
 	dcat:accessURL <http://data.example.com/dataset1.ttl>
 	void:dataDump <http://data.example.com/dataset1.ttl>
 .
-
-[] a qb:Observation ;
-	daq:computedOn [ a sd:NamedGraph; sd:name <http://data.example.com/dataset1.ttl> ] ; 
-    daq:metric kees:trustRank;
-    daq:value "0.5"^^xsd:double;
-	daq:isEstimated true .
-.
-
 ```
 
-A KEES compliant agent SHOULD check if <http://data.example.com/dataset1.ttl> resource is newer than  <http://data.example.com/dataset1.ttl> named graph in the knowledge base; if yes it COULD execute the following sparql update statements:
+A KEES compliant agent implementation SHOULD check if <http://data.example.com/dataset1.ttl> resource is newer 
+than  <http://data.example.com/dataset1.ttl> named graph in the knowledge base; 
+if yes it COULD execute the following sparql update statements:
 
 ```
 DROP SILENT GRAPH <http://data.example.com/dataset1.ttl> ;
@@ -126,23 +120,93 @@ INSERT DATA {
 	GRAPH <http://data.example.com/dataset1.ttl> {
 		[] a prov:Entity, sd:NamedGraph ; 
 			sd:name <http://data.example.com/dataset1.ttl> ;
-			dct:modified "here current date"^xsd:date ;
-			prov:wasGeneratedBy [ 
-				a prov:Activity;
-				prov:wasAssociatedWith kees:load_resource_processor ;
-				prov:used <http://data.example.com/dataset1.ttl>
-			] ;
+			dct:modified "here current date"^xsd:date 
 		.
 		# following properties COULD be inferred from http "Last-Modified:", "ETAG" and content type headers
 		<http://data.example.com/dataset1.ttl> a prov:Entity , foaf:Document ;
 			dct:modified  "2017-03-30"^^xsd:date ;
 			dct:identifier "123456789" ;
-		    dct:format "text/turtle" ;
+		    dct:format "text/turtle" 
 		.	
 	}
 }
 ```
 
+### adding accrual info
+
+It is possible to specify graph accrual method, but the semantic is implementation specific. e.g:
+
+
+```
+[] a kees:LinkedDataGraph;
+	dct:source <http://data.example.com/dataset1.ttl> ;
+	dct:accrualMethod ( ex:load_from_local_mirror "mirror/dataset1.ttl" "turtle" );
+.
+```
+
+### adding accrual periodicity
+
+A KEES compliant agent should be able to manage accrual periodicity. e.g:
+
+
+```
+[] a kees:LinkedDataGraph;
+	dct:source <http://data.example.com/dataset1.ttl> ;
+	dct:accrualPeriodicity <http://purl.org/linked-data/sdmx/2009/code#freq-W>
+.
+```
+
+In order to express frequency of update in the example above, use an instance from the [Content-Oriented Guidelines](http://www.w3.org/TR/vocab-data-cube/#dsd-cog) 
+developed as part of the W3C Data Cube Vocabulary efforts. 
+
+
+### adding trust info
+
+Trust in dataset can be expessed with:
+
+```
+[] a qb:Observation ;
+	daq:computedOn [ a sd:NamedGraph; sd:name <http://data.example.com/dataset1.ttl> ] ; 
+    daq:metric kees:trustRank;
+    daq:value 1.0 ;
+	daq:isEstimated true 
+.
+```
+
+If no explicit observation records are present in the knowledge base, this axiom SHOULD applies:
+
+```
+CONSTRUCT {
+	[] a qb:Observation ;
+		daq:computedOn [ sd:name ?name ] ; 
+	    daq:metric kees:trustRank;
+	    daq:value 0.5 ;
+		daq:isEstimated true .
+} WHERE {
+	?g sd:name ?name ;
+	OPTIONAL { ?observation daq:computedOn [ sd:name ?name ]  }
+	FILTER( !BOUND(?observation))
+}
+```
+
+
+If more than an observation of a trust Rank is present, the average SHOULD be considered. As example see this axiom:
+
+```
+CONSTRUCT {
+	?g kees:calculatedTrust ?trust ;
+} WHERE {
+	?g sd:name ?name ;
+	{
+		SELECT (AVG(?value) AS ?trust)
+		WHERE {
+		  ?observation a qb:Observation ;
+		  daq:computedOn [ sd:name ?name ] ;
+		  daq:value ?value
+		}
+	}
+}
+```
 
 ### simple protected dataset (re)loading
 This states that an ABoxGraph named *http://data.example.com/dataset1* SHOULD exist in the knowledge base and that graph should be loaded with the content of the web 
@@ -177,14 +241,16 @@ This states that a some InferredKnowledgeGraph SHOULD created on a knowledge bas
 	kees:builds (
 		[
 			a kees:InferredKnowledgeGraph ;
+			sd:name graph:inferredAlternateNames ;
 			dct:title "Inferred alternate names" ;
-			dct:accrualMethod (kees:eval_sparql_constructor <axioms/alternateNames.constructor>)
+			dct:accrualMethod ( ex:eval_costructor <axioms/alternateNames.constructor> )
 		]
 	
 		[
 			a kees:InferredKnowledgeGraph ;
+			sd:name graph:inferredLinksToCities ;
 			dct:title "Inferred links to Cities"  ;
-			dct:accrualMethod (kees:sparql_update <axioms/linkCities.update> )
+			dct:accrualMethod ( ex:sparql_updatecostructor <axioms/linkCities.update> )
 		]
 	) 
 ] .
@@ -192,6 +258,9 @@ This states that a some InferredKnowledgeGraph SHOULD created on a knowledge bas
 <axioms/alternateNames.constructor> dct:format "application/sparql-query".
 <axioms/linkCities.update> dct:format "application/sparql-update".
 ```
+
+Note that in previous example KEES agent implementation is supposed to understand  ex:eval_costructor and ex:sparql_updatecostructor accrual methods.
+
 
 ### simple web resource incremental loading
 
@@ -206,9 +275,6 @@ resource "http://data.example.com/dataset1.ttl"
 	dct:accrualPolicy kees:append 
 ].
 ```
-
-In order to express frequency of update in the example above, use an instance from the [Content-Oriented Guidelines](http://www.w3.org/TR/vocab-data-cube/#dsd-cog) 
-developed as part of the W3C Data Cube Vocabulary efforts. 
 
 If some error occur during incremental append accrual policy, the graph is not updated else following changes to medatata SHOULD happen:
 
