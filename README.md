@@ -91,13 +91,12 @@ This states that an ABoxGraph SHOULD exist in the knowledge base and that graph 
 resource "http://data.example.com/dataset1.ttl"
 
 ```
-[] a kees:LinkedDataGraph; dct:source <http://data.example.com/dataset1.ttl> .
+resource:graph_1 a kees:LinkedDataGraph; dct:source <http://data.example.com/dataset1.ttl> .
 ```
-
 These two RDF triples are equivalent to:
 
 ```
-[] a kees:LinkedDataGraph,kees:ABoxGraph, sd:NamedGraph;
+resource:graph_1 a kees:LinkedDataGraph,kees:ABoxGraph, sd:NamedGraph;
 	sd:name  <http://data.example.com/dataset1.ttl> ;
 	dct:source <http://data.example.com/dataset1.ttl> ;
 	dct:accrualPolicy kees:reload_on_source_change ;
@@ -110,20 +109,17 @@ These two RDF triples are equivalent to:
 ```
 
 A KEES compliant agent implementation SHOULD check if <http://data.example.com/dataset1.ttl> resource is newer 
-than  <http://data.example.com/dataset1.ttl> named graph in the knowledge base; 
+than  resource:graph_1 named graph in the knowledge base; 
 if yes it COULD execute the following sparql update statements:
 
 ```
 DROP SILENT GRAPH <http://data.example.com/dataset1.ttl> ;
 LOAD <http://data.example.com/dataset1.ttl> INTO GRAPH <http://data.example.com/dataset1.ttl> ;
-INSERT DATA {
+INSERT_DATA  {
 	GRAPH <http://data.example.com/dataset1.ttl> {
-		[] a prov:Entity, sd:NamedGraph ; 
-			sd:name <http://data.example.com/dataset1.ttl> ;
-			dct:modified "here current date"^xsd:date 
-		.
-		# following properties COULD be inferred from http "Last-Modified:", "ETAG" and content type headers
-		<http://data.example.com/dataset1.ttl> a prov:Entity , foaf:Document ;
+		resource:graph_1 dct:modified "here current date"^xsd:date .
+		# following properties COULD be inferred from http "Last-Modified:", "ETAG" and content-type headers
+		<http://data.example.com/dataset1.ttl> 
 			dct:modified  "2017-03-30"^^xsd:date ;
 			dct:identifier "123456789" ;
 		    dct:format "text/turtle" 
@@ -132,13 +128,14 @@ INSERT DATA {
 }
 ```
 
+**N.B.** the graph description uri MUST be different from sd:name and MUST NOT be a blank node.
+
 ### adding accrual info
 
-It is possible to specify graph accrual method, but the semantic is implementation specific. e.g:
-
+It is possible to specify graph accrual method, but its semantic is  left to agent implementation. e.g:
 
 ```
-[] a kees:LinkedDataGraph;
+resource:graph_1 a kees:LinkedDataGraph;
 	dct:source <http://data.example.com/dataset1.ttl> ;
 	dct:accrualMethod ( ex:load_from_local_mirror "mirror/dataset1.ttl" "turtle" );
 .
@@ -148,15 +145,14 @@ It is possible to specify graph accrual method, but the semantic is implementati
 
 A KEES compliant agent should be able to manage accrual periodicity. e.g:
 
-
 ```
-[] a kees:LinkedDataGraph;
+resource:graph_1 a kees:LinkedDataGraph;
 	dct:source <http://data.example.com/dataset1.ttl> ;
 	dct:accrualPeriodicity <http://purl.org/linked-data/sdmx/2009/code#freq-W>
 .
 ```
 
-In order to express frequency of update in the example above, use an instance from the [Content-Oriented Guidelines](http://www.w3.org/TR/vocab-data-cube/#dsd-cog) 
+A KEES agent implementation SHOULD recognize at frequency instance from the [Content-Oriented Guidelines](http://www.w3.org/TR/vocab-data-cube/#dsd-cog) 
 developed as part of the W3C Data Cube Vocabulary efforts. 
 
 
@@ -178,13 +174,13 @@ If no explicit observation records are present in the knowledge base, this axiom
 ```
 CONSTRUCT {
 	[] a qb:Observation ;
-		daq:computedOn [ sd:name ?name ] ; 
+		daq:computedOn ?g ; 
 	    daq:metric kees:trustRank;
 	    daq:value 0.5 ;
 		daq:isEstimated true .
 } WHERE {
 	?g sd:name ?name ;
-	OPTIONAL { ?observation daq:computedOn [ sd:name ?name ]  }
+	OPTIONAL { ?observation daq:computedOn ?g  }
 	FILTER( !BOUND(?observation))
 }
 ```
@@ -194,16 +190,17 @@ If more than an observation of a trust Rank is present, the average SHOULD be co
 
 ```
 CONSTRUCT {
-	?g kees:calculatedTrust ?trust ;
+	?g kees:calculatedTrust ?trust 
 } WHERE {
-	?g sd:name ?name ;
+	?g sd:name ?name .
 	{
-		SELECT (AVG(?value) AS ?trust)
+		SELECT ?g (AVG(?value) AS ?trust)
 		WHERE {
 		  ?observation a qb:Observation ;
-		  daq:computedOn [ sd:name ?name ] ;
+		  daq:metric kees:trustRank;
+		  daq:computedOn ?g ;
 		  daq:value ?value
-		}
+		} GROUP BY ?g
 	}
 }
 ```
@@ -213,13 +210,13 @@ This states that an ABoxGraph named *http://data.example.com/dataset1* SHOULD ex
 resources *http://data.example.com/dataset1.ttl?page=1* and *http://data.example.com/dataset1.ttl?page=2* that are protected with a basic http autentication.
 
 ```
-[] a kees:LinkedDataGraph; sd:name <http://data.example.com/graph/dataset> dct:source <http://data.example.com/dataset1.rdf> -
-[]  dcat:accessURL <http://data.example.com/dataset1.rdf> ;
+resource:graph_1 a kees:LinkedDataGraph; sd:name <http://data.example.com/graph/dataset> dct:source <http://data.example.com/dataset1.rdf> -
+resource:distrib_1  dcat:accessURL <http://data.example.com/dataset1.rdf> ;
 	void:dataDump 
 	    <http://data.example.com/dataset1.ttl?page=1>,
         <http://data.example.com/dataset1.ttl?page=2>
 .
-[] a kees:BasicHttpAuthentication ;
+resource:auth_1 a kees:BasicHttpAuthentication ;
 	kees:realm "example.com private area";
 	kees:uriRegexPattern "^http://data.example.com/dataset1.ttl"
 .
@@ -235,31 +232,30 @@ If yes it SHOULD load the two datadump resources in a cache and loads them in th
 This states that a some InferredKnowledgeGraph SHOULD created on a knowledge base when some facts changes 
 
 ```
-[
-	a kees:ReasoningActivity ;
+resource:inference_1 a kees:InferredKnowledgeGraph ;
+	sd:name graph:inferredAlternateNames ;
+	dct:title "Inferred alternate names" ;
+	dct:accrualMethod ( ex:eval_costructor <axioms/alternateNames.constructor> ). 
+
+resource:inference_2
+	a kees:InferredKnowledgeGraph ;
+	sd:name graph:inferredLinksToCities ;
+	dct:title "Inferred links to Cities"  ;
+	dct:accrualMethod ( ex:sparql_update <axioms/linkCities.update> ).
+
+resoure:reasoning_1 a kees:ReasoningActivity ;
 	keees:onEvent kees:facts_change ;
-	kees:builds (
-		[
-			a kees:InferredKnowledgeGraph ;
-			sd:name graph:inferredAlternateNames ;
-			dct:title "Inferred alternate names" ;
-			dct:accrualMethod ( ex:eval_costructor <axioms/alternateNames.constructor> )
-		]
-	
-		[
-			a kees:InferredKnowledgeGraph ;
-			sd:name graph:inferredLinksToCities ;
-			dct:title "Inferred links to Cities"  ;
-			dct:accrualMethod ( ex:sparql_updatecostructor <axioms/linkCities.update> )
-		]
-	) 
-] .
+	kees:reasoningChain (
+		resource:inference_1
+		resource:inference_2
+	) .
 
 <axioms/alternateNames.constructor> dct:format "application/sparql-query".
 <axioms/linkCities.update> dct:format "application/sparql-update".
 ```
 
-Note that in previous example KEES agent implementation is supposed to understand  ex:eval_costructor and ex:sparql_updatecostructor accrual methods.
+Note that in previous example KEES agent implementation is supposed to understand  ex:eval_costructor and ex:sparql_update accrual methods.
+The reasoningChain property allow to describe reasoning sequence.
 
 
 ### simple web resource incremental loading
