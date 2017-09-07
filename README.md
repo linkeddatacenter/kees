@@ -178,13 +178,13 @@ This states that a some InferredKnowledgeGraph SHOULD created on a knowledge bas
 		[
 			a kees:InferredKnowledgeGraph ;
 			dct:title "Inferred alternate names" ;
-			kees:reasoningMethod (kees:eval_sparql_constructor <axioms/alternateNames.constructor>)
+			dct:accrualMethod (kees:eval_sparql_constructor <axioms/alternateNames.constructor>)
 		]
 	
 		[
 			a kees:InferredKnowledgeGraph ;
 			dct:title "Inferred links to Cities"  ;
-			kees:reasoningMethod (kees:sparql_update <axioms/linkCities.update> )
+			dct:accrualMethod (kees:sparql_update <axioms/linkCities.update> )
 		]
 	) 
 ] .
