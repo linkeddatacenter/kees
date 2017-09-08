@@ -45,40 +45,51 @@ Beside these, kees defines its own vocabulary
 
 ## The main KEES entities 
 
-A **Trust map** is a rank about the quality of a dataset.
+KEES define a small set of concepts, mainly derived from existing ontologies
 
 A **Knowledge Base** is a semantic system where information is described as a set of statements according with the W3C standard 
 Resource Description Framework (RDF). A  Knowledge Base is composed by two disjoint set of statements: *TBox* and *ABox*. 
-
-**TBox statements** describe a system in terms of controlled vocabularies. TBox statements sometimes associate with object-oriented classes.
+*TBox statements* describe a system in terms of controlled vocabularies. TBox statements sometimes associate with object-oriented classes.
 TBox statements tend to be more permanent within a knowledge base and are often grouped in "ontologies" that describe a specific 
 knowledge domain (e.g. business entities, people, goods, friendship, offering, geocoding, etc, etc).
+*ABox statements* associate with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and 
+are populated from datasets available in the web or by reasonings. A knowledge base is implemented as a **Graph database**
+and it is composed by the union of all REDF triples contained in a  set of disjoined Named Graphs.
 
-**TBox graph** is a named graph that contains only TBox statements as RDF triples.
+A **KEES agent** is a semantic web agent that knows KEES language profile and that it is able to do actions on a 
+knowledge base taking into account the statements contained in all configuration graphs. It  SHOULD be able to execute accrual policies and methods and to 
+answer to a set of questions
 
-**ABox statements** associate with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and 
-are populated from datasets available in the web or by reasonings.
+A **Rule** describes how to generate/validate knowledge base statemensts using an algoritmic approach. For instance  a rule could be implemented with some
+sparql update insert statements or with a program.
 
-**Graph database**: a database that implements a Knowledge Base  as a set of ABox graphs and ABox graphs
-
-A **Rule** describes how to generate/validate knowledge statemensts using an algoritmic approach. For example a rule could be implemented with some
-sparql insert statements.
-
-An **Axiom** describes how to generate/validate RDF statemensts using a declarative approach. For instance an axiom is represented with
+An **Axiom** describes how to generate/validate knowledge base statemensts using a declarative approach. For instance an axiom is represented with
 a sparql construct or with a  SHACL restriction or embedded in a owl vocabulary.
 
-**Reasoning** is the process of evaluating Rules and Axioms.
+**Reasoning** is the process (i.e. an activity) of evaluating Rules and Axioms. The evaluation results can be stored results in the knowledge base (matherializing)
+or just used by the query processor (e.g. SPARQL a endpoint)
 
-**ABox graph** is a named graph that contains only ABox statements as RDF triples. Acts as a superclass of
+**Inferred data graph** is a named graph  that contains only RDF statements derived from a reasoning.
 
-- **Configuration graph** is an ABoxGraph that contains statements that describe a knowledge base as RDF triples.
-- **Inferred data graph** is an ABoxGraph that contains statements derived from a reasoning as RDF triples.
-- **Linked Data data graph** is an ABoxGraph that contains statements derived from dastasets (i.e. facts).
+**Linked Data data graph** is a named graph that contains only RDF statements derived from a source. The source MUST exists and MUST be 
+referrenced as  dcat:accessURL property in at least a dcat:Distribution of a dcat:Dastasets, part of a dset:Catalog. 
+A KEES agent MUST recognize DCAT-AP. According with DCAT-AP, the catalog MUST exports publiher info,
+the dataset SHOULD exports data update info and the distribution SHOULD exports the license info.
 
-A **KEES agent** is a semantic web agent that knows KEES language profile and is able to do actions on a 
-knowledge base taking into account the statements contained in all configuration graphs.
+**Configuration graph** is a linked data graph that contains statements that describes the knowledge base itself as a set of RDF triples.
 
-A formal definition of kees vocabulary is availabe as a [RDFS file](v1/kees.rdf).
+**TBox graph** is a linked data graph that contains TBOX statements.
+
+An **Accrual Policy** defines when a named graph SOULD be created or updated and what to do if there are errors in the acctual process.
+
+An **Accrual Method** states what process to use to accrual data (e.g. an Exctract Trasform Load process) with all needed additional paramethers
+
+A **Named answer** is a parametric sparql query contained in the knowlwdge base.
+
+A **Trust rank** is just a rank about the quality of a dataset. It can be calculated form a set of quality measures (observations)
+
+
+TODO: A formal definition of kees vocabulary is availabe as a [RDFS file](v1/kees.rdf).
 
 TODO: KEES language profile restrictions is formally expressed in [SHACL constraints file](v1/kees-profile.rdf)
 
