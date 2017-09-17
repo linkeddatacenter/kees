@@ -16,12 +16,25 @@ Semantic web agents and humans can use these specificationa to populate, merge a
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
 
-## The KEES language profile
+## Terminology used in the KEES language profile
 
-To describe a knowledge base, KEES reuses terms from various existing specifications adding some restrictions
-by identifying mandatory, recommended and optional elements, properties cardinalities etc..etc.
+The **KEES Language Profile** is a specification that re-uses terms from one or more base
+standards, adding more specificity by identifying mandatory, recommended and
+optional elements to be used for describing a knowledge base, as well as recommendations
+for controlled vocabularies to be used.
 
-Classes and properties have been taken from the following namespaces:
+A **KEES Agent** is a semantic web agent that knows KEES language profile and that it is able to do actions on a 
+knowledge base taking into account the statements contained in all configuration graphs. It  SHOULD be able to execute accrual policies and methods and to 
+answer to a set of questions
+
+A **Rule** describes how to generate/validate knowledge base statemensts using an algoritmic approach. For instance  a rule could be implemented with some
+sparql update insert statements or with a program.
+
+An **Axiom** describes how to generate/validate knowledge base statemensts using a declarative approach. For instance an axiom is represented with
+a sparql construct or with a SHACL restriction or with an entailment inferred by language profile semantic.
+
+The KEES Language Profile reuses terms from various existing specifications. Classes and
+properties have been taken from the following namespaces:
 
 - adms: http://www.w3.org/ns/adms#
 - dcat: http://www.w3.org/ns/dcat#
@@ -39,15 +52,11 @@ Classes and properties have been taken from the following namespaces:
 - prov: http://www.w3.org/ns/prov#
 - void: http://rdfs.org/ns/void#
 - sd: http://www.w3.org/ns/sparql-service-description#
-
-Beside these, kees defines its own vocabulary
 - kees: http://linkeddata.center/kees/v1#
 
-## The main KEES entities 
+The **kees:** namespace define a small set of concepts, mainly derived from existing ontologies:
 
-KEES define a small set of concepts, mainly derived from existing ontologies
-
-A **Knowledge Base** is a semantic system where information is described as a set of statements according with the W3C standard 
+A **kees:KnowledgeBase** is a semantic system where information is described as a set of statements according with the W3C standard 
 Resource Description Framework (RDF). A  Knowledge Base is composed by two disjoint set of statements: *TBox* and *ABox*. 
 *TBox statements* describe a system in terms of controlled vocabularies. TBox statements sometimes associate with object-oriented classes.
 TBox statements tend to be more permanent within a knowledge base and are often grouped in "ontologies" that describe a specific 
@@ -56,38 +65,41 @@ knowledge domain (e.g. business entities, people, goods, friendship, offering, g
 are populated from datasets available in the web or by reasonings. A knowledge base is implemented as a **Graph database**
 and it is composed by the union of all REDF triples contained in a  set of disjoined Named Graphs.
 
-A **KEES agent** is a semantic web agent that knows KEES language profile and that it is able to do actions on a 
-knowledge base taking into account the statements contained in all configuration graphs. It  SHOULD be able to execute accrual policies and methods and to 
-answer to a set of questions
 
-A **Rule** describes how to generate/validate knowledge base statemensts using an algoritmic approach. For instance  a rule could be implemented with some
-sparql update insert statements or with a program.
 
-An **Axiom** describes how to generate/validate knowledge base statemensts using a declarative approach. For instance an axiom is represented with
-a sparql construct or with a  SHACL restriction or embedded in a owl vocabulary.
-
-**Reasoning** is the process (i.e. an activity) of evaluating Rules and Axioms. The evaluation results can be stored results in the knowledge base (matherializing)
+**kees:Reasoning** is the process (i.e. an activity) of evaluating Rules and Axioms. The evaluation results can be stored results in the knowledge base (matherializing)
 or just used by the query processor (e.g. SPARQL a endpoint)
 
-**Inferred data graph** is a named graph  that contains only RDF statements derived from a reasoning.
+**kees:InferredDataGraph** states a named graph  that contains only RDF statements derived from a reasoning.
 
-**Linked Data data graph** is a named graph that contains only RDF statements derived from a source. The source MUST exists and MUST be 
+**kees:LinkedDataGraph** states a named graph that contains only RDF statements derived from a source. The source MUST exists and MUST be 
 referrenced as  dcat:accessURL property in at least a dcat:Distribution of a dcat:Dastasets, part of a dset:Catalog. 
-A KEES agent MUST recognize DCAT-AP. According with DCAT-AP, the catalog MUST exports publiher info,
-the dataset SHOULD exports data update info and the distribution SHOULD exports the license info.
+A KEES agent MUST recognize all mandatory properties defined in DCAT-AP for dcat:Catalog, dcat:Dataset and dcat:Distribution plus dct:modified 
+property on dcat:Dataset.
 
-**Configuration graph** is a linked data graph that contains statements that describes the knowledge base itself as a set of RDF triples.
+**kees:KBConfigGraph** states a linked data graph that contains statements that describes the knowledge base itself as a set of RDF triples.
 
-**TBox graph** is a linked data graph that contains TBOX statements.
+**kees:TBoxGraph** states a linked data graph that contains TBOX statements.
 
-An **Accrual Policy** defines when a named graph SOULD be created or updated and what to do if there are errors in the acctual process.
+A **kees:AccrualPolicy** states when a named graph SOULD be created or updated and what to do if there are errors in the acctual process.
 
-An **Accrual Method** states what process to use to accrual data (e.g. an Exctract Trasform Load process) with all needed additional paramethers
+A **kees:AccrualMethod** states what process to use to accrual data (e.g. an Exctract Trasform Load process) with all needed additional paramethers
 
-A **Named answer** is a parametric sparql query contained in the knowlwdge base.
+A **kees:Table** states a parametric sparql select contained in the knowlwdge base. A table often used to provide an answer to a question.
 
-A **Trust rank** is just a rank about the quality of a dataset. It can be calculated form a set of quality measures (observations)
 
+Beside classes and properties, kees vocabulary defines a set of individuals:
+
+- **kees:facts_change** defines an event that occurs when at least a graph changed its content after a learning windows 
+- **kees:trust_rank** defines a metric that evaluate a subjective trust value for a graph. Can be used in grapph quality observation. ie:
+
+```
+[] a qb:Observation ;
+	daq:computedOn resource:a_graph ; 
+    daq:metric kees:trust_rank;
+    daq:value 0.9 ;
+	daq:isEstimated true .
+```
 
 TODO: A formal definition of kees vocabulary is availabe as a [RDFS file](v1/kees.rdf).
 
