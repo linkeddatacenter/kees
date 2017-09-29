@@ -122,7 +122,6 @@ These two RDF triples are equivalent to:
 resource:graph_1 a kees:LinkedDataGraph,kees:ABoxGraph, sd:NamedGraph;
 	sd:name  <http://data.example.com/dataset1.ttl> ;
 	dct:source <http://data.example.com/dataset1.ttl> ;
-	dct:accrualPolicy kees:reload_on_source_change ;
 .
 
 []	dcat:Distribution, void:Dataset ;
@@ -155,7 +154,7 @@ INSERT_DATA  {
 
 ### adding accrual info
 
-It is possible to specify graph accrual method, but its semantic is  left to agent implementation. e.g:
+It is possible to specify graph accrual method, but its semantic is left to agent implementation. e.g:
 
 ```
 resource:graph_1 a kees:LinkedDataGraph;
@@ -245,7 +244,8 @@ resource:auth_1 a kees:BasicHttpAuthentication ;
 .
 ```
 
-A KEES compliant agent SHOULD get someway the username and password required by the http basic authentication; it could use rdfs:label and rdfs:comment to ask these data to user.
+A KEES compliant agent SHOULD get someway the username and password required by the http basic authentication; 
+it could use rdfs:label and rdfs:comment to ask these data to user.
 Than, using such credentials, check if <http://data.example.com/dataset1.rdf> resource is newer than the creation date of the
 <http://data.example.com/graph/dataset> named graph in the knowledge base.
 If yes it SHOULD load the two datadump resources in a cache and loads them in the same graph in kb.
@@ -266,8 +266,8 @@ resource:inference_2
 	dct:title "Inferred links to Cities"  ;
 	dct:accrualMethod ( ex:sparql_update <axioms/linkCities.update> ).
 
-resoure:reasoning_1 a kees:ReasoningActivity ;
-	keees:onEvent kees:facts_change ;
+resource:reasoning a kees:Reasoning ;
+	kees:onEvent kees:facts_change ;
 	kees:reasoningChain (
 		resource:inference_1
 		resource:inference_2
