@@ -5,36 +5,41 @@ KEES: Knowledge Exchange Engine Schema
 
 In order to let computers to work for us, they must understand data. 
 Not only grammar and syntax (like in EDI) but the real meaning of things. 
-When this is clear, machines can recognize, manage data and make decisions even when their provenance and 
-quality is not totally known and data are incomplete.
+When this happens, machines can make decisions. Even when data are incomplete.
 The same concerns apply to the knowledge itself: to share knowledge we need a language that is understandable both for humans and machines.
 
 This is the source code repository for the KEES language profile specifications that is used to describe a knowledge configurations.
 
-Semantic web agents and humans can use these specificationa to populate, merge and share a domain specific knowledge base. 
+Semantic web agents and humans can use these specifications to populate, merge and share a domain specific knowledge base. 
 
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
+## Core KEES concepts
 
-## Terminology used in the KEES language profile
+Lot of concepts used by KEES refer to the well known [Sematic Web Standards](https://www.w3.org/standards/semanticweb/) published by the World Wide Web Consortium ([W3C](https://w3.org/)).
 
-The **KEES Language Profile** is a specification that re-uses terms from one or more base
-standards, adding more specificity by identifying mandatory, recommended and
-optional elements to be used for describing a knowledge base, as well as recommendations
-for controlled vocabularies to be used.
+What is **data**? According with common sense, KEES defines data as words, numbers or in general any string of symbols with an associated data type.  This concept is equivalent to the definition of "literal" in the [RDF] (Resource Data Framework). Example of data is the string  `xyz`, the numbers `123`, `33.22` or the URI `http://LinkedData.Center`. Note that the _data type_ describes the nature of the data, not its meaning.
 
-A **KEES Agent** is a semantic web agent that knows KEES language profile and that it is able to do actions on a 
-knowledge base taking into account the statements contained in all configuration graphs. It  SHOULD be able to execute accrual policies and methods and to 
-answer to a set of questions
+What is **information**? KEES defines information as data with a meaning. The meaning can be 
+implicitly derived from the context where a data is found or explicitly defined. From a practical point of view, because KEES adopts the [RDF] standards, an information is defined by three data that build up a _triple_ (also known as a RDF statement): a _subject_, a _predicate_ and an _object_. The data type for the first two triple elements (subject and predicate) must be an URIs, the last element (object) can be any data type.
 
-A **Rule** describes how to generate/validate knowledge base statemensts using an algoritmic approach. For instance  a rule could be implemented with some
-sparql update insert statements or with a program.
+KEES defines **knowledge** as a nework of linked information (i.e. linked data). This neworks is possible because, in RDF, any URI can be both the object of an information  and subject of another one or even apredicate for another.
 
-An **Axiom** describes how to generate/validate knowledge base statemensts using a declarative approach. For instance an axiom is represented with
-a sparql construct or with a SHACL restriction or with an entailment inferred by language profile semantic.
+KEES defines **knowledge base** as a container of linked information. From a more formal point of view, a _knowledge base_ is 
+a semantic system where information is described as a set of statements according with the W3C standard 
+Resource Description Framework (RDF). A  Knowledge Base is composed by two disjoint set of statements: *TBox* and *ABox*. 
+*TBox statements* describe a system in terms of controlled vocabularies. TBox statements sometimes associate with object-oriented classes.
+TBox statements tend to be more permanent within a knowledge base and are often grouped in "ontologies" that describe a specific 
+knowledge domain (e.g. business entities, people, goods, friendship, offering, geocoding, etc, etc).
+*ABox statements* associate with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and 
+are populated from datasets available in the web or by reasonings. A knowledge base is often implemented with **Graph database**
+and it is composed by the union of all REF triples contained in a set of disjoined Named Graphs.
 
-The KEES Language Profile reuses terms from various existing specifications. Classes and
-properties have been taken from the following namespaces:
+
+The **KEES Language Profile** is a collection of information that represents the vocabulary that describes the knowledge base content; more of less is the _TBox_ knowledge base partition. Any knowlege should contain a language profile.  _KEES Language Profile_ reuses some terms from existing
+vocabularies, eventually adding some restrictions in term usage.
+
+KEES Language Profile terms have been taken from the following vocabularies:
 
 - adms: http://www.w3.org/ns/adms#
 - dcat: http://www.w3.org/ns/dcat#
@@ -54,26 +59,29 @@ properties have been taken from the following namespaces:
 - sd: http://www.w3.org/ns/sparql-service-description#
 - kees: http://linkeddata.center/kees/v1#
 
-The **kees:** namespace define a small set of concepts, mainly derived from existing ontologies:
 
-A **kees:KnowledgeBase** is a semantic system where information is described as a set of statements according with the W3C standard 
-Resource Description Framework (RDF). A  Knowledge Base is composed by two disjoint set of statements: *TBox* and *ABox*. 
-*TBox statements* describe a system in terms of controlled vocabularies. TBox statements sometimes associate with object-oriented classes.
-TBox statements tend to be more permanent within a knowledge base and are often grouped in "ontologies" that describe a specific 
-knowledge domain (e.g. business entities, people, goods, friendship, offering, geocoding, etc, etc).
-*ABox statements* associate with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and 
-are populated from datasets available in the web or by reasonings. A knowledge base is implemented as a **Graph database**
-and it is composed by the union of all REDF triples contained in a  set of disjoined Named Graphs.
+A **KEES Agent** is a semantic web agent that knows KEES language profile and that it is able to do actions on a 
+knowledge base. It should be able to execute accrual policies and methods and to answer to a set of questions
 
+A **Rule** describes how to generate/validate knowledge base statemensts using an algoritmic approach. 
 
+An **Axiom** describes how to generate/validate knowledge base statemensts using a declarative approach. For instance an axiom is represented with
+a sparql construct or with a SHACL restriction or with an entailment inferred by language profile semantic.
 
-**kees:Reasoning** is the process (i.e. an activity) of evaluating Rules and Axioms. The evaluation results can be stored results in the knowledge base (matherializing)
-or just used by the query processor (e.g. SPARQL a endpoint)
+**Trust** is a key concept in KEES. The [RDF] model allow to mix any kind of information, even information that are incoerent with the language profile. For instace, suppose that your Language Profile contains a property "person:hasMom" that require a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could contains two different triples (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), in order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are the same person. If you ar not so sure, you have two possibility: choose the most trusted statement with respect some criteria (eve casually if both statemenst have the same trust rank) or to change the language profile, allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement (both ABox and Tbox) in the knowlege base.
+
+Knowing the statement **provenance** is the most usefull way to get an idea about its trustability. For this reason, KEES requires that any statement must have a fourth element that links to metadata that describe any statement in the knowledge base. This means that, for pratical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to a metadata
+
+## Terminology used in the KEES language profile
+
+The _kees:_ namespace define a small set of concepts, mainly derived from existing ontologies. You use these tems to describe the knowledge base.
+
+**kees:Reasoning** is the process (i.e. an activity) of evaluating Rules and Axioms. The evaluation results can be stored results in the knowledge base (matherializing) or just used by the query processor (e.g. SPARQL a endpoint)
 
 **kees:InferredDataGraph** states a named graph  that contains only RDF statements derived from a reasoning.
 
-**kees:LinkedDataGraph** states a named graph that contains only RDF statements derived from a source. The source MUST exists and MUST be 
-referrenced as  dcat:accessURL property in at least a dcat:Distribution of a dcat:Dastasets, part of a dset:Catalog. 
+**kees:LinkedDataGraph** states a named graph that contains only RDF statements derived from a source. 
+The source MUST exists and MUST be  referrenced as  dcat:accessURL property in at least a dcat:Distribution of a dcat:Dastasets, part of a dset:Catalog. 
 A KEES agent MUST recognize all mandatory properties defined in DCAT-AP for dcat:Catalog, dcat:Dataset and dcat:Distribution plus dct:modified 
 property on dcat:Dataset.
 
@@ -90,15 +98,24 @@ A **kees:Table** states a parametric sparql select contained in the knowlwdge ba
 
 Beside classes and properties, kees vocabulary defines a set of individuals:
 
-- **kees:facts_change** defines an event that occurs when at least a graph changed its content after a learning windows 
-- **kees:trust_rank** defines a metric that evaluate a subjective trust value for a graph. Can be used in grapph quality observation. ie:
+- **kees:trustGraphMetric** defines a metric that evaluate a subjective trust value for a graph. Can be used in graph quality observation. i.e.:
 
 ```
 [] a qb:Observation ;
-	daq:computedOn resource:a_graph ; 
-    daq:metric kees:trust_rank;
+    daq:computedOn :a_graph ; 
+    daq:metric kees:trustGraphMetric;
     daq:value 0.9 ;
-	daq:isEstimated true .
+    daq:isEstimated true .
+```
+
+- **kees:trustMetric** defines a generic trust metric computed on an arbitrary requirements. I.e:
+
+```
+[] a qb:Observation ;
+    daq:computedOn (:a_graph schema:LocalBusiness schema:legalName) ; 
+    daq:metric kees:trustMetric ;
+    daq:value 0.99 ;
+    daq:isEstimated true .
 ```
 
 TODO: A formal definition of kees vocabulary is availabe as a [RDFS file](v1/kees.rdf).
@@ -150,7 +167,7 @@ INSERT_DATA  {
 }
 ```
 
-**N.B.** the graph description uri MUST be different from sd:name and MUST NOT be a blank node.
+**N.B.** the graph description URI MUST be different from sd:name .
 
 ### adding accrual info
 
@@ -174,7 +191,8 @@ resource:graph_1 a kees:LinkedDataGraph;
 .
 ```
 
-A KEES agent implementation SHOULD recognize at frequency instance from the [Content-Oriented Guidelines](http://www.w3.org/TR/vocab-data-cube/#dsd-cog) 
+A KEES agent implementation SHOULD recognize at frequency instance from 
+the [Content-Oriented Guidelines](http://www.w3.org/TR/vocab-data-cube/#dsd-cog) 
 developed as part of the W3C Data Cube Vocabulary efforts. 
 
 
@@ -184,10 +202,10 @@ Trust in dataset can be expessed with:
 
 ```
 [] a qb:Observation ;
-	daq:computedOn [ a sd:NamedGraph; sd:name <http://data.example.com/dataset1.ttl> ] ; 
+    daq:computedOn ?x ; 
     daq:metric kees:trustRank;
     daq:value 1.0 ;
-	daq:isEstimated true 
+    daq:isEstimated true 
 .
 ```
 
@@ -195,15 +213,14 @@ If no explicit observation records are present in the knowledge base, this axiom
 
 ```
 CONSTRUCT {
-	[] a qb:Observation ;
-		daq:computedOn ?g ; 
-	    daq:metric kees:trustRank;
-	    daq:value 0.5 ;
-		daq:isEstimated true .
+   [] a qb:Observation ;
+      daq:computedOn ?x ; 
+      daq:metric kees:trustRank;
+      daq:value 0.5 ;
+      daq:isEstimated true .
 } WHERE {
-	?g sd:name ?name ;
-	OPTIONAL { ?observation daq:computedOn ?g  }
-	FILTER( !BOUND(?observation))
+      ?g sd:name ?name ;
+      FILTER NOT EXISTS { ?observation daq:computedOn ?x  }
 }
 ```
 
@@ -387,3 +404,6 @@ A great way to contribute to the site is to create an [issue](https://github.com
 
 
 All stuff here in the Creative Common (unless otherwise noted)
+
+
+[RDF]: https://www.w3.org/TR/rdf11-primer/
