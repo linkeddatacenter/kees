@@ -18,10 +18,10 @@ See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9
 
 Lot of concepts used by KEES refer to the well known [Sematic Web Standards](https://www.w3.org/standards/semanticweb/) published by the World Wide Web Consortium ([W3C](https://w3.org/)).
 
-What is **data**? According with common sense, KEES defines data as words, numbers or in general any string of symbols with an associated data type.  This concept is equivalent to the definition of "literal" in the [RDF] (Resource Data Framework). Example of data is the string  `xyz`, the numbers `123`, `33.22` or the URI `http://LinkedData.Center`. Note that the _data type_ describes the nature of the data, not its meaning.
+What is **data**? According with common sense, KEES defines data as words, numbers or in general any string of symbols.  This concept is equivalent to the definition of "literal" in the [RDF] (Resource Data Framework). Example of data is the string  `xyz`, the numbers `123`, `33.22` or the URI `http://LinkedData.Center`. Note that the data is usually associated with a  _data type_ it is just a name that states a set of restrictions on symbols string that build up the data;  _data type_ is not the data meaning.
 
 What is **information**? KEES defines information as data with a meaning. The meaning can be 
-implicitly derived from the context where a data is found or explicitly defined. From a practical point of view, because KEES adopts the [RDF] standards, an information is defined by three data that build up a _triple_ (also known as a RDF statement): a _subject_, a _predicate_ and an _object_. The data type for the first two triple elements (subject and predicate) must be an URIs, the last element (object) can be any data type.
+learned from the context where a data is found or explicitly defined. From a practical point of view, because KEES adopts the [RDF] standards, an information is defined by three data that build up a _triple_ (also known as a RDF statement): a _subject_, a _predicate_ and an _object_. The data type for the first two triple elements (subject and predicate) must be an URIs, the last element (object) can be any data type.
 
 KEES defines **knowledge** as a nework of linked information (i.e. linked data). This neworks is possible because, in RDF, any URI can be both the object of an information  and subject of another one or even apredicate for another.
 
