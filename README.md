@@ -88,15 +88,6 @@ A **kees:Table** states a parametric sparql select contained in the knowlwdge ba
 
 Beside classes and properties, kees vocabulary defines a set of individuals:
 
-- **kees:trustGraphMetric** defines a metric that evaluate a subjective trust value for a graph. Can be used in graph quality observation. i.e.:
-
-```
-[] a qb:Observation ;
-    daq:computedOn :a_graph ; 
-    daq:metric kees:trustGraphMetric;
-    daq:value 0.9 ;
-    daq:isEstimated true .
-```
 
 - **kees:trustMetric** defines a generic trust metric computed on an arbitrary requirements. I.e:
 
@@ -107,6 +98,17 @@ Beside classes and properties, kees vocabulary defines a set of individuals:
     daq:value 0.99 ;
     daq:isEstimated true .
 ```
+
+- **kees:trustGraphMetric** defines a metric that evaluate a subjective trust value for a graph with a specific name. Can be used in graph quality observation. i.e.:
+
+```
+[] a qb:Observation ;
+    daq:computedOn :a_graph ; 
+    daq:metric kees:trustGraphMetric;
+    daq:value 0.9 ;
+    daq:isEstimated true .
+```
+The previous statements appy to all tripes contained in a named graph with `sd:name  :a_graph`
 
 TODO: A formal definition of kees vocabulary is availabe as a [RDFS file](v1/kees.rdf).
 
