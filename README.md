@@ -74,24 +74,14 @@ Knowing the statement **provenance** is the most usefull way to get an idea abou
 
 ## Terminology used in the KEES language profile
 
-The _kees:_ namespace define a small set of concepts, mainly derived from existing ontologies. You use these tems to describe the knowledge base.
+The _kees:_ namespace contains a small set of concepts, mainly derived from existing ontologies. It provides terms to describe the knowledge base metadata that a KEES complain agent SHOULD/MUST know.
 
-**kees:Reasoning** is the process (i.e. an activity) of evaluating Rules and Axioms. The evaluation results can be stored results in the knowledge base (matherializing) or just used by the query processor (e.g. SPARQL a endpoint)
-
-**kees:InferredDataGraph** states a named graph  that contains only RDF statements derived from a reasoning.
+**kees:InferredDataGraph** states a named graph that contains only RDF statements derived from a reasoning.
 
 **kees:LinkedDataGraph** states a named graph that contains only RDF statements derived from a source. 
-The source MUST exists and MUST be  referrenced as  dcat:accessURL property in at least a dcat:Distribution of a dcat:Dastasets, part of a dset:Catalog. 
+The source MUST exists and MUST be referrenced as dcat:accessURL property in at least a dcat:Distribution of a dcat:Dastasets, part of a dset:Catalog. 
 A KEES agent MUST recognize all mandatory properties defined in DCAT-AP for dcat:Catalog, dcat:Dataset and dcat:Distribution plus dct:modified 
 property on dcat:Dataset.
-
-**kees:KBConfigGraph** states a linked data graph that contains statements that describes the knowledge base itself as a set of RDF triples.
-
-**kees:TBoxGraph** states a linked data graph that contains TBOX statements.
-
-A **kees:AccrualPolicy** states when a named graph SOULD be created or updated and what to do if there are errors in the acctual process.
-
-A **kees:AccrualMethod** states what process to use to accrual data (e.g. an Exctract Trasform Load process) with all needed additional paramethers
 
 A **kees:Table** states a parametric sparql select contained in the knowlwdge base. A table often used to provide an answer to a question.
 
@@ -122,22 +112,33 @@ TODO: A formal definition of kees vocabulary is availabe as a [RDFS file](v1/kee
 
 TODO: KEES language profile restrictions is formally expressed in [SHACL constraints file](v1/kees-profile.rdf)
 
+A set of other terms is currently on evaluation:
+
+**kees:KBConfigGraph** states a linked data graph that contains statements that describes the knowledge base itself as a set of RDF triples.
+
+**kees:Reasoning** is the process (i.e. an activity) of evaluating Rules and Axioms. The evaluation results can be stored results in the knowledge base (materializing) or just used by the query processor (e.g. SPARQL a endpoint)
+
+**kees:TBoxGraph** states a linked data graph that contains TBOX statements.
+
+A **kees:AccrualPolicy** states when a named graph SOULD be created or updated and what to do if there are errors in the acctual process.
+
+A **kees:AccrualMethod** states what process to use to accrual data (e.g. an Exctract Trasform Load process) with all needed additional paramethers
+
 
 ## KEES by examples
 
 ### simple web resource (re)loading
 
-This states that an ABoxGraph SHOULD exist in the knowledge base and that graph should be loaded with the content of the web 
-resource "http://data.example.com/dataset1.ttl"
+This states that an graph named `:example`  SHOULD exist in the knowledge base and that graph should be loaded with the content of the web resource "http://data.example.com/dataset1.ttl"
 
 ```
-resource:graph_1 a kees:LinkedDataGraph; dct:source <http://data.example.com/dataset1.ttl> .
+:graph_example a kees:LinkedDataGraph; sd:name :example; dct:source <http://data.example.com/dataset1.ttl> .
 ```
 These two RDF triples are equivalent to:
 
 ```
 resource:graph_1 a kees:LinkedDataGraph,kees:ABoxGraph, sd:NamedGraph;
-	sd:name  <http://data.example.com/dataset1.ttl> ;
+	sd:name  :example ;
 	dct:source <http://data.example.com/dataset1.ttl> ;
 .
 
@@ -148,12 +149,13 @@ resource:graph_1 a kees:LinkedDataGraph,kees:ABoxGraph, sd:NamedGraph;
 ```
 
 A KEES compliant agent implementation SHOULD check if <http://data.example.com/dataset1.ttl> resource is newer 
-than  resource:graph_1 named graph in the knowledge base; 
+than  :example named graph in the knowledge base; 
 if yes it COULD execute the following sparql update statements:
 
 ```
-DROP SILENT GRAPH <http://data.example.com/dataset1.ttl> ;
-LOAD <http://data.example.com/dataset1.ttl> INTO GRAPH <http://data.example.com/dataset1.ttl> ;
+DROP SILENT GRAPH :example ;
+LOAD <http://data.example.com/dataset1.ttl> INTO GRAPH :example ;
+##### ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ this is from void:dataDump property
 INSERT_DATA  {
 	GRAPH <http://data.example.com/dataset1.ttl> {
 		resource:graph_1 dct:modified "here current date"^xsd:date .
