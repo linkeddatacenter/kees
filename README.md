@@ -71,9 +71,9 @@ a sparql construct or with a SHACL restriction or with an entailment inferred by
 
 Knowing the statement **provenance** is the most usefull way to get an idea about its trustability. For this reason, KEES requires that any statement must have a fourth element that links to metadata that describe any statement in the knowledge base. This means that, for pratical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to a metadata
 
-## Terminology used in the KEES vocabulary
+## The KEES vocabulary
 
-The *kees:* namespace contains a small set of concepts, mainly derived from existing ontologies. It provides terms to describe the knowledge base metadata that a KEES complain agent SHOULD/MUST know.
+The http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*) contains a small set of concepts, mainly derived from existing ontologies. It provides terms to describe the knowledge base metadata that a KEES complain agent SHOULD/MUST know.
 
 **kees:InferredDataGraph** states a named graph that contains only RDF statements derived from a reasoning.
 
@@ -168,12 +168,12 @@ A KEES compliant sparql endpoint SHOULD support http caching specs for all SPARQ
 This states that an graph named `:example`  SHOULD exist in the knowledge base and that graph should be loaded with the content of the web resource "http://data.example.com/dataset1.ttl"
 
 ```
-:graph_example a kees:LinkedDataGraph; sd:name :example; dct:source <http://data.example.com/dataset1.ttl> .
+[] a kees:LinkedDataGraph; sd:name :example; dct:source <http://data.example.com/dataset1.ttl> .
 ```
 These two RDF triples are equivalent to:
 
 ```
-resource:graph_1 a kees:LinkedDataGraph,kees:ABoxGraph, sd:NamedGraph;
+[] a kees:LinkedDataGraph, kees:ABoxGraph, sd:NamedGraph;
 	sd:name  :example ;
 	dct:source <http://data.example.com/dataset1.ttl> ;
 .
@@ -202,8 +202,7 @@ INSERT {
 }
 WHERE {
 	BIND( NOW() as ?now)
-	OPTIONAL {?named_graph sd:name :example}
-	BIND( COALESCE( ?named_graph, URI("urn:graph:example") AS ?graph_description)
+	?named_graph sd:name :example
 }
 ```
 
