@@ -16,7 +16,7 @@ See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9
 
 ## Core KEES concepts
 
-Lot of concepts used by KEES refer to the well known [Sematic Web Standards](https://www.w3.org/standards/semanticweb/) published by the World Wide Web Consortium ([W3C](https://w3.org/)).
+Lot of concepts used by KEES refer to the well known [Semantic Web Standards](https://www.w3.org/standards/semanticweb/) published by the World Wide Web Consortium ([W3C](https://w3.org/)).
 
 What is **data**? According with common sense, KEES defines data as words, numbers or in general any string of symbols.  This concept is equivalent to the definition of "literal" in the [RDF] (Resource Data Framework). Example of data is the string  `xyz`, the numbers `123`, `33.22` or the URI `http://LinkedData.Center`. Note that the data is usually associated with a  _data type_ it is just a name that states a set of restrictions on symbols string that build up the data;  _data type_ is not the data meaning.
 
@@ -35,8 +35,7 @@ knowledge domain (e.g. business entities, people, goods, friendship, offering, g
 are populated from datasets available in the web or by reasonings. A knowledge base is often implemented with **Graph database**
 and it is composed by the union of all REF triples contained in a set of disjoined Named Graphs.
 
-
-The **KEES Language Profile** is a collection of information that represents the vocabulary that describes the knowledge base content; more of less is the _TBox_ knowledge base partition. Any knowlege should contain a language profile.  _KEES Language Profile_ reuses some terms from existing
+The **KEES Language Profile** is  the vocabulary that describes the knowledge base content; more of less is the _TBox_ knowledge base partition. Any knowlege should contain a language profile.  _KEES Language Profile_ reuses some terms from existing
 vocabularies, eventually adding some restrictions in term usage.
 
 KEES Language Profile terms have been taken from the following vocabularies:
@@ -72,9 +71,9 @@ a sparql construct or with a SHACL restriction or with an entailment inferred by
 
 Knowing the statement **provenance** is the most usefull way to get an idea about its trustability. For this reason, KEES requires that any statement must have a fourth element that links to metadata that describe any statement in the knowledge base. This means that, for pratical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to a metadata
 
-## Terminology used in the KEES language profile
+## Terminology used in the KEES vocabulary
 
-The _kees:_ namespace contains a small set of concepts, mainly derived from existing ontologies. It provides terms to describe the knowledge base metadata that a KEES complain agent SHOULD/MUST know.
+The *kees:* namespace contains a small set of concepts, mainly derived from existing ontologies. It provides terms to describe the knowledge base metadata that a KEES complain agent SHOULD/MUST know.
 
 **kees:InferredDataGraph** states a named graph that contains only RDF statements derived from a reasoning.
 
@@ -83,11 +82,18 @@ The source MUST exists and MUST be referrenced as dcat:accessURL property in at 
 A KEES agent MUST recognize all mandatory properties defined in DCAT-AP for dcat:Catalog, dcat:Dataset and dcat:Distribution plus dct:modified 
 property on dcat:Dataset.
 
-A **kees:Table** states a parametric sparql select contained in the knowlwdge base. A table often used to provide an answer to a question.
+a **kees:Report** states a parametric SPARQL query template that can be stored as  RDF data in a knowledge base. Eache report must provide an unique id (dct:identifier) in the knowledge base.
+
+A **kees:Table** states a report that contains a SPARQL SELECT statement. 
+
+A **kees:Document**  states a report that contains a SPARQL CONSTRUCT statement. 
+
+A **kees:Question** states a report that contains a SPARQL ASK contained statement. 
 
 
 Beside classes and properties, kees vocabulary defines a set of individuals:
 
+- **kees:guard** a sparql service description feature that state the kees support (see below)
 
 - **kees:trustMetric** defines a generic trust metric computed on an arbitrary requirements. I.e:
 
@@ -126,8 +132,36 @@ A **kees:AccrualPolicy** states when a named graph SOULD be created or updated a
 
 A **kees:AccrualMethod** states what process to use to accrual data (e.g. an Exctract Trasform Load process) with all needed additional paramethers
 
+## RDF Store requirement
+
+Any RDF Store that provides with a SPARQL endpoint and QUAD support is compliant with KEES. Following requirement applies:
+
+All KESS related information SHOULD be contained in a graph named <urn:kees:config>
+
+If a statement with subject <urn:kees:kb> and predicate dct:valid is present in the graph <urn:kees:config>, this  means that the Knowledge base is in the *teaching window* windows (i.e. safe to be queried). Otherwhise the kees status of the knowledge base should be considered undefined.
+
+For example: to declare that a RDF Store is ready to be safely queried execute following SPARQL UPDATE statement
+
+```
+WITH <urn:kees:config>
+INSERT { <urn:kees:kb> <http://purl.org/dc/terms/valid> ?now }
+WHERE { BIND( NOW() AS ?now) }
+```
+
+to check if a RDF Store is ready to be safely queried `ASK { <urn:kees:kb> <http://purl.org/dc/terms/valid> [] }`
+
+## SPARQL endpoint requirements
+
+A KEES compliant sparql endpoint SHOULD support following features:
+
+- **kees:guard**: A KEES compliant sparql endpoint SHOULD return 503 Error of any SPARQL QUERY that happens on a RDF Store that ist not in the  *teaching window* state.  A KEES compliant sparql endpoint SHOULD should recognize the http header "X-KEES-guard: disable" in any SPARQL QUERY requests to disable *kees:guard* feature
+
+A KEES compliant sparql endpoint SHOULD support http caching specs for all SPARQL queries that happened in the same teaching windows.
+
 
 ## KEES by examples
+
+[** WARNING: THIS SECTION IS INFORMATIVE AND SUBJECTED TO CHANGE **]
 
 ### simple web resource (re)loading
 
@@ -145,8 +179,8 @@ resource:graph_1 a kees:LinkedDataGraph,kees:ABoxGraph, sd:NamedGraph;
 .
 
 []	dcat:Distribution, void:Dataset ;
-	dcat:accessURL <http://data.example.com/dataset1.ttl>
-	void:dataDump <http://data.example.com/dataset1.ttl>
+	dcat:downloadURL <http://data.example.com/dataset1.ttl>;
+	dct:format "text/turtle"
 .
 ```
 
@@ -157,17 +191,19 @@ if yes it COULD execute the following sparql update statements:
 ```
 DROP SILENT GRAPH :example ;
 LOAD <http://data.example.com/dataset1.ttl> INTO GRAPH :example ;
-##### ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ this is from void:dataDump property
-INSERT_DATA  {
-	GRAPH <http://data.example.com/dataset1.ttl> {
-		resource:graph_1 dct:modified "here current date"^xsd:date .
-		# following properties COULD be inferred from http "Last-Modified:", "ETAG" and content-type headers
-		<http://data.example.com/dataset1.ttl> 
-			dct:modified  "2017-03-30"^^xsd:date ;
-			dct:identifier "123456789" ;
-		    dct:format "text/turtle" 
-		.	
-	}
+WITH <http://data.example.com/dataset1.ttl>
+INSERT {
+	?graph_description a kees:LinkedDataGraph; dct:modified ?now .
+	# following properties COULD be inferred from http "Last-Modified:", "ETAG" and content-type headers
+	<http://data.example.com/dataset1.ttl> 
+		dct:modified  "2017-03-30"^^xsd:date ;
+		dct:identifier "123456789" ;
+		dct:format "text/turtle" .
+}
+WHERE {
+	BIND( NOW() as ?now)
+	OPTIONAL {?named_graph sd:name :example}
+	BIND( COALESCE( ?named_graph, URI("urn:graph:example") AS ?graph_description)
 }
 ```
 
