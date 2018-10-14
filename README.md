@@ -136,9 +136,9 @@ A **kees:AccrualMethod** states what process to use to accrual data (e.g. an Exc
 
 Any RDF Store that provides with a SPARQL endpoint and QUAD support is compliant with KEES. Following requirement applies:
 
-All KESS related information SHOULD be contained in a graph named <urn:kees:config>
+All KESS related information SHOULD be contained in a graph named <urn:graph:kees>
 
-If a statement with subject <urn:kees:kb> and predicate dct:valid is present in the graph <urn:kees:config>, this  means that the Knowledge base is in the *teaching window* windows (i.e. safe to be queried). Otherwhise the kees status of the knowledge base should be considered undefined.
+If a statement with subject <urn:kees:kb> and predicate dct:valid is present in the graph <urn:graph:kees>, this  means that the Knowledge base is in the *teaching window* windows (i.e. safe to be queried). Otherwhise the kees status of the knowledge base should be considered undefined.
 
 For example: to declare that a RDF Store is ready to be safely queried execute following SPARQL UPDATE statement
 
