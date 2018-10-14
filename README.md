@@ -10,7 +10,7 @@ The same concerns apply to the knowledge itself: to share knowledge we need a la
 
 The KEES open specifications provide the tools to describe a knowledge base and to make it tradeable and shareable. KEES is a Semantic Web Application.
 
-A.I. and humans can use these specifications to populate, merge and endrich a domain specific knowledge base. 
+A.I. and humans can use these specifications to populate, merge and enrich a domain specific knowledge base. 
 
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
