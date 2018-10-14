@@ -8,9 +8,9 @@ Not only grammar and syntax (like in EDI) but the real meaning of things.
 When this happens, machines can make decisions. Even when data are incomplete.
 The same concerns apply to the knowledge itself: to share knowledge we need a language that is understandable both for humans and machines.
 
-This is the source code repository for the KEES language profile specifications that is used to describe a knowledge configurations.
+The KEES open specifications provide the tools to describe a knowledge base and to make it tradeable and shareable. KEES is a Semantic Web Application.
 
-Semantic web agents and humans can use these specifications to populate, merge and share a domain specific knowledge base. 
+A.I. and humans can use these specifications to populate, merge and endrich a domain specific knowledge base. 
 
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
