@@ -143,7 +143,7 @@ If a statement with subject <urn:kees:kb> and predicate dct:valid is present in 
 For example: to declare that a RDF Store is ready to be safely queried execute following SPARQL UPDATE statement
 
 ```
-WITH <urn:kees:config>
+WITH <urn:graph:kees>
 INSERT { <urn:kees:kb> <http://purl.org/dc/terms/valid> ?now }
 WHERE { BIND( NOW() AS ?now) }
 ```
