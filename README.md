@@ -3,14 +3,13 @@ KEES: Knowledge Exchange Engine Schema
 
 **WARNING: WORKING IN PROGRESS**
 
-In order to let computers to work for us, they must understand data. 
-Not only grammar and syntax (like in EDI) but the real meaning of things. 
-When this happens, machines can make decisions. Even when data are incomplete.
-The same concerns apply to the knowledge itself: to share knowledge we need a language that is understandable both for humans and machines.
+In order to let computers to work for us, they must understand data: 
+not just the grammar and the syntax but the real meaning of things. 
+When this happens, machines can make decisions.
+We need a languages that are understandable both for humans and machines.
 
-The KEES open specifications provide the tools to describe a knowledge base and to make it tradeable and shareable. KEES is a Semantic Web Application.
-
-A.I. and humans can use these specifications to populate, merge and enrich a domain specific knowledge base. 
+KEES proposes a way to describe a *knowledge base* and to make it tradeable and shareable. 
+Artificial Intelligences and humans can use KEES to describe, populate, merge, exchange and enrichdomain specific knowledge. KEES is a Semantic Web Application.
 
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
@@ -21,24 +20,23 @@ Lot of concepts used by KEES refer to the well known [Semantic Web Standards](ht
 What is **data**? According with common sense, KEES defines data as words, numbers or in general any string of symbols.  This concept is equivalent to the definition of "literal" in the [RDF] (Resource Data Framework). Example of data is the string  `xyz`, the numbers `123`, `33.22` or the URI `http://LinkedData.Center`. Note that the data is usually associated with a  _data type_ it is just a name that states a set of restrictions on symbols string that build up the data;  _data type_ is not the data meaning.
 
 What is **information**? KEES defines information as data with a meaning. The meaning can be 
-learned from the context where a data is found or explicitly defined. From a practical point of view, because KEES adopts the [RDF] standards, an information is defined by three data that build up a _triple_ (also known as a RDF statement): a _subject_, a _predicate_ and an _object_. The data type for the first two triple elements (subject and predicate) must be an URIs, the last element (object) can be any data type.
+learned from the context where a data is found or explicitly defined. From a practical point of view, because KEES adopts the [RDF standards](https://www.w3.org/RDF/), an information is defined by three data that build up a _triple_ (also known as a RDF statement): a _subject_, a _predicate_ and an _object_. The data type for the first two triple elements (subject and predicate) must be an URIs, the last element (object) can be any data type.
 
-KEES defines **knowledge** as a nework of linked information (i.e. linked data). This neworks is possible because, in RDF, any URI can be both the object of an information  and subject of another one or even apredicate for another.
+KEES defines **knowledge** as a nework of linked information (i.e. linked data). This neworks is possible because, in RDF, any URI can be both the object of an information  and subject of another one or even a predicate for another.
 
-KEES defines **knowledge base** as a container of linked information. From a more formal point of view, a _knowledge base_ is 
+KEES defines **knowledge base** as a container of related linked data. From a more formal point of view, a _knowledge base_ is 
 a semantic system where information is described as a set of statements according with the W3C standard 
-Resource Description Framework (RDF). A  Knowledge Base is composed by two disjoint set of statements: *TBox* and *ABox*. 
+Resource Description Framework (RDF). A  Knowledge Base is partitioned by two set of statements: *TBox* and *ABox*. 
 *TBox statements* describe a system in terms of controlled vocabularies. TBox statements sometimes associate with object-oriented classes.
+
 TBox statements tend to be more permanent within a knowledge base and are often grouped in "ontologies" that describe a specific 
 knowledge domain (e.g. business entities, people, goods, friendship, offering, geocoding, etc, etc).
 *ABox statements* associate with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and 
 are populated from datasets available in the web or by reasonings. A knowledge base is often implemented with **Graph database**
 and it is composed by the union of all REF triples contained in a set of disjoined Named Graphs.
 
-The **KEES Language Profile** is  the vocabulary that describes the knowledge base content; more of less is the _TBox_ knowledge base partition. Any knowlege should contain a language profile.  _KEES Language Profile_ reuses some terms from existing
-vocabularies, eventually adding some restrictions in term usage.
-
-KEES Language Profile terms have been taken from the following vocabularies:
+The **Language Profile** is  the vocabulary that describes the knowledge base content; more of less is the set of all terms defined in the _TBox_ knowledge base partition. Any knowlege should refer to a language profile.  The knowledge base itself can be described with the *KEES Language Profile* that reuses some terms from existing
+vocabularies:
 
 - adms: http://www.w3.org/ns/adms#
 - dcat: http://www.w3.org/ns/dcat#
@@ -58,8 +56,10 @@ KEES Language Profile terms have been taken from the following vocabularies:
 - sd: http://www.w3.org/ns/sparql-service-description#
 - kees: http://linkeddata.center/kees/v1#
 
+In aKEES compliant Knowledge Base, the ABOX partition SHOULD contain also the definition of some **key questions**. 
+Key questions are exprexed as parametric SPARQL queries and represent the reason for the the knowledge base existence. In other word, the knoledge base exists to answer to *key questions*.
 
-A **KEES Agent** is a semantic web agent that knows KEES language profile and that it is able to do actions on a 
+A **KEES Agent** is a semantic web agent that knows the knowledg base language profile and that it is able to do actions on a 
 knowledge base. It should be able to execute accrual policies and methods and to answer to a set of questions
 
 A **Rule** describes how to generate/validate knowledge base statemensts using an algoritmic approach. 
@@ -67,7 +67,7 @@ A **Rule** describes how to generate/validate knowledge base statemensts using a
 An **Axiom** describes how to generate/validate knowledge base statemensts using a declarative approach. For instance an axiom is represented with
 a sparql construct or with a SHACL restriction or with an entailment inferred by language profile semantic.
 
-**Trust** is a key concept in KEES. The [RDF] model allow to mix any kind of information, even information that are incoerent with the language profile. For instace, suppose that your Language Profile contains a property "person:hasMom" that require a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could contains two different triples (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), in order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are the same person. If you ar not so sure, you have two possibility: choose the most trusted statement with respect some criteria (eve casually if both statemenst have the same trust rank) or to change the language profile, allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement (both ABox and Tbox) in the knowlege base.
+**Trust** is a key concept in KEES. The [RDF] model allow to mix any kind of information, even information that are incoerent with the language profile. For instace, suppose that your Language Profile contains a property "person:hasMom" that require a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could contains two different triples (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), in order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are the same person. If you ar not so sure, you have two possibility: choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the language profile, allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement (both ABox and Tbox) in the knowlege base.
 
 Knowing the statement **provenance** is the most usefull way to get an idea about its trustability. For this reason, KEES requires that any statement must have a fourth element that links to metadata that describe any statement in the knowledge base. This means that, for pratical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to a metadata
 
@@ -77,23 +77,23 @@ The http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*) contain
 
 **kees:InferredDataGraph** states a named graph that contains only RDF statements derived from a reasoning.
 
-**kees:LinkedDataGraph** states a named graph that contains only RDF statements derived from a source. 
-The source MUST exists and MUST be referrenced as dcat:accessURL property in at least a dcat:Distribution of a dcat:Dastasets, part of a dset:Catalog. 
+**kees:LinkedDataGraph** states a named graph that contains only RDF statements derived from a data source. 
+The source MUST be referrenced as dcat:accessURL property in at least a dcat:Distribution of a dcat:Dastasets, part of a dset:Catalog. 
 A KEES agent MUST recognize all mandatory properties defined in DCAT-AP for dcat:Catalog, dcat:Dataset and dcat:Distribution plus dct:modified 
 property on dcat:Dataset.
 
-a **kees:Report** states a parametric SPARQL query template that can be stored as  RDF data in a knowledge base. Eache report must provide an unique id (dct:identifier) in the knowledge base.
+a **kees:Question** states a parametric SPARQL query template that can be stored as  RDF data in a knowledge base. It represent a knowledge base KEY QUESTION.
 
-A **kees:Table** states a report that contains a SPARQL SELECT statement. 
+A **kees:Table** states a [wh-question](https://en.wikipedia.org/wiki/Wh-question) that you can express with a SPARQL SELECT statement. 
 
-A **kees:Document**  states a report that contains a SPARQL CONSTRUCT statement. 
+A **kees:Document**  states a wh-question that you can express withSPARQL CONSTRUCT statement. 
 
-A **kees:Question** states a report that contains a SPARQL ASK contained statement. 
+A **kees:Test** states a [yes–no question](https://en.wikipedia.org/wiki/Yes%E2%80%93no_question) that you can express with a SPARQL ASK contained statement. 
 
 
 Beside classes and properties, kees vocabulary defines a set of individuals:
 
-- **kees:guard** a sparql service description feature that state the kees support (see below)
+- **kees:guard** a [SPARQL service description](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) feature that states that the RDF store supports KEES specifications (see below)
 
 - **kees:trustMetric** defines a generic trust metric computed on an arbitrary requirements. I.e:
 
@@ -126,17 +126,17 @@ A set of other terms is currently on evaluation:
 
 **kees:Reasoning** is the process (i.e. an activity) of evaluating Rules and Axioms. The evaluation results can be stored results in the knowledge base (materializing) or just used by the query processor (e.g. SPARQL a endpoint)
 
-**kees:TBoxGraph** states a linked data graph that contains TBOX statements.
+**kees:TBoxGraph** states a linked data graph that contains only TBOX statements.
 
-A **kees:AccrualPolicy** states when a named graph SOULD be created or updated and what to do if there are errors in the acctual process.
+TODO: A **kees:AccrualPolicy** states when a named graph SOULD be created or updated and what to do if there are errors in the acctual process.
 
-A **kees:AccrualMethod** states what process to use to accrual data (e.g. an Exctract Trasform Load process) with all needed additional paramethers
+TODO:  A **kees:AccrualMethod** states what process to use to accrual data (e.g. an Exctract Trasform Load process) with all needed additional paramethers
 
 ## RDF Store requirement
 
 Any RDF Store that provides with a SPARQL endpoint and QUAD support is compliant with KEES. Following requirement applies:
 
-All KESS related information SHOULD be contained in a graph named <urn:graph:kees>
+All KEES related information SHOULD be contained in a graph named <urn:graph:kees>
 
 If a statement with subject <urn:kees:kb> and predicate dct:valid is present in the graph <urn:graph:kees>, this  means that the Knowledge base is in the *teaching window* windows (i.e. safe to be queried). Otherwhise the kees status of the knowledge base should be considered undefined.
 
@@ -150,18 +150,16 @@ WHERE { BIND( NOW() AS ?now) }
 
 to check if a RDF Store is ready to be safely queried `ASK { <urn:kees:kb> <http://purl.org/dc/terms/valid> [] }`
 
-## SPARQL endpoint requirements
+## SPARQL service requirements
 
-A KEES compliant sparql endpoint SHOULD support following features:
+A KEES compliant sparql endpoint SHOULD support the  **kees:guard** feature: a KEES compliant sparql endpoint SHOULD return 503 Error of any SPARQL QUERY that happens on a RDF Store that is not in the  *teaching window* state.  A KEES compliant sparql endpoint SHOULD enable this feature only if the http header "X-KEES-guard: enable" is present.
 
-- **kees:guard**: A KEES compliant sparql endpoint SHOULD return 503 Error of any SPARQL QUERY that happens on a RDF Store that ist not in the  *teaching window* state.  A KEES compliant sparql endpoint SHOULD should recognize the http header "X-KEES-guard: disable" in any SPARQL QUERY requests to disable *kees:guard* feature
-
-A KEES compliant sparql endpoint SHOULD support http caching specs for all SPARQL queries that happened in the same teaching windows.
+A KEES compliant sparql endpoint SHOULD support http caching specs [as described in Section 13 of RFC2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html) for all SPARQL queries that happened in the same teaching windows.
 
 
 ## KEES by examples
 
-[** WARNING: THIS SECTION IS INFORMATIVE AND SUBJECTED TO CHANGE **]
+[** WARNING: THIS SECTION IS INFORMATIVE AND SUBJECTED TO MAYOR CHANGS **]
 
 ### simple web resource (re)loading
 
@@ -179,8 +177,7 @@ These two RDF triples are equivalent to:
 .
 
 []	dcat:Distribution, void:Dataset ;
-	dcat:downloadURL <http://data.example.com/dataset1.ttl>;
-	dct:format "text/turtle"
+	dcat:accessURL <http://data.example.com/dataset1.ttl>;
 .
 ```
 
@@ -193,11 +190,10 @@ DROP SILENT GRAPH :example ;
 LOAD <http://data.example.com/dataset1.ttl> INTO GRAPH :example ;
 WITH <http://data.example.com/dataset1.ttl>
 INSERT {
-	?graph_description a kees:LinkedDataGraph; dct:modified ?now .
-	# following properties COULD be inferred from http "Last-Modified:", "ETAG" and content-type headers
+	?named_graph a kees:LinkedDataGraph; dct:modified ?now .
+	# following properties COULD be inferred from http "Last-Modified:" and "Content-type" resource header
 	<http://data.example.com/dataset1.ttl> 
 		dct:modified  "2017-03-30"^^xsd:date ;
-		dct:identifier "123456789" ;
 		dct:format "text/turtle" .
 }
 WHERE {
@@ -221,7 +217,7 @@ resource:graph_1 a kees:LinkedDataGraph;
 
 ### adding accrual periodicity
 
-A KEES compliant agent should be able to manage accrual periodicity. e.g:
+A KEES compliant agent should take into account accrual periodicity. e.g:
 
 ```
 resource:graph_1 a kees:LinkedDataGraph;
@@ -253,60 +249,18 @@ If no explicit observation records are present in the knowledge base, this axiom
 ```
 CONSTRUCT {
    [] a qb:Observation ;
-      daq:computedOn ?x ; 
-      daq:metric kees:trustRank;
+      daq:computedOn ?g ; 
+      daq:metric kees:trustGraphMetric;
       daq:value 0.5 ;
       daq:isEstimated true .
 } WHERE {
       ?g sd:name ?name ;
-      FILTER NOT EXISTS { ?observation daq:computedOn ?x  }
+      FILTER NOT EXISTS { ?observation daq:computedOn ?g  }
 }
 ```
 
 
-If more than an observation of a trust Rank is present, the average SHOULD be considered. As example see this axiom:
-
-```
-CONSTRUCT {
-	?g kees:calculatedTrust ?trust 
-} WHERE {
-	?g sd:name ?name .
-	{
-		SELECT ?g (AVG(?value) AS ?trust)
-		WHERE {
-		  ?observation a qb:Observation ;
-		  daq:metric kees:trustRank;
-		  daq:computedOn ?g ;
-		  daq:value ?value
-		} GROUP BY ?g
-	}
-}
-```
-
-### simple protected dataset (re)loading
-This states that an ABoxGraph named *http://data.example.com/dataset1* SHOULD exist in the knowledge base and that graph should be loaded with the content of the web 
-resources *http://data.example.com/dataset1.ttl?page=1* and *http://data.example.com/dataset1.ttl?page=2* that are protected with a basic http autentication.
-
-```
-resource:graph_1 a kees:LinkedDataGraph; sd:name <http://data.example.com/graph/dataset> dct:source <http://data.example.com/dataset1.rdf> -
-resource:distrib_1  dcat:accessURL <http://data.example.com/dataset1.rdf> ;
-	void:dataDump 
-	    <http://data.example.com/dataset1.ttl?page=1>,
-        <http://data.example.com/dataset1.ttl?page=2>
-.
-resource:auth_1 a kees:BasicHttpAuthentication ;
-	kees:realm "example.com private area";
-	kees:uriRegexPattern "^http://data.example.com/dataset1.ttl"
-.
-```
-
-A KEES compliant agent SHOULD get someway the username and password required by the http basic authentication; 
-it could use rdfs:label and rdfs:comment to ask these data to user.
-Than, using such credentials, check if <http://data.example.com/dataset1.rdf> resource is newer than the creation date of the
-<http://data.example.com/graph/dataset> named graph in the knowledge base.
-If yes it SHOULD load the two datadump resources in a cache and loads them in the same graph in kb.
-
-### simple reasoning chain
+### TODO: simple reasoning chain
 
 This states that a some InferredKnowledgeGraph SHOULD created on a knowledge base when some facts changes 
 
@@ -431,7 +385,7 @@ INSERT DATA {
 ```
 
 
-## A complete example
+### A complete example
 
 See [examples directory](examples)
 
