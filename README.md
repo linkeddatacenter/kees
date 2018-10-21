@@ -9,7 +9,7 @@ When this happens, machines can make decisions.
 We need a languages that are understandable both for humans and machines.
 
 KEES proposes a way to describe a *knowledge base* and to make it tradeable and shareable. 
-Artificial Intelligences and humans can use KEES to describe, populate, merge, exchange and enrichdomain specific knowledge. KEES is a Semantic Web Application.
+Artificial Intelligences and humans can use KEES to describe, populate, merge, exchange and enrich domain specific knowledge. KEES is a Semantic Web Application.
 
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
