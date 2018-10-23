@@ -143,7 +143,7 @@ A KEES workflow is based on a sequence of four temporal phases called "windowsâ€
 - a time slot for the data inference (**reasoning window**)
 - a time slot to access the Knowledge Base and answering to questions  (**teaching window**)
 
-KEES workflow is a continuous integration process. A guard can prevent user to query the knowledge base only in the teaching windows.
+KEES workflow is a continuous integration process. A guard SHOULD allow user to query the knowledge base only in the teaching windows.
 
 
 ## RDF Store requirement
@@ -166,7 +166,7 @@ to check if a RDF Store is ready to be safely queried `ASK { <urn:kees:kb> <http
 
 ## SPARQL service requirements
 
-A KEES compliant sparql endpoint SHOULD support the  **kees:guard** feature: a KEES compliant sparql endpoint SHOULD return 503 Error of any SPARQL QUERY that happens on a RDF Store that is not in the  *teaching window* state.  A KEES compliant sparql endpoint SHOULD enable this feature only if the http header "X-KEES-guard: enable" is present.
+A KEES compliant sparql endpoint SHOULD support the  **kees:guard** feature: a KEES compliant sparql endpoint SHOULD return 503 Error of any SPARQL QUERY that happens on a RDF Store that is not in the  *teaching window* state.  A KEES compliant sparql endpoint SHOULD disable this feature if the http header "X-KEES-guard: disable" is present.
 
 A KEES compliant sparql endpoint SHOULD support http caching specs [as described in Section 13 of RFC2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html) for all SPARQL queries that happened in the same teaching windows.
 
