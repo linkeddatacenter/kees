@@ -56,8 +56,8 @@ vocabularies:
 - sd: http://www.w3.org/ns/sparql-service-description#
 - kees: http://linkeddata.center/kees/v1#
 
-In aKEES compliant Knowledge Base, the ABOX partition SHOULD contain also the definition of some **key questions**. 
-Key questions are exprexed as parametric SPARQL queries and represent the reason for the the knowledge base existence. In other word, the knoledge base exists to answer to *key questions*.
+In a KEES compliant Knowledge Base, the ABOX partition SHOULD contain also the definition of some **key questions**. 
+Key questions are expressed as parametric SPARQL queries and represent the reason for the the knowledge base existence. In other words, the knoledge base exists to answer to *key questions*.
 
 A **KEES Agent** is a semantic web agent that knows the knowledg base language profile and that it is able to do actions on a 
 knowledge base. It should be able to execute accrual policies and methods and to answer to a set of questions
@@ -70,6 +70,7 @@ a sparql construct or with a SHACL restriction or with an entailment inferred by
 **Trust** is a key concept in KEES. The [RDF] model allow to mix any kind of information, even information that are incoerent with the language profile. For instace, suppose that your Language Profile contains a property "person:hasMom" that require a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could contains two different triples (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), in order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are the same person. If you ar not so sure, you have two possibility: choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the language profile, allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement (both ABox and Tbox) in the knowlege base.
 
 Knowing the statement **provenance** is the most usefull way to get an idea about its trustability. For this reason, KEES requires that any statement must have a fourth element that links to metadata that describe any statement in the knowledge base. This means that, for pratical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to a metadata
+
 
 ## The KEES vocabulary
 
@@ -132,11 +133,24 @@ TODO: A **kees:AccrualPolicy** states when a named graph SOULD be created or upd
 
 TODO:  A **kees:AccrualMethod** states what process to use to accrual data (e.g. an Exctract Trasform Load process) with all needed additional paramethers
 
+
+## The KEES workflow
+
+A KEES workflow is based on a sequence of four temporal phases called "windows“:
+
+- a startup  phase (**boot window**)  to initialize the knowledge base just with KEES description
+- a time slot for the population of the Knowledge Base and to link data (**learning window**)
+- a time slot for the data inference (**reasoning window**)
+- a time slot to access the Knowledge Base and answering to questions  (**teaching window**)
+
+KEES workflow is a continuous integration process. A guard can prevent user to query the knowledge base only in the teaching windows.
+
+
 ## RDF Store requirement
 
 Any RDF Store that provides with a SPARQL endpoint and QUAD support is compliant with KEES. Following requirement applies:
 
-All KEES related information SHOULD be contained in a graph named <urn:graph:kees>
+All information retated too KEED booting window SHOULD be contained in a graph named <urn:graph:kees>
 
 If a statement with subject <urn:kees:kb> and predicate dct:valid is present in the graph <urn:graph:kees>, this  means that the Knowledge base is in the *teaching window* windows (i.e. safe to be queried). Otherwhise the kees status of the knowledge base should be considered undefined.
 
