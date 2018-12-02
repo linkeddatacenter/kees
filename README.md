@@ -83,11 +83,9 @@ The source MUST be referrenced as dcat:accessURL property in at least a dcat:Dis
 A KEES agent MUST recognize all mandatory properties defined in DCAT-AP for dcat:Catalog, dcat:Dataset and dcat:Distribution plus dct:modified 
 property on dcat:Dataset.
 
-a **kees:Question** states a parametric SPARQL query template that can be stored as  RDF data in a knowledge base. It represent a knowledge base KEY QUESTION.
+a **kees:LinkedDataView** states a SPARQL constructor template that can be stored as  RDF data in a knowledge base. It represent how to answer to a knowledge base KEY QUESTION. The LinkedDataView can
 
-A **kees:Table** states a [wh-question](https://en.wikipedia.org/wiki/Wh-question) that you can express with a SPARQL SELECT statement. 
-
-A **kees:Document**  states a wh-question that you can express withSPARQL CONSTRUCT statement. 
+A **kees:Table** states a [non-polar questions](https://en.wikipedia.org/wiki/Wh-question) that you can express with a SPARQL SELECT statement. 
 
 A **kees:Test** states a [yes–no question](https://en.wikipedia.org/wiki/Yes%E2%80%93no_question) that you can express with a SPARQL ASK contained statement. 
 
@@ -96,7 +94,7 @@ Beside classes and properties, kees vocabulary defines a set of individuals:
 
 - **kees:guard** a [SPARQL service description](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) feature that states that the RDF store supports KEES specifications (see below)
 
-- **kees:trustMetric** defines a generic trust metric computed on an arbitrary requirements. I.e:
+- **kees:trustMetric** defines a generic trust metric computed on an arbitrary requirements.
 
 ```
 [] a qb:Observation ;
@@ -174,6 +172,48 @@ A KEES compliant sparql endpoint SHOULD support http caching specs [as described
 ## KEES by examples
 
 [** WARNING: THIS SECTION IS INFORMATIVE AND SUBJECTED TO MAYOR CHANGS **]
+
+
+### TBD: LinkedDataView description 
+
+```
+[]
+    a kees:LinkedDataView ;
+    dct:title "Financial report index"
+    dct:description "All fact relatet to the 2017 incomings. The financial reference period could be changed"
+    kees:urlTemplate "accounts";
+    kees:hasVariableValues "financialReport" ;  
+    kees:hasConstructor 
+        """
+            PREFIX fr: <http://linkeddata.center/botk-fr/v1#>
+            PREFIX dct: <http://purl.org/dc/terms/>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            PREFIX qb:	<http://purl.org/linked-data/cube#>
+
+            CONSTRUCT { 
+                _:f1 a fr:FinancialReport;
+                    dct:source ?financialReport ;
+                    fr:refPeriod ?refPeriod
+                .
+                [] a fr:Fact ;
+                    qb:dataSet _:f1 ;
+                    fr:amount ?amount  ;
+                    dct:title ?title
+                .
+            }
+            WHERE { 
+                VALUES ?refPeriod { <http://reference.data.gov.uk/id/gregorian-interval/2017-01-01T00:00:00/P1Y> }
+		
+                ?financialReport a fr:FinancialReport; fr:refPeriod ?refPeriod .
+                ?financialFact a fr:Fact ;
+                    qb:dataSet ?finnacialReport ;
+                    fr:amount ?amount  ;
+                    fr:concept/skos:prefLabel ?title
+                .
+            }
+        """^^kees:Constructor 
+.
+```
 
 ### simple web resource (re)loading
 
@@ -399,7 +439,7 @@ INSERT DATA {
 ```
 
 
-### A complete example
+### Other examples
 
 See [examples directory](examples)
 
