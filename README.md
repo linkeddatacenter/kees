@@ -313,24 +313,16 @@ This states that a some InferredKnowledgeGraph SHOULD created on a knowledge bas
 resource:inference_1 a kees:InferredKnowledgeGraph ;
 	sd:name graph:inferredAlternateNames ;
 	dct:title "Inferred alternate names" ;
-	kees:requires "ASK ..."^^kees:sparqlQueryAskOperation ;
+	kees:runIf "ASK ..."^^kees:sparqlQueryAskOperation ; # inline condition
 	dct:accrualMethod ( ex:eval_costructor <axioms/alternateNames.constructor> ). 
 
 resource:inference_2
 	a kees:InferredKnowledgeGraph ;
 	sd:name graph:inferredLinksToCities ;
 	dct:title "Inferred links to Cities"  ;
+	kees:runIf <http://example.org/conditions/inference_condition.sparql_ask"> ; # application/sparql-query resource
 	dct:accrualMethod ( ex:sparql_update <axioms/linkCities.update> ).
 
-resource:reasoning a kees:Reasoning ;
-	kees:onEvent kees:facts_change ;
-	kees:reasoningChain (
-		resource:inference_1
-		resource:inference_2
-	) .
-
-<axioms/alternateNames.constructor> dct:format "application/sparql-query".
-<axioms/linkCities.update> dct:format "application/sparql-update".
 ```
 
 Note that in previous example KEES agent implementation is supposed to understand  ex:eval_costructor and ex:sparql_update accrual methods.
