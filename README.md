@@ -5,11 +5,9 @@ KEES: Knowledge Exchange Engine Schema
 
 In order to let computers to work for us, they must understand data: 
 not just the grammar and the syntax but the real meaning of things. 
-When this happens, machines can make decisions.
-We need a languages that are understandable both for humans and machines.
 
-KEES proposes a way to describe a *knowledge base* and to make it tradeable and shareable. 
-Artificial Intelligences and humans can use KEES to describe, populate, merge, exchange and enrich domain specific knowledge. KEES is a Semantic Web Application.
+KEES proposes some specifications to add metadata to a *domain knowledge* in order to make it tradeable and shareable. 
+Artificial Intelligences and humans can use KEES to populate, merge, exchange and enrich such knowledge. KEES is a Semantic Web Application.
 
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
@@ -20,9 +18,9 @@ Lot of concepts used by KEES refer to the well known [Semantic Web Standards](ht
 What is **data**? According with common sense, KEES defines data as words, numbers or in general *any string of symbols*.  This concept is equivalent to the definition of "literal" in the [RDF] (Resource Data Framework). Example of data is the string  `xyz`, the numbers `123`, `33.22` or the URI `http://LinkedData.Center`. Note that the data is usually associated with a  _data type_ it is just a name that states a set of restrictions on symbols string that build up the data;  _data type_ is not the data meaning.
 
 What is **information**? KEES defines information as *data with a meaning*. The meaning can be 
-learned from the context where a data is found or explicitly defined. From a practical point of view, because KEES adopts the [RDF standards](https://www.w3.org/RDF/), an information is defined by three data that build up a _triple_ (also known as a RDF statement): a _subject_, a _predicate_ and an _object_. The data type for the first two triple elements (subject and predicate) must be an URIs, the last element (object) can be any data type.
+learned from the context where a data is found or explicitly defined. From a practical point of view, because KEES adopts the [RDF standards](https://www.w3.org/RDF/), an information is defined by three data that build up a _triple_ (also known as a RDF statement): a _subject_, a _predicate_ and an _object_. The data type for the first two triple elements (subject and predicate) must be an URIs subclass, the last element (object) can be any data type.
 
-KEES defines **knowledge** as a nework of linked information (i.e. linked data). This neworks is possible because, in RDF, any URI can be both the object of an information  and subject of another one or even a predicate for another.
+KEES defines **knowledge** as a nework of linked information (i.e. linked data). This nework is possible because, in RDF, any URI can be both the object of a triple  and the subject of another one or even a predicate for another.
 
 KEES defines **knowledge base** as a container of related linked data. From a more formal point of view, a _knowledge base_ is 
 a semantic system where information is described as a set of statements according with the W3C standard 
@@ -35,7 +33,9 @@ knowledge domain (e.g. business entities, people, goods, friendship, offering, g
 are populated from datasets available in the web or by reasonings. A knowledge base is often implemented with **Graph database**
 and it is composed by the union of all REF triples contained in a set of disjoined Named Graphs.
 
-The **Language Profile** (or **Application profile**) is  the vocabulary that describes the knowledge that is recognized by a specific software  application. The language profile is normally described in the Tbox partition of a knowledge base. Any application should refer to a language profile, that is extension the concept of *data model*.  The *KEES Language Profile* describes the knowledge base itself reusing some terms from existing vocabularies:
+The **Language Profile** (or **Application profile**) is  the vocabulary that describes the knowledge that is recognized by a specific software application. The language profile is normally described in the Tbox partition of a knowledge base. Any application should refer to a language profile, that is extension the concept of *data model*.  
+
+The *KEES Language Profile* describes the knowledge base itself reusing some terms from existing vocabularies:
 
 - dcat: http://www.w3.org/ns/dcat#
 - dct: http://purl.org/dc/terms/
@@ -60,8 +60,8 @@ KEES introduced some concepts.
 The most important concept introduced by KEES  is the **Key question**. 
 Key questions represent the reason for the the knowledge base existence. In other words, the knoledge base exists to answer to *key questions*. Key question can be expressed as parametric SPARQL queries.
 
-A **KEES Agent** is a semantic web agent that understand a portion the KEES language profile and that it is able to do actions on a 
-knowledge base. For instance tt should be able to execute accrual policies and methods and to answer to a question.
+A **KEES Agent** is a software process that understands a portion the KEES language profile and that it is able to do actions on a 
+knowledge base. For instance, it should be able to execute accrual policies and methods and to answer to a question.
 
 A **Rule** describes how to generate/validate knowledge base statemensts using an algoritmic approach. 
 
