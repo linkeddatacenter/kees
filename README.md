@@ -22,7 +22,7 @@ learned from the context where a data is found or explicitly defined. From a pra
 
 KEES defines **knowledge** as a nework of linked information (i.e. linked data). This nework is possible because, in RDF, any URI can be both the object of a triple  and the subject of another one or even a predicate for another.
 
-KEES defines **knowledge base** as a container of related linked data. From a more formal point of view, a _knowledge base_ is 
+KEES defines **knowledge base** as a container of related linked data with a purpose. From a more formal point of view, a _knowledge base_ is 
 a semantic system where information is described as a set of statements according with the W3C standard 
 Resource Description Framework (RDF). A  Knowledge Base is partitioned by two set of statements: *TBox* and *ABox*. 
 *TBox statements* describe a system in terms of controlled vocabularies. TBox statements sometimes associate with object-oriented classes.
@@ -35,7 +35,7 @@ and it is composed by the union of all REF triples contained in a set of disjoin
 
 The **Language Profile** (or **Application profile**) is  the vocabulary that describes the knowledge that is recognized by a specific software application. The language profile is normally described in the Tbox partition of a knowledge base. Any application should refer to a language profile, that is extension the concept of *data model*.  
 
-The *KEES Language Profile* describes the knowledge base itself reusing some terms from existing vocabularies:
+The *KEES Language Profile* reuses terms from existing vocabularies:
 
 - dcat: http://www.w3.org/ns/dcat#
 - dct: http://purl.org/dc/terms/
@@ -53,12 +53,12 @@ The *KEES Language Profile* describes the knowledge base itself reusing some ter
 - sd: http://www.w3.org/ns/sparql-service-description#
 - kees: http://linkeddata.center/kees/v1#
 
-A **KEES compliant application** recognizes a declared subset of all terms defined in previous list, applying some restriction on property cardinality and extending the vocabulary with specific need. 
+A **KEES compliant application** recognizes a declared subset of all terms defined in previous list, applying some restriction on property cardinality and extending the vocabulary for specific needs. 
 
 KEES introduced some concepts.
 
 The most important concept introduced by KEES  is the **Key question**. 
-Key questions represent the reason for the the knowledge base existence. In other words, the knoledge base exists to answer to *key questions*. Key question can be expressed as parametric SPARQL queries.
+Key questions represent the purpose for the the knowledge base existence. In other words, the knoledge base exists to answer to *key questions*. Key question should be expressed as parametric SPARQL queries.
 
 A **KEES Agent** is a software process that understands a portion the KEES language profile and that it is able to do actions on a 
 knowledge base. For instance, it should be able to execute accrual policies and methods and to answer to a question.
@@ -82,7 +82,7 @@ The http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*) contain
 **kees:InferredDataGraph** states a named graph that contains only RDF statements derived from a reasoning.
 
 [TO BE REVISED] **kees:LinkedDataGraph** states a named graph that contains only RDF statements derived from a data source. 
-The source MUST be referrenced as dct:source property with a range dcat:Dastasets. 
+When possible, the source SHOULD be referrenced as dct:source property with a range dcat:Dastasets. 
 A KEES agent MUST recognize all mandatory properties defined in DCAT-AP for dcat:Dataset and dcat:Distribution plus dct:modified property on dcat:Dataset. [NOTE. this concept should be extended to cover the case of a graph with more than a data source or from a a portion of a data source]
 
 Beside classes and properties, kees vocabulary defines a set of individuals:
@@ -97,8 +97,6 @@ Beside classes and properties, kees vocabulary defines a set of individuals:
 - **kees:sparqlQuerySelectOperation** states the datatype of a literal string containing a sparql query SELECT operation.
 - **kees:sparqlQueryDescribeOperation** states the datatype of a literal string containing a sparql query DESCRIBE operation.
 - **kees:sparqlQueryAskOperation** states the datatype of a literal string containing a sparql query ASK operation.
-
-
 
 TODO: A formal definition of kees vocabulary is availabe as a [RDFS file](v1/kees.rdf).
 
