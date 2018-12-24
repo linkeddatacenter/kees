@@ -85,12 +85,11 @@ The http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*) contain
 [TO BE REVISED] **kees:LinkedDataGraph** states a named graph that contains only RDF statements derived from a data source. 
 When possible, the source SHOULD be referrenced as dct:source property with a range dcat:DastaSet. The DataSet should expose following properties:
 
-- dct:modified  with range a xsd:dateTime literal;
-- dct:accrualMethod that points to the method to be used to ingest information in the knowwledge base; the method description is implementation dependent.
-- dct:accrualPeriodicity that express the frequency with which items are added to the knowledge base;
-- dcat:distribution that points to a dcat:Distribution object that represents web resource with a dcat:license property.
+- *dct:modified*  with range a xsd:dateTime literal;
+- *dct:accrualMethod* that points to the method to be used to ingest information in the knowwledge base; the method description is implementation dependent.
+- *dct:accrualPeriodicity* that express the frequency with which items are added to the knowledge base;
+- *dcat:distribution* that points to a dcat:Distribution object that represents web resource with a dcat:license property.
 
-A KEES agent MUST recognize all mandatory properties defined in DCAT-AP for dcat:Dataset and dcat:Distribution plus dct:modified property on dcat:Dataset. [NOTE. this concept should be extended to cover the case of a graph with more than a data source or from a a portion of a data source]
 
 Beside classes and properties, kees vocabulary defines a set of individuals:
 
