@@ -22,18 +22,21 @@ learned from the context where a data is found or explicitly defined. From a pra
 
 KEES defines **knowledge** as a nework of linked information (i.e. linked data). This nework is possible because, in RDF, any URI can be both the object of a triple  and the subject of another one or even a predicate for another.
 
-KEES defines **knowledge base** as a container of related linked data with a purpose. From a more formal point of view, a _knowledge base_ is 
+KEES defines **knowledge base** as a container of related *linked data with a purpose*. From a more formal point of view, a _knowledge base_ is 
 a semantic system where information is described as a set of statements according with the W3C standard 
-Resource Description Framework (RDF). A  Knowledge Base is partitioned by two set of statements: *TBox* and *ABox*. 
-*TBox statements* describe a system in terms of controlled vocabularies. TBox statements sometimes associate with object-oriented classes.
+Resource Description Framework (RDF). A  Knowledge Base is partitioned by two set of statements: *TBox* and *ABox*. *ABox statements* describe the facts,  *TBox statements* describe the terms used to qualify the facts. If you are familiar with object-oriented paradigm, TBox statements sometimes associate with classes, while ABox associate with individual class instances.
 
 *TBox statements* tend to be more permanent within a knowledge base and are often grouped in *ontologies* that describe a specific 
 knowledge domain (e.g. business entities, people, goods, friendship, offering, geocoding, etc, etc).
 *ABox statements* associate with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and 
-are populated from datasets available in the web or by reasonings. A knowledge base is often implemented with **Graph database**
-and it is composed by the union of all REF triples contained in a set of disjoined Named Graphs.
+are populated from datasets available in the web or by reasonings. 
 
-The **Language Profile** (or **Application profile**) is  the vocabulary that describes the knowledge that is recognized by a specific software application. The language profile is normally described in the Tbox partition of a knowledge base. Any application should refer to a language profile, that is extension the concept of *data model*.  
+A **knowledge graph** is a compostion of one or more knwolwdge base and it is implemented with a RDF **Graph database**
+and it is composed by the union of all REF triples contained in a set of disjoined **Named Graphs**.
+
+The **Language Profile** (or **Application profile**) is  the vocabulary that describes the knowledge that is recognized by a specific software application. The language profile is normally described in the Tbox partition of a knowledge base. Any application should refer to a language profile, that is an extension of the *data model* concept.  
+
+A language profile is described by a set of formal vocabularies and some restrictions.
 
 The *KEES Language Profile* reuses terms from existing vocabularies:
 
@@ -55,25 +58,23 @@ The *KEES Language Profile* reuses terms from existing vocabularies:
 
 A **KEES compliant application** recognizes a declared subset of all terms defined in previous list, applying some restriction on property cardinality and extending the vocabulary for specific needs. 
 
-KEES introduced some concepts.
+KEES introduced some new concepts.
 
 The most important concept introduced by KEES  is the **Key question**. 
-Key questions represent the purpose for the the knowledge base existence. In other words, the knoledge base exists to answer to *key questions*. Key question should be expressed as parametric SPARQL queries.
+Key questions represent the purpose for the the knowledge base existence. In other words, the knoledge base exists to answer to *key questions*. Key question are natural language expressions that can be expressed as parametric SPARQL queries on a populated knowledge graph. The answer to a key question can be a table of data, a structured document, a boolean or a translation of thes in a natural language sentence.
 
-A **KEES Agent** is a software process that understands a portion the KEES language profile and that it is able to do actions on a 
-knowledge base. For instance, it should be able to execute accrual policies and methods and to answer to a question.
+A **KEES Agent** is a software process that understands a portion the language profile and that it is able to do actions on a 
+knowledge base. For instance, it should be able to ingest data and to answer some questions.
 
 A **Rule** describes how to generate/validate knowledge base statemensts using an algoritmic approach. 
 
-An **Axiom** describes how to generate/validate knowledge base statemensts using a declarative approach. For instance an axiom is represented with
-a sparql construct or with a SHACL restriction or with an entailment inferred by language profile semantic.
+An **Axiom** describes how to generate/validate knowledge base statemensts using a declarative approach. 
+For instance an axiom is represented with a sparql construct or with a SHACL restriction or with an 
+entailment inferred by language profile semantic.
 
 **Trust** is another key concept in KEES. The [RDF] model allow to mix any kind of information, even information that are incoerent with the language profile. For instace, suppose that your Language Profile contains a property "person:hasMom" that require a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could contains two different triples (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), in order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are the same person. If you are not so sure, you have two possibility: choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the language profile, allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement (both ABox and Tbox) in the knowlege base.
 
-Knowing the statement **provenance** is the most usefull way to get an idea about its trustability. For this reason, KEES requires that any statement must have a fourth element that links to metadata that describe any statement in the knowledge base. This means that, for pratical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to a metadata
-
-
-[This concept is stille in evaluation] **kees:Question** states a knowlege base key question and the answer method. A question is answered by a sparql Query operation
+Knowing the statement **provenance** is the most usefull way to get an idea about its trustability. For this reason, KEES requires that any statement must have a fourth element that links to metadata that describe any statement in the knowledge base. This means that, for pratical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to a metadata.
 
 ## The KEES vocabulary
 
@@ -82,7 +83,13 @@ The http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*) contain
 **kees:InferredDataGraph** states a named graph that contains only RDF statements derived from a reasoning.
 
 [TO BE REVISED] **kees:LinkedDataGraph** states a named graph that contains only RDF statements derived from a data source. 
-When possible, the source SHOULD be referrenced as dct:source property with a range dcat:Dastasets. 
+When possible, the source SHOULD be referrenced as dct:source property with a range dcat:DastaSet. The DataSet should expose following properties:
+
+- dct:modified  with range a xsd:dateTime literal;
+- dct:accrualMethod that points to the method to be used to ingest information in the knowwledge base; the method description is implementation dependent.
+- dct:accrualPeriodicity that express the frequency with which items are added to the knowledge base;
+- dcat:distribution that points to a dcat:Distribution object that represents web resource with a dcat:license property.
+
 A KEES agent MUST recognize all mandatory properties defined in DCAT-AP for dcat:Dataset and dcat:Distribution plus dct:modified property on dcat:Dataset. [NOTE. this concept should be extended to cover the case of a graph with more than a data source or from a a portion of a data source]
 
 Beside classes and properties, kees vocabulary defines a set of individuals:
