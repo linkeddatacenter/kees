@@ -22,23 +22,26 @@ learned from the context where a data is found or explicitly defined. From a pra
 
 KEES defines **knowledge** as a nework of linked information (i.e. linked data). This nework is possible because, in RDF, any URI can be both the object of a triple  and the subject of another one or even a predicate for another.
 
-KEES defines **knowledge base** as a container of related *linked data with a purpose*. From a more formal point of view, a _knowledge base_ is 
+KEES defines **knowledge base** as a container of related *linked data with a purpose*. 
+From a more theoretical point of view, a _knowledge base_ is 
 a semantic system where information is described as a set of statements according with the W3C standard 
-Resource Description Framework (RDF). A  Knowledge Base is partitioned by two set of statements: *TBox* and *ABox*. *ABox statements* describe the facts,  *TBox statements* describe the terms used to qualify the facts. If you are familiar with object-oriented paradigm, TBox statements sometimes associate with classes, while ABox associate with individual class instances.
+Resource Description Framework (RDF). A  Knowledge Base is partitioned by two set of statements: *TBox* and *ABox*. *ABox statements* describe the facts,  *TBox statements* describe the terms used to qualify the facts. If you are familiar with object-oriented paradigm, TBox statements sometimes associate with classes, while ABox associate with individual class instances. 
 
 *TBox statements* tend to be more permanent within a knowledge base and are often grouped in *ontologies* that describe a specific 
 knowledge domain (e.g. business entities, people, goods, friendship, offering, geocoding, etc, etc).
 *ABox statements* associate with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and 
 are populated from datasets available in the web or by reasonings. 
 
-A **knowledge graph** is a compostion of one or more knwolwdge base and it is implemented with a RDF **Graph database**
+For the KEES practical purposes, a knowledge base is a sublcass of a [service description dataset](https://www.w3.org/TR/sparql11-service-description/#sd-Dataset) 
+
+A **knowledge graph** is an instance og a knowledge base implemented as [SPARQL service](https://www.w3.org/TR/sparql11-service-description/#sd-Service)
 and it is composed by the union of all REF triples contained in a set of disjoined **Named Graphs**.
 
 The **Language Profile** (or **Application profile**) is  the vocabulary that describes the knowledge that is recognized by a specific software application. The language profile is normally described in the Tbox partition of a knowledge base. Any application should refer to a language profile, that is an extension of the *data model* concept.  
 
 A language profile is described by a set of formal vocabularies and some restrictions.
 
-The *KEES Language Profile* reuses terms from existing vocabularies:
+The **KEES Language Profile** is a language profile to describe a knowledge base itself. It reuses terms from existing vocabularies:
 
 - dcat: http://www.w3.org/ns/dcat#
 - dct: http://purl.org/dc/terms/
@@ -56,15 +59,15 @@ The *KEES Language Profile* reuses terms from existing vocabularies:
 - sd: http://www.w3.org/ns/sparql-service-description#
 - kees: http://linkeddata.center/kees/v1#
 
-A **KEES compliant application** recognizes a declared subset of all terms defined in previous list, applying some restriction on property cardinality and extending the vocabulary for specific needs. 
+A **KEES application** is a Semantic Web Application that includes the KEES Language Profile, extending the vocabulary to describe a specific knowledge domain. 
 
-KEES introduced some new concepts.
+KEES introduced some **new concepts**.
 
 The most important concept introduced by KEES  is the **Key question**. 
-Key questions represent the purpose for the the knowledge base existence. In other words, the knoledge base exists to answer to *key questions*. Key question are natural language expressions that can be expressed as parametric SPARQL queries on a populated knowledge graph. The answer to a key question can be a table of data, a structured document, a boolean or a translation of thes in a natural language sentence.
+Key questions represent the purpose for the the knowledge base existence. In other words, the knoledge base exists to answer to *key questions*. Key question are natural language expressions that can be expressed as parametric SPARQL queries on a populated knowledge graph. The answer to a key question can be a table of data, a structured document, a boolean or a translation of thes in a natural language sentence. [must add refences to http://inference-web.org works?]
 
 A **KEES Agent** is a software process that understands a portion the language profile and that it is able to do actions on a 
-knowledge base. For instance, it should be able to ingest data and to answer some questions.
+knowledge base. For instance, it could be able to ingest data and to answer some questions.
 
 A **Rule** describes how to generate/validate knowledge base statemensts using an algoritmic approach. 
 
