@@ -34,11 +34,11 @@ are populated from datasets available in the web or by reasonings.
 
 For practical purposes, a knowledge base is a specialization of a [SPARQL service](https://www.w3.org/TR/sparql11-service-description/#sd-Service) and contains a default dataset composed by all RDF triples contained in a set of disjoined **Named Graphs**.
 
-The **Language Profile** (or **Application profile**) is the vocabulary that describes the knowledge that is recognized by a specific software application. The language profile is normally described in the Tbox partition of a knowledge base. Any application should refer to a language profile, that is an extension of the *data model* concept.  
 
-A language profile is described by a set of formal vocabularies and some restrictions.
+The **Language Profile** (or **Application profile**) is the portion of the  vocabulary that describes the knowledge that is recognized by a specific software application. The language profile is normally described in the Tbox partition of a knowledge base.  
 
-The **KEES Language Profile** is a language profile to describe a knowledge base itself. It reuses terms from existing vocabularies:
+
+The **KEES Language Profile** is a language profile to describe the knowledge base itself. It reuses terms from existing vocabularies:
 
 - dcat: http://www.w3.org/ns/dcat#
 - dct: http://purl.org/dc/terms/
@@ -56,19 +56,19 @@ The **KEES Language Profile** is a language profile to describe a knowledge base
 - sd: http://www.w3.org/ns/sparql-service-description#
 - kees: http://linkeddata.center/kees/v1#
 
-The following picture sumarize main aspects of the KEES language profile.
+The following picture sumarize mandatory restrictions introduced by the KEES language profile.
 
 ![uml](architecture/uml.png)
 
-
-The http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*) contains a small set of concepts, mainly derived from existing ontologies. It provides terms to describe the knowledge base metadata that a KEES complain agent SHOULD/MUST know.
 
 A **KEES compliant application** is a Semantic Web Application that is not in conflict with the KEES Language Profile. 
 
 A **KEES Agent** is a software process that understands a portion the language profile and that it is able to do actions on a 
 knowledge base. For instance, it could be able to ingest data and to answer some questions.
 
-**Trust** is another key concept in KEES. The [RDF] model allow to mix any kind of information, even information that are incoerent with the language profile. For instace, suppose that your Language Profile contains a property "person:hasMom" that require a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could contains two different triples (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), in order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are the same person. If you are not so sure, you have two possibility: choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the language profile, allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement (both ABox and Tbox) in the knowlege base.
+The http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*) contains a small set of concepts, mainly derived from existing ontologies. It provides terms to describe the knowledge base metadata that a KEES complain agent SHOULD know.
+
+
 
 Knowing the statement **provenance** is the most usefull way to get an idea about its trustability. For this reason, KEES requires that any statement must have a fourth element that links to metadata that describe any statement in the knowledge base. This means that, for pratical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to a metadata.
 
@@ -105,6 +105,9 @@ TODO: KEES language profile restrictions is formally expressed in [SHACL constra
 
 **kees:KBConfigGraph** states a linked data graph that contains statements that describes the knowledge base itself as a set of RDF triples.
 
+## Trust
+
+**Trust** is another key concept in KEES. The [RDF] model allow to mix any kind of information, even information that are incoerent with the language profile. For instace, suppose that your Language Profile contains a property "person:hasMom" that require a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could contains two different triples (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), in order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are the same person. If you are not so sure, you have two possibility: choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the language profile, allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement (both ABox and Tbox) in the knowlege base.
 
 ## The KEES workflow
 
