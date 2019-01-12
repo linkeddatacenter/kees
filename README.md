@@ -172,9 +172,7 @@ A KEES compliant sparql endpoint SHOULD support http caching specs [as described
 ### TBD: Questions and Answers
 
 ```
-[] a kees:Question
-    dtc:identifier "question1" ;
-    kees:hasParameter  "year" ;
+:keyQuestion1 a kees:Question
     kees:answeredBy """
         PREFIX fr: <http://linkeddata.center/botk-fr/v1#>
         PREFIX qb:	<http://purl.org/linked-data/cube#>
@@ -204,6 +202,7 @@ A KEES compliant sparql endpoint SHOULD support http caching specs [as described
         }
     """^^kees:sparqlQueryConstructOperation 
 .
+:keyQuestion2 a kees:Question; kees:answeredBy <http://example.com/example.rq>.
 ```
 
 ### TBD: simple web resource (re)loading
