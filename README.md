@@ -175,7 +175,7 @@ A KEES compliant sparql endpoint SHOULD support http caching specs [as described
 [] a kees:Question
     dtc:identifier "question1" ;
     kees:hasParameter  "year" ;
-    kees:answeredBySparqlQuery """
+    kees:answeredBy """
         PREFIX fr: <http://linkeddata.center/botk-fr/v1#>
         PREFIX qb:	<http://purl.org/linked-data/cube#>
         PREFIX interval: <http://reference.data.gov.uk/def/intervals/>
