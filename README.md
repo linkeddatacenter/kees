@@ -8,7 +8,7 @@ not just the grammar and the syntax but the real meaning of things.
 
 KEES proposes some specifications to add metadata to a *domain knowledge* in order to make it tradeable and shareable. 
 
-To trade a *domain knowledge* means to be able to license specifich know how about to:
+To *trade a domain knowledge* means to be able to license specific know how about to:
 
 - collect the right data, 
 - evaluate the data quality, 
