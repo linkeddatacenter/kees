@@ -7,14 +7,15 @@ In order to let computers to work for us, they must understand data:
 not just the grammar and the syntax but the real meaning of things. 
 
 KEES proposes some specifications to add metadata to a *domain knowledge* in order to make it tradeable and shareable. 
-Artificial Intelligences and humans can use KEES to populate, merge, exchange and enrich such knowledge. KEES is a Semantic Web Application.
 
-To trade a *domain knowledge* means to be able to license information about how to:
+To trade a *domain knowledge* means to be able to license specifich know how about to:
 
 - collect the right data, 
-- trust in the data quality, 
-- reasonings about collected data
-- answer somain specific questions
+- evaluate the data quality, 
+- do reasonings about collected data
+- answer specific questions
+
+Artificial Intelligences and humans can use KEES to populate, merge, exchange and enrich knowledge. KEES is a Semantic Web Application.
 
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
@@ -45,7 +46,7 @@ For practical purposes, KEES assumes that a knowledge base is realized with of a
 The most important concept introduced by KEES  is the **Question**. 
 Questions represent the reasons for the the knowledge base existence. In other words, the knoledge base exists to answer to *questions*. Question are natural language expressions that can be expressed as parametric SPARQL queries on a populated knowledge graph. The answer to a question can be a table of data, a structured document, a boolean or a translation of these in a natural language sentences.
 
-**Trustability** is another key concept in KEES. The [RDF] model allow to mix any kind of information, even when information that are incoerent. For instace, suppose that your TBOX defines a property "person:hasMom" that require a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could contains two different fact (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), in order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are the same person. If you are not so sure, you have two possibility: choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the TBOX , allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement (both ABox and Tbox) in the knowlege base.
+**Trustability** is another key concept in KEES. The [RDF] model allow to mix any kind of information, even when information that are incoerent. For instacne, suppose that your TBOX defines a property "person:hasMom" that require a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could contains two different fact (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), in order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are two names for the same person. If you are not so sure, you have two possibility: choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the TBOX , allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement (both ABox and Tbox) in the knowlege base. At least you want to know the **provenance** and all metadata of all information in your knowledge base because the trust on a single data often derives from the trust of its source or in the creator of the data source.
 
 **The KEES workflow** is based on a sequence of four temporal phases called "windows“:
 
@@ -56,13 +57,12 @@ Questions represent the reasons for the the knowledge base existence. In other w
 
 KEES workflow is a continuous integration process. A guard SHOULD allow user to query the knowledge base only during the teaching windows.
 
-The **Language Profile** (or **Application profile**) is the portion of the vocabulary that describes the knowledge that is recognized by a specific software application. The language profile is normally described in the Tbox partition of a knowledge base. 
+The **Language Profile** (or **Application profile**) is the portion of the vocabularies (TBOX) that describe the knowledge that are recognized by a specific software application. The language profile is normally described in the Tbox partition of a knowledge base but can be just referenced as linked data. 
 
 The **KEES Language Profile** is an application profile to describe the knowledge base itself, providing instructions about how
 to learn facts, how to reasoning about learned informations and about how to answer to questions. It reuses terms from existing vocabularies:
 
 - dct: http://purl.org/dc/terms/
-- xsd: http://www.w3.org/2001/XMLSchema#
 - qb: http://purl.org/linked-data/cube#
 - sdmx-code: http://purl.org/linked-data/sdmx/2009/code#
 - daq: http://purl.org/eis/vocab/daq# 
@@ -80,11 +80,14 @@ A **KEES Agent** is a software process that understands a portion the KEES langu
 knowledge base. For instance, it could be able to ingest data and/or to answer some questions.
 
 Knowing the statement **provenance** is the most usefull way to get an idea about its trustability. For this reason, KEES requires that any statement must have a fourth element that links to metadata that describe any statement in the knowledge base. This means that, for pratical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to a metadata.
-A **Reasoning** describes rules to materialize new informations using an algoritmic approach  on existing knowledge base facts.
-A reasoning should occurs when a test conditions is true and it is related to a sequence of **Inference steps** through the  property **axioms**.
+
+A **Reasoning** describes how to materialize new informations on existing knowledge base facts.
+A reasoning should occurs when a test conditions is true and it is related to a sequence of rules or axioms.
 
 An axiom describes how to generate/validate knowledge base statemensts using a declarative approach.  For instance an axiom can be represented with a sparql construct or with a SHACL restriction or with an 
-entailment inferred by language profile semantic. A test condition can be realized with an ASK SPARQL operation. KEES does not impose any specification for axioms nor for condition representation.
+entailment inferred by language profile semantic.
+
+The test condition can be realized with an ASK SPARQL operation or in any other mode. KEES does not impose any specification for axioms nor for condition representation.
 
 Finnaly  **KEES configuration** is a dataset describing a knowledge base. A KEES Agent shold be able to rebuild the whole knowlege graph
 just looking to the KEES configuration. Because different KEES configurations can be safely merged in a single new configuration, and this make knowledge domains shareable. Because a dataset can be protected with a license, you can sell your knowledge base (that is different to sell the data contained in the  knowlede about the data) making knowledge tradeable. 
@@ -93,14 +96,11 @@ The KEES configuration can be included in the knowledge base in the graph named 
 
 The http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*) contains a small set of concepts, mainly derived from existing ontologies. It provides terms to describe the knowledge base metadata that a KEES complain agent SHOULD know.
 
-KEES vocabulary defines a set of individuals:
+Besides few classes and properties, KEES vocabulary defines some individuals:
 
 - **kees:guard** a [SPARQL service description](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) feature that states that the RDF store supports KEES guard specifications (see below)
-
 - **kees:trustMetric** defines a generic trust metric computed on an arbitrary requirements.
-
 - **kees:trustGraphMetric** defines a metric that evaluate a subjective trust value for a graph with a specific name. Can be used in graph quality observations.
-
 - **kees:sparqlQueryConstructOperation** states the datatype of a literal string containing a sparql query CONSTRUCT operation. 
 - **kees:sparqlQuerySelectOperation** states the datatype of a literal string containing a sparql query SELECT operation.
 - **kees:sparqlQueryDescribeOperation** states the datatype of a literal string containing a sparql query DESCRIBE operation.
@@ -257,10 +257,10 @@ This states that a some Infereces SHOULD created if the knowledge base is not em
 
 ```
 [] a kees:Reasoning ;
-	kees:when [ kees:test "ASK ?s ?p ?o"^^kees:sparqlQueryAskOperation ]
+	dct:accrualPolicy "ASK {?s ?p ?o}"^^kees:sparqlQueryAskOperation;
 	kees:accrualMethod (
 		"Drop all triples in inferred named graph"@en 
-		"Evaluate skos axioms"@en
+		"Evaluate base skos axioms"@en
 	)
 .
 
