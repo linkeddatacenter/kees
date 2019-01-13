@@ -9,6 +9,13 @@ not just the grammar and the syntax but the real meaning of things.
 KEES proposes some specifications to add metadata to a *domain knowledge* in order to make it tradeable and shareable. 
 Artificial Intelligences and humans can use KEES to populate, merge, exchange and enrich such knowledge. KEES is a Semantic Web Application.
 
+To trade a *domain knowledge* means to license the know how about to:
+
+- collect the right data, 
+- trust in the data quality, 
+- reasonings about collected data
+- answer the right questions
+
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
 ## Core KEES concepts
@@ -79,7 +86,10 @@ A reasoning should occurs when a test conditions is true and it is related to a 
 An axiom describes how to generate/validate knowledge base statemensts using a declarative approach.  For instance an axiom can be represented with a sparql construct or with a SHACL restriction or with an 
 entailment inferred by language profile semantic. A test condition can be realized with an ASK SPARQL operation. KEES does not impose any specification for axioms nor for condition representation.
 
+Finnaly  **KEES configuration** is a dataset describing a knowledge base. A KEES Agent shold be able to rebuild the whole knowlege graph
+just looking to the KEES configuration. Because different KEES configurations can be safely merged in a single new configuration, and this make knowledge domains shareable. Because a dataset can be protected with a license, you can sell your knowledge base (that is different to sell the data contained in the  knowlede about the data) making knowledge tradeable. 
 
+The KEES configuration can be included in the knowledge base in the graph named <urn:kees:configuration> or kept as separate resource.
 
 The http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*) contains a small set of concepts, mainly derived from existing ontologies. It provides terms to describe the knowledge base metadata that a KEES complain agent SHOULD know.
 
@@ -98,11 +108,6 @@ KEES vocabulary defines a set of individuals:
 - **kees:sparqlUpdateScript** states the datatype of a literal string containing a sparql update scrirpt.
 
 
-**Here are a set of proposed terms to be discuss:**
-
-**kees:KBConfigGraph** states a linked data graph that contains statements that describes the knowledge base itself as a set of RDF triples.
-
-
 TODO: A formal definition of kees vocabulary is availabe as a [RDFS file](v1/kees.rdf).
 
 TODO: KEES language profile restrictions is formally expressed in [SHACL constraints file](v1/kees-profile.rdf)
@@ -111,13 +116,11 @@ TODO: KEES language profile restrictions is formally expressed in [SHACL constra
 
 Any RDF Store that provides with a SPARQL endpoint and QUAD support is compliant with KEES. Following requirement applies:
 
-- All information retated too KEES booting window SHOULD be contained in a graph named <urn:graph:kees>
-- If a statement with subject <urn:kees:kb> and predicate dct:valid is present in the graph <urn:graph:kees>, this  means that the Knowledge base is in the *teaching window* windows (i.e. safe to be queried). Otherwhise the kees status of the knowledge base should be considered undefined.
+- If a statement with subject <urn:kees:kb> and predicate dct:valid is present in the knowledge base, this  means that the Knowledge base is in the *teaching window* windows (i.e. safe to be queried). Otherwhise the kees status of the knowledge base should be considered undefined.
 
 For example: to declare that a RDF Store is ready to be safely queried execute following SPARQL UPDATE statement
 
 ```
-WITH <urn:graph:kees>
 INSERT { <urn:kees:kb> <http://purl.org/dc/terms/valid> ?now }
 WHERE { BIND( NOW() AS ?now) }
 ```
@@ -200,8 +203,7 @@ A KEES compliant agent should take into account accrual periodicity. e.g:
 
 ```
 [] a kees:Learning;;
-	kees:dataset <http://data.example.com/dataset1 ;
-	kees:expects <http://data.example.com/dataset1l> ;
+	kees:graphName <http://data.example.com/dataset1l> ;
 	dct:accrualPeriodicity sdmx-code:freq-W
 .
 ```
@@ -256,16 +258,15 @@ This states that a some Infereces SHOULD created if the knowledge base is not em
 ```
 [] a kees:Reasoning ;
 	kees:when [ kees:test "ASK ?s ?p ?o"^^kees:sparqlQueryAskOperation ]
-	kees:inferencePipeline (
-		[ a kees:Inference dct:accrualMethod "Drop all inferred named graph" ]
-		[ a kees:Inference dct:accrualMethod "Evaluate skos axioms" ]
-		[ a kees:Inference dct:accrualMethod "Evaluate app specific axioms"  ]
+	kees:accrualMethod (
+		"Drop all triples in inferred named graph"@en 
+		"Evaluate skos axioms"@en
 	)
 .
 
 ```
 
-Note that a KEES Agent able to understand the accrual method is required to perform inferences.
+Note that in this case a KEES Agent that the able to understand the accrual method text is required to perform these inferences.
 
 ## Contributing to the site
 
