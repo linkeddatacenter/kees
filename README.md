@@ -9,12 +9,12 @@ not just the grammar and the syntax but the real meaning of things.
 KEES proposes some specifications to add metadata to a *domain knowledge* in order to make it tradeable and shareable. 
 Artificial Intelligences and humans can use KEES to populate, merge, exchange and enrich such knowledge. KEES is a Semantic Web Application.
 
-To trade a *domain knowledge* means to license the know how about to:
+To trade a *domain knowledge* means to be able to license information about how to:
 
 - collect the right data, 
 - trust in the data quality, 
 - reasonings about collected data
-- answer the right questions
+- answer somain specific questions
 
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
