@@ -178,14 +178,14 @@ A KEES compliant sparql endpoint SHOULD support http caching specs [as described
 This states that an graph named `:example`  SHOULD exist in the knowledge base and that graph should be loaded with the content of the web resource "http://data.example.com/dataset1.ttl"
 
 ```
-[]  kees:dataset <http://data.example.com/dataset1> .
+[]  kees:graphName <http://data.example.com/dataset1> .
 ```
 This RDF triple is equivalent to:
 
 ```
 [] a kees:Learning;
-	kees:dataset <http://data.example.com/dataset1> ;
-	kees:expects <http://data.example.com/dataset1l> ;
+	kees:dataSource <http://data.example.com/dataset1> ;
+	kees:graphName <http://data.example.com/dataset1l> ;
 .
 ```
 
@@ -257,14 +257,15 @@ This states that a some Infereces SHOULD created if the knowledge base is not em
 [] a kees:Reasoning ;
 	kees:when [ kees:test "ASK ?s ?p ?o"^^kees:sparqlQueryAskOperation ]
 	kees:inferencePipeline (
-		[ kees:axiom "DROP ALL"^^kees:sparqlUpdateScript ]
-		[ kees:axiom <axioms/axiom1.sparql_update> ]
-		[ kees:axiom <axioms/axiom2.sparql_update> ]
+		[ a kees:Inference dct:accrualMethod "Drop all inferred named graph" ]
+		[ a kees:Inference dct:accrualMethod "Evaluate skos axioms" ]
+		[ a kees:Inference dct:accrualMethod "Evaluate app specific axioms"  ]
 	)
 .
 
 ```
 
+Note that a KEES Agent able to understand the accrual method is required to perform inferences.
 
 ## Contributing to the site
 
