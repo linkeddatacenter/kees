@@ -40,19 +40,10 @@ The **Language Profile** (or **Application profile**) is the portion of the  voc
 
 The **KEES Language Profile** is a language profile to describe the knowledge base itself. It reuses terms from existing vocabularies:
 
-- dcat: http://www.w3.org/ns/dcat#
 - dct: http://purl.org/dc/terms/
-- foaf: http://xmlns.com/foaf/0.1/
-- owl: http://www.w3.org/2002/07/owl#
-- rdfs: http://www.w3.org/2000/01/rdf-schema#
-- schema: http://schema.org/
-- skos: http://www.w3.org/2004/02/skos/core#
-- spdx: http://spdx.org/rdf/terms#
 - xsd: http://www.w3.org/2001/XMLSchema#
 - qb: http://purl.org/linked-data/cube#
 - daq: http://purl.org/eis/vocab/daq# 
-- prov: http://www.w3.org/ns/prov#
-- void: http://rdfs.org/ns/void#
 - sd: http://www.w3.org/ns/sparql-service-description#
 - kees: http://linkeddata.center/kees/v1#
 
