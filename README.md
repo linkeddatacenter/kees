@@ -129,9 +129,20 @@ to check if a RDF Store is ready to be safely queried `ASK { <urn:kees:kb> <http
 
 ## SPARQL service requirements
 
-A KEES compliant sparql endpoint SHOULD support the  **kees:guard** feature: a KEES compliant sparql endpoint SHOULD return 503 Error of any SPARQL QUERY that happens on a RDF Store that is not in the  *teaching window* state.  A KEES compliant sparql endpoint SHOULD disable this feature if the http header "X-KEES-guard: disable" is present.
+A KEES compliant sparql endpoint MUST support the  **kees:guard** feature: a KEES compliant sparql endpoint SHOULD return 503 Error of any SPARQL QUERY that happens on a RDF Store that is not in the  *teaching window* state.  A KEES compliant sparql endpoint SHOULD disable this feature if the http header "X-KEES-guard: disable" is present.
 
 A KEES compliant sparql endpoint SHOULD support http caching specs [as described in Section 13 of RFC2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html) for all SPARQL queries that happened in the same teaching windows.
+
+## KEES agent requirements
+
+A KEES Agent MUST be able to 
+
+- recognise and compute a dct:accrualPolicy that is made of a list of a strings containing  a SPARQL QUERY ASK 
+operation or a list of urls to a resource providing an application/sparql-quey content.
+- recognise and compute a dct:accrualMethod that is made of a list strings containing  a SPARQL QUERY CONSTRUCT 
+operation or a list of urls to a resource providing an application/sparql-quey content.
+
+The list MUST determine the excecution order of method steps.
 
 
 ## Examples
