@@ -133,12 +133,28 @@ A KEES Agent MUST know terms defined in  http://linkeddata.center/kees/v1 vocabu
 
 A KEES Agent MUST be able to:
 
-- recognise and compute a dct:accrualPolicy that is strings containing  a SPARQL QUERY ASK 
-operation or a url to a resource providing an application/sparql-query content.
-- recognise and compute a dct:accrualMethod that is made of a list strings containing  a SPARQL UPDATE CONSTRUCT 
-operation or  url to a resource providing an application/sparql-update content.
+- generate all missing properties and types in a KISS configuration according the KEES Language Profile.
+- provide valid defaults for missing accrual policies, error management and accrual methods.
+- generate a unique graphName if missing.
+- verify the validity of a kees configuration against KEES language profile
+- for any **kees:GraphAccrualPlan** objects:
+    - recognise and compute a dct:accrualPolicy that is list of strings containing  a SPARQL QUERY ASK 
+operation or  urls to a resource providing an application/sparql-query content. The accrualMethod must be executed only if all list elements evaluate to true. The evaluation of list element must stop on failure or 
+- for **kees:Learning** objects:
+   - recognise and compute a dct:accrualMethod that is made of a string containing  a SPARQL UPDATE CONSTRUCT 
+operation or an url to a resource providing an application/sparql-update content.
+   - use the URI of the object referenced by the dataSource property as graphName if missing
+- for **kees:Reasoning** objects:
+   - recognise and compute a dct:accrualMethod that is made of a list strings containing  a SPARQL UPDATE CONSTRUCT or urls to a resource providing an application/sparql-query content
 
 A KEES agent MUST inform the RDF store when it enters or exits the teaching window. 
+
+During teaching window:
+
+- all named graph must be related to a kees:GraphAccrualPlan by means of dct:accrualMethod property
+- all named graph must expose a dct:created date and a dct:creator properties
+- all succesful created named graph must expose a dct:issued property
+- all unsuccessful created named graph (or incomple one) MUST NOT expose a dct:issued property. 
 
 ## SPARQL service requirements
 
