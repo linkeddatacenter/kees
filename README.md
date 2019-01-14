@@ -139,13 +139,13 @@ A KEES Agent MUST be able to:
 - verify the validity of a kees configuration against KEES language profile
 - for any **kees:GraphAccrualPlan** objects:
     - recognise and compute a dct:accrualPolicy that is list of strings containing  a SPARQL QUERY ASK 
-operation or  urls to a resource providing an application/sparql-query content. The accrualMethod must be executed only if all list elements evaluate to true. The evaluation of list element must stop on failure or 
+operation or  urls to a resource providing an application/sparql-query content. The accrualMethod must be executed only if all list elements evaluate to true. The evaluation of list element must stop on first list element tthat is evaluated as "false"
 - for **kees:Learning** objects:
    - recognise and compute a dct:accrualMethod that is made of a string containing  a SPARQL UPDATE CONSTRUCT 
-operation or an url to a resource providing an application/sparql-update content.
+ or an url to a resource providing an application/sparql-update content.
    - use the URI of the object referenced by the dataSource property as graphName if missing
 - for **kees:Reasoning** objects:
-   - recognise and compute a dct:accrualMethod that is made of a list strings containing  a SPARQL UPDATE CONSTRUCT or urls to a resource providing an application/sparql-query content
+   - recognise and compute a dct:accrualMethod that is made of a list strings containing  a SPARQL UPDATE CONSTRUCT or urls to a resource providing an application/sparql-update content
 
 A KEES agent MUST inform the RDF store when it enters or exits the teaching window. 
 
