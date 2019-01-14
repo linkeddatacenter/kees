@@ -90,6 +90,9 @@ The following picture sumarize main aspects of the KEES language profile.
 
 ![uml](architecture/uml.png)
 
+
+TODO: KEES language profile restrictions is formally expressed in [SHACL constraints file](v1/kees-profile.rdf)
+
 A **KEES compliant application** is a Semantic Web Application that is not in conflict with the KEES Language Profile. 
 
 A **KEES Agent** is a software process that understands a portion the KEES language profile and that it is able to do actions on a 
@@ -100,7 +103,6 @@ just looking to the KEES configuration. Because different KEES configurations ca
 
 The KEES configuration can be included in the knowledge base in the graph named <urn:kees:configuration> or kept as separate resource.
 
-TODO: KEES language profile restrictions is formally expressed in [SHACL constraints file](v1/kees-profile.rdf)
 
 ## RDF Store requirement
 
