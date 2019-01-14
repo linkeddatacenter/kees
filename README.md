@@ -1,4 +1,4 @@
-KEES: Knowledge Exchange Engine Schema 
+KEES: Knowledge Exchange Engine Service 
 =======================================
 
 **WARNING: WORKING IN PROGRESS**
@@ -17,7 +17,7 @@ This means to formalize, license and transfer specific know hows:
 
 Using KEES, artificial intelligences and humans can use this *know how* to populate, merge, exchange and enrich knowledge. KEES is a Semantic Web Application.
 
-See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
+See [KEES presentation slides](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
 ## Core KEES concepts
 
