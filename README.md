@@ -106,7 +106,7 @@ Knowing the statement **provenance** is the most usefull way to get an idea abou
 
 Any RDF Store that provides with a SPARQL endpoint and QUAD support is compliant with KEES. Following requirement applies:
 
-- If a statement with subject <urn:kees:kb> and predicate dct:valid is present in the knowledge base, this  means that the Knowledge base is in the *teaching window* windows (i.e. safe to be queried). Otherwhise the kees status of the knowledge base should be considered undefined.
+- If a statement with subject <urn:kees:kb> and predicate dct:valid is present in the knowledge base, this  means that the Knowledge base is *safe* to be queried. Otherwhise the status of the knowledge base should be considered undefined.
 
 For example: to declare that a RDF Store is ready to be safely queried execute following SPARQL UPDATE statement
 
@@ -116,12 +116,6 @@ WHERE { BIND( NOW() AS ?now) }
 ```
 
 to check if a RDF Store is ready to be safely queried `ASK { <urn:kees:kb> <http://purl.org/dc/terms/valid> [] }`
-
-## SPARQL service requirements
-
-A KEES compliant sparql endpoint MUST support the  **kees:guard** feature: a KEES compliant sparql endpoint SHOULD return 503 Error of any SPARQL QUERY that happens on a RDF Store that is not in the  *teaching window* state.  A KEES compliant sparql endpoint SHOULD disable this feature if the http header "X-KEES-guard: disable" is present.
-
-A KEES compliant sparql endpoint SHOULD support http caching specs [as described in Section 13 of RFC2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html) for all SPARQL queries that happened in the same teaching windows.
 
 ## KEES agent requirements
 
@@ -144,6 +138,13 @@ operation or a url to a resource providing an application/sparql-query content.
 - recognise and compute a dct:accrualMethod that is made of a list strings containing  a SPARQL UPDATE CONSTRUCT 
 operation or  url to a resource providing an application/sparql-update content.
 
+A KEES agent MUST inform the RDF store when it enters or exits the teaching window. 
+
+## SPARQL service requirements
+
+A KEES compliant sparql endpoint MUST support the  **kees:guard** feature: a KEES compliant sparql endpoint SHOULD return 503 Error of any SPARQL QUERY that happens on a RDF Store that is not in the  *save* state.  A KEES compliant sparql endpoint SHOULD disable this feature if the http header "X-KEES-guard: disable" is present.
+
+A KEES compliant SPARQL service SHOULD alwais provide proper http caching information [as described in Section 13 of RFC2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html).
 
 
 ## Examples
