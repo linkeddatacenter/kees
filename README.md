@@ -8,7 +8,7 @@ not just the grammar and the syntax but the real meaning of things.
 
 KEES proposes some specifications to add metadata to a *domain knowledge* in order to make it tradeable and shareable. 
 
-This means to formalize, license and transfer specific know hows:
+KEES allows to formalize, license and transfer specific know hows:
 
 - how to collect the right data, 
 - how much you can trust in your data, 
