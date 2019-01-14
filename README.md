@@ -11,11 +11,11 @@ KEES proposes some specifications to add metadata to a *domain knowledge* in ord
 This means to formalize, license and transfer specific know hows:
 
 - how to collect the right data, 
-- how mutch you can trust in your data, 
-- what infromation you can deduct from the collected data,
-- how to anwswer to specific questions using data
+- how much you can trust in your data, 
+- what new information you can deduct from the collected data,
+- how to answer to specific questions using data
 
-Using KEES, artificial intelligences and humans can use this know how to populate, merge, exchange and enrich knowledge. KEES is a Semantic Web Application.
+Using KEES, artificial intelligences and humans can use this *know how* to populate, merge, exchange and enrich knowledge. KEES is a Semantic Web Application.
 
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
