@@ -52,14 +52,10 @@ The **Language Profile** (or **Application profile**) is the portion of the voca
 
 ## KEES Specification
 
-The **KEES vocabulary** define few new terms the  http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*). 
-It consists of few OWL classes and properties, mainly derived from existing ontologies. 
+The **KEES vocabulary** defines few new terms the  http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*). 
+It consists of some OWL classes and properties, mainly derived from existing ontologies. 
 
-
-A Reasoning describes how to materialize new informations on existing knowledge base facts. A reasoning should occurs when a test conditions is true and it is related to a sequence of rules or axioms.
-
-An axiom describes how to generate/validate knowledge base statemensts using a declarative approach.  For instance an axiom can be represented with a sparql construct or with a SHACL restriction or with an 
-entailment inferred by language profile semantic.
+A Reasoning describes how to materialize new informations from existing knowledge base facts. A reasoning should occurs only when a test conditions is true and it is related to a sequence of rules or axioms evaluation. An axiom describes how to generate/validate knowledge base statemensts using entailment inferred by language profile semantic; a rule express a logic deduction (if *facts exists* then *new facts genetarted*). For example an axiom can be described with OWL, rules can be represented with a sparql construct.
 
 The test condition can be realized with an ASK SPARQL operation or in any other mode. KEES does not impose any specification for axioms nor for condition representation.
 
