@@ -8,14 +8,14 @@ not just the grammar and the syntax but the real meaning of things.
 
 KEES proposes some specifications to add metadata to a *domain knowledge* in order to make it tradeable and shareable. 
 
-To *trade a domain knowledge* means to be able to license specific know how about to:
+This means to formalize, license and transfer specific know hows:
 
-- collect the right data, 
-- evaluate the data quality, 
-- do reasonings about collected data
-- answer specific questions
+- how to collect the right data, 
+- how mutch you can trust in your data, 
+- what infromation you can deduct from the collected data,
+- how to anwswer to specific questions using data
 
-Artificial Intelligences and humans can use KEES to populate, merge, exchange and enrich knowledge. KEES is a Semantic Web Application.
+Using KEES, artificial intelligences and humans can use this know how to populate, merge, exchange and enrich knowledge. KEES is a Semantic Web Application.
 
 See [KEES project presentation](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
@@ -26,75 +26,41 @@ Lot of concepts used by KEES refer to the well known [Semantic Web Standards](ht
 What is **data**? According with common sense, KEES defines data as words, numbers or in general *any string of symbols*.  This concept is equivalent to the definition of "literal" in the [RDF] (Resource Data Framework). Example of data is the string  `xyz`, the numbers `123`, `33.22` or the URI `http://LinkedData.Center`. Note that the data is usually associated with a  _data type_ it is just a name that states a set of restrictions on symbols string that build up the data;  _data type_ is not the data meaning.
 
 What is **information**? KEES defines information as *data with a meaning*. The meaning can be 
-learned from the context where a data is found or explicitly defined. From a practical point of view, because KEES adopts the [RDF standards](https://www.w3.org/RDF/), an information is defined by three data that build up a _triple_ (also known as a RDF statement): a _subject_, a _predicate_ and an _object_. The data type for the first two triple elements (subject and predicate) must be an URIs subclass, the last element (object) can be any data type.
+learned from the context where a data is found or explicitly defined. From a practical point of view, because KEES adopts the [RDF standards](https://www.w3.org/RDF/), an information is defined by three data that build up a _triple_ (also known as a RDF statement): a _subject_, a _predicate_ and an _object_. The data type for the first two triple elements (subject and predicate) must be an URIs subclass, the last element (object) can be anything.
 
 KEES defines **knowledge** as a nework of linked information (i.e. linked data). This nework is possible because, in RDF, any URI can be both the object of a triple  and the subject of another one or even a predicate for another.
 
-KEES defines **knowledge base** (or **knowledge graph** ) as a container of *linked data with a purpose*.
+KEES defines **knowledge base** (or **knowledge graph** ) as a container of *linked data with a purpose*, that is a related set information that can be composed to provide answer to some questions. 
 
-From a more theoretical point of view, a knowledge base is a semantic system where information is described as a
-set of statements according with the W3C standard Resource Description Framework (RDF). 
+From a theoretical point of view, a KEES knowledge base is composed by information (i.e. fatcs), plus a formal system of logic used for knowledge representation, plus the [Open-world assumption](https://en.wikipedia.org/w/index.php?title=Open-world_assumption&oldid=871019791).
 
-A  Knowledge Base is logically partitioned in two set of statements: *TBox* and *ABox*. *ABox statements* describe the facts,  *TBox statements* describe the terms used to qualify the facts (i.e. the vocabulary). If you are familiar with object-oriented paradigm, TBox statements sometimes associate with classes, while ABox associate with individual class instances. 
+The information are partitioned in two set: *TBox* and *ABox*. *ABox statements* describe facts,  *TBox statements* describe the terms used to qualify the facts meaning. If you are familiar with object-oriented paradigm, TBox statements sometimes associate with classes, while ABox associate with individual class instances. 
 *TBox statements* tend to be more permanent within a knowledge base and are often grouped in *ontologies* that describe a specific 
 knowledge domain (e.g. business entities, people, goods, friendship, offering, geocoding, etc, etc).
 *ABox statements* associate with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and 
 are populated from datasets available in the web or by reasonings. 
 
-For practical purposes, KEES assumes that a knowledge base is realized with of a [SPARQL service](https://www.w3.org/TR/sparql11-service-description/#sd-Service) with contains a default dataset composed by all RDF triples contained in a set of disjoined **Named Graphs**.
+For practical purposes, KEES knowledge base fully conforms to the [Semantic Web Standards](https://www.w3.org/standards/semanticweb/) and assumes that the knowledge base can be described as a [SPARQL service](https://www.w3.org/TR/sparql11-service-description).
 
-The most important concept introduced by KEES  is the **Question**. 
-Questions represent the reasons for the the knowledge base existence. In other words, the knoledge base exists to answer to *questions*. Question are natural language expressions that can be expressed as parametric SPARQL queries on a populated knowledge graph. The answer to a question can be a table of data, a structured document, a boolean or a translation of these in a natural language sentences.
+The **Question** represents the reason for the the knowledge base existence. In other words, the knoledge base exists to answer to *questions*. Question are natural language expressions that can be expressed as parametric SPARQL queries on a populated knowledge graph. The answer to a question can be a table of data, a structured document, a boolean or a translation of these in a natural language sentences.
 
-**Trustability** is another key concept in KEES. The [RDF] model allow to mix any kind of information, even when information that are incoerent. For instacne, suppose that your TBOX defines a property "person:hasMom" that require a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could contains two different fact (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), in order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are two names for the same person. If you are not so sure, you have two possibility: choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the TBOX , allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement (both ABox and Tbox) in the knowlege base. At least you want to know the **provenance** and all metadata of all information in your knowledge base because the trust on a single data often derives from the trust of its source or in the creator of the data source.
-
-**The KEES workflow** is based on a sequence of four temporal phases called "windows“:
-
-- a startup  phase (**boot window**)  to initialize the knowledge base just with KEES description and TBOX statements
-- a time slot for the population of the Knowledge Base and to link data (**learning window**)
-- a time slot for the data inference (**reasoning window**)
-- a time slot to access the Knowledge Base and answering to questions  (**teaching window**)
-
-KEES workflow is a continuous integration process. A guard SHOULD allow user to query the knowledge base only during the teaching windows.
+**Trust** is another key concept in KEES. The [RDF] model allow to mix any kind of information, even when information that are incoerent. For instacne, suppose that your TBOX defines a property "person:hasMom" that require a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could contains two different fact (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), in order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are two names for the same person. If you are not so sure, you have two possibility: choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the TBOX , allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement (both ABox and Tbox) in the knowlege base. At least you want to know the **provenance** and all metadata of all information in your knowledge base because the trust on a single data often derives from the trust of its source or in the creator of the data source.
 
 The **Language Profile** (or **Application profile**) is the portion of the vocabularies (TBOX) that describe the knowledge that are recognized by a specific software application. The language profile is normally described in the Tbox partition of a knowledge base but can be just referenced as linked data. 
 
-The **KEES Language Profile** is an application profile to describe the knowledge base itself, providing instructions about how
-to learn facts, how to reasoning about learned informations and about how to answer to questions. It reuses terms from existing vocabularies:
 
-- dct: http://purl.org/dc/terms/
-- qb: http://purl.org/linked-data/cube#
-- sdmx-code: http://purl.org/linked-data/sdmx/2009/code#
-- daq: http://purl.org/eis/vocab/daq# 
-- sd: http://www.w3.org/ns/sparql-service-description#
-- kees: http://linkeddata.center/kees/v1#
+## KEES Specification
+
+The **KEES vocabulary** define few new terms the  http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*). 
+It consists of few OWL classes and properties, mainly derived from existing ontologies. 
 
 
-The following picture sumarize mandatory restrictions introduced by the KEES language profile.
-
-![uml](architecture/uml.png)
-
-A **KEES compliant application** is a Semantic Web Application that is not in conflict with the KEES Language Profile. 
-
-A **KEES Agent** is a software process that understands a portion the KEES language profile and that it is able to do actions on a 
-knowledge base. For instance, it could be able to ingest data and/or to answer some questions.
-
-Knowing the statement **provenance** is the most usefull way to get an idea about its trustability. For this reason, KEES requires that any statement must have a fourth element that links to metadata that describe any statement in the knowledge base. This means that, for pratical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to a metadata.
-
-A **Reasoning** describes how to materialize new informations on existing knowledge base facts.
-A reasoning should occurs when a test conditions is true and it is related to a sequence of rules or axioms.
+A Reasoning describes how to materialize new informations on existing knowledge base facts. A reasoning should occurs when a test conditions is true and it is related to a sequence of rules or axioms.
 
 An axiom describes how to generate/validate knowledge base statemensts using a declarative approach.  For instance an axiom can be represented with a sparql construct or with a SHACL restriction or with an 
 entailment inferred by language profile semantic.
 
 The test condition can be realized with an ASK SPARQL operation or in any other mode. KEES does not impose any specification for axioms nor for condition representation.
-
-Finnaly  **KEES configuration** is a dataset describing a knowledge base. A KEES Agent shold be able to rebuild the whole knowlege graph
-just looking to the KEES configuration. Because different KEES configurations can be safely merged in a single new configuration, and this make knowledge domains shareable. Because a dataset can be protected with a license, you can sell your knowledge base (that is different to sell the data contained in the  knowlede about the data) making knowledge tradeable. 
-
-The KEES configuration can be included in the knowledge base in the graph named <urn:kees:configuration> or kept as separate resource.
-
-The http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*) contains a small set of concepts, mainly derived from existing ontologies. It provides terms to describe the knowledge base metadata that a KEES complain agent SHOULD know.
 
 Besides few classes and properties, KEES vocabulary defines some individuals:
 
@@ -108,11 +74,36 @@ Besides few classes and properties, KEES vocabulary defines some individuals:
 - **kees:sparqlUpdateScript** states the datatype of a literal string containing a sparql update scrirpt.
 
 
-TODO: A formal definition of kees vocabulary is availabe as a [RDFS file](v1/kees.rdf).
+The **KEES Language Profile** is an application profile allowing to automate the learning of facts from various sources,
+to reasoning about learned informations and about  to answer to questions. It reuses existing vocabularies:
+
+- dct: http://purl.org/dc/terms/
+- qb: http://purl.org/linked-data/cube#
+- sdmx-code: http://purl.org/linked-data/sdmx/2009/code#
+- daq: http://purl.org/eis/vocab/daq# 
+- sd: http://www.w3.org/ns/sparql-service-description#
+- kees: http://linkeddata.center/kees/v1#
+
+
+The following picture sumarize main aspects of the KEES language profile.
+
+![uml](architecture/uml.png)
+
+A **KEES compliant application** is a Semantic Web Application that is not in conflict with the KEES Language Profile. 
+
+A **KEES Agent** is a software process that understands a portion the KEES language profile and that it is able to do actions on a 
+knowledge base. For instance, it could be able to ingest data and/or to answer some questions.
+
+At the end, **KEES configuration** is a dataset describing a knowledge base. A KEES Agent should be able to rebuild the whole knowlege graph
+just looking to the KEES configuration. Because different KEES configurations can be safely merged in a single new configuration, and this make knowledge domains shareable. Because a dataset can be protected with a license, you can sell your knowledge base (that is different to sell the data contained in the  knowlede about the data) making knowledge tradeable. 
+
+The KEES configuration can be included in the knowledge base in the graph named <urn:kees:configuration> or kept as separate resource.
 
 TODO: KEES language profile restrictions is formally expressed in [SHACL constraints file](v1/kees-profile.rdf)
 
 ## RDF Store requirement
+
+Knowing the statement **provenance** is the most usefull way to get an idea about its trustability. For this reason, KEES requires that any statement must have a fourth element that links to metadata that describe any statement in the knowledge base. This means that, for pratical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to a metadata.
 
 Any RDF Store that provides with a SPARQL endpoint and QUAD support is compliant with KEES. Following requirement applies:
 
@@ -135,14 +126,25 @@ A KEES compliant sparql endpoint SHOULD support http caching specs [as described
 
 ## KEES agent requirements
 
-A KEES Agent MUST be able to 
+A KEES Agent SHOULD perform actions on a knowledge base on a sequence of four temporal phases called *windows*:
 
-- recognise and compute a dct:accrualPolicy that is made of a list of a strings containing  a SPARQL QUERY ASK 
-operation or a list of urls to a resource providing an application/sparql-quey content.
-- recognise and compute a dct:accrualMethod that is made of a list strings containing  a SPARQL QUERY CONSTRUCT 
-operation or a list of urls to a resource providing an application/sparql-quey content.
+- a startup  phase (**boot window**)  to initialize the knowledge base just with KEES description and TBOX statements
+- a time slot for the population of the Knowledge Base and to link data (**learning window**)
+- a time slot for the data inference (**reasoning window**)
+- a time slot to access the Knowledge Base and answering to questions  (**teaching window**)
 
-The list MUST determine the excecution order of method steps.
+This sequence is called **KEES workflow** and it is a continuous integration process. A guard SHOULD allow user to query the knowledge base only during the teaching windows.
+
+
+A KEES Agent MUST know terms defined in  http://linkeddata.center/kees/v1 vocabulary.
+
+A KEES Agent MUST be able to:
+
+- recognise and compute a dct:accrualPolicy that is strings containing  a SPARQL QUERY ASK 
+operation or a url to a resource providing an application/sparql-query content.
+- recognise and compute a dct:accrualMethod that is made of a list strings containing  a SPARQL UPDATE CONSTRUCT 
+operation or  url to a resource providing an application/sparql-update content.
+
 
 
 ## Examples
