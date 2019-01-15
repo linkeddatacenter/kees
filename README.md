@@ -8,14 +8,14 @@ not just the grammar and the syntax but the real meaning of things.
 
 KEES proposes some specifications to add metadata to a *domain knowledge* in order to make it tradeable and shareable. 
 
-KEES allows to formalize, license and transfer specific know hows:
+KEES allows to formalize and license:
 
 - how to collect the right data, 
 - how much you can trust in your data, 
 - what new information you can deduct from the collected data,
 - how to answer to specific questions using data
 
-Using KEES, artificial intelligences and humans can use this *know how* to populate, merge, exchange and enrich knowledge. KEES is a Semantic Web Application.
+Artificial intelligences and humans can use these *know hows* to reuse and enrich existing knowledge. KEES is a Semantic Web Application.
 
 See [KEES presentation slides](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
@@ -71,8 +71,7 @@ Besides few classes and properties, KEES vocabulary defines some individuals:
 - **kees:sparqlUpdateScript** states the datatype of a literal string containing a sparql update scrirpt.
 
 
-The **KEES Language Profile** is an application profile allowing to automate the learning of facts from various sources,
-to reasoning about learned informations and about  to answer to questions. It reuses existing vocabularies:
+The **KEES Language Profile** reuses following vocabularies:
 
 - dct: http://purl.org/dc/terms/
 - qb: http://purl.org/linked-data/cube#
@@ -121,40 +120,45 @@ to check if a RDF Store is ready to be safely queried `ASK { <urn:kees:kb> <http
 
 A KEES Agent SHOULD perform actions on a knowledge base on a sequence of four temporal phases called *windows*:
 
-- a startup  phase (**boot window**)  to initialize the knowledge base just with KEES description and TBOX statements
-- a time slot for the population of the Knowledge Base and to link data (**learning window**)
-- a time slot for the data inference (**reasoning window**)
-- a time slot to access the Knowledge Base and answering to questions  (**teaching window**)
+1. a startup  phase (**boot window**)  to initialize the knowledge base just with KEES description and TBOX statements
+2. a time slot for the population of the Knowledge Base and to link data (**learning window**)
+3. a time slot for the data inference (**reasoning window**)
+4. a time slot to access the Knowledge Base and answering to questions  (**teaching window**)
 
-This sequence is called **KEES workflow** and it is a continuous integration process. A guard SHOULD allow user to query the knowledge base only during the teaching windows.
+Step 2 and 3 can be iterated.
 
+This sequence is called **KEES workflow** and it is a continuous integration process. 
+
+A guard SHOULD allow user to query the knowledge base only during the teaching windows.
 
 A KEES Agent MUST know terms defined in  http://linkeddata.center/kees/v1 vocabulary.
 
 A KEES Agent MUST be able to:
 
-- generate all missing properties and types in a KISS configuration according the KEES Language Profile.
-- provide valid defaults for missing accrual policies, error management and accrual methods.
-- generate a unique graphName if missing.
+- generate all missing mandatory properties and types in a KISS configuration according the KEES Language Profile. 
+  The KEES Agent MUST assume following default :
+    - kees:accrualPeriodicity sdmx-code:freq-N . Agent can interprete this value as a minimum  update frequency.
+    - kees:onlyIf "ASK {}"^^kees:sparqlQueryAskOperation .
+    - kees:resilience 0 .
+    - kees:script ""^^kees:sparqlUpdateScript .
+    - kees:resource <http://example.com/> if kees:into is missing otherwhise the same object kees:into property
+    - kees:into the same object kees:into property
+    - kees:with "CONSTRUCT WHERE {}"^^kees:sparqlQueryConstructOperation.
+    - kees:answeredBy "ASK {}"^^kees:sparqlQueryAskOperation .
+    - kees:AccrualPolicy kees:create .
+- all missing types MUST be inferred from functional properties.
+- all kees:Workflow object MUST be considered owl:sameAs, This meens that kees:boot and kees:cycle properties are merged
 - verify the validity of a kees configuration against KEES language profile
-- for any **kees:GraphAccrualPlan** objects:
-    - recognise and compute a dct:accrualPolicy that is list of strings containing  a SPARQL QUERY ASK 
-operation or  urls to a resource providing an application/sparql-query content. The accrualMethod must be executed only if all list elements evaluate to true. The evaluation of list element must stop on first list element tthat is evaluated as "false"
-- for **kees:Learning** objects:
-   - recognise and compute a dct:accrualMethod that is made of a string containing  a SPARQL UPDATE CONSTRUCT 
- or an url to a resource providing an application/sparql-update content.
-   - use the URI of the object referenced by the dataSource property as graphName if missing
-- for **kees:Reasoning** objects:
-   - recognise and compute a dct:accrualMethod that is made of a list strings containing  a SPARQL UPDATE CONSTRUCT or urls to a resource providing an application/sparql-update content
 
-A KEES agent MUST inform the RDF store when it enters or exits the teaching window. 
 
-During teaching window:
+A KEES agent MUST update the RDF store when it enters or exits the teaching window. 
 
-- all named graph must be related to a kees:GraphAccrualPlan by means of dct:accrualMethod property
-- all named graph must expose a dct:created date and a dct:creator properties
-- all succesful created named graph must expose a dct:issued property
-- all unsuccessful created named graph (or incomple one) MUST NOT expose a dct:issued property. 
+During teaching window these condition MUST be always true:
+
+- all named graph must expose a dct:created dct:modified properties
+- all nemed graph MUST be related to a kees:Plan
+- for all amed graph related to a kees:SingleGraphPlan, kees:resilience must be >= of the total count of the  prov:InvalidatedAtTime properties
+ 
 
 ## SPARQL service requirements
 
