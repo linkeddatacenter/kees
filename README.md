@@ -28,7 +28,6 @@ What is **data**? According with common sense, KEES defines data as words, numbe
 What is **information**? KEES defines information as *data with a meaning*. The meaning can be 
 learned from the context where a data is found or explicitly defined. From a practical point of view, because KEES adopts the [RDF standards](https://www.w3.org/RDF/), an information is defined by three data that build up a _triple_ (also known as a RDF statement): a _subject_, a _predicate_ and an _object_. The data type for the first two triple elements (subject and predicate) must be an URIs, the last element of the triple (object) can be anything. A triple can be also rapresented as an [unidirected labeled graph]( :
 
-
 KEES defines **knowledge** as a graph of linked information (i.e. linked data). This graph is possible because, in RDF, any URI can be both the object of a triple  and the subject of another one or even a predicate for another.
 
 KEES defines **knowledge base** (or **knowledge graph** ) as a container of *linked data with a purpose*, that is a related set information that can be composed to provide answer to some questions. 
@@ -41,7 +40,7 @@ knowledge domain (e.g. business entities, people, goods, friendship, offering, g
 *ABox statements* associate with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and 
 are populated from datasets available in the web or by reasonings. 
 
-For practical purposes, KEES knowledge base fully conforms to the [Semantic Web Standards](https://www.w3.org/standards/semanticweb/) and assumes that the knowledge base can be described as a [SPARQL service](https://www.w3.org/TR/sparql11-service-description).
+For practical purposes, KEES knowledge base fully conforms to the [Semantic Web Standards](https://www.w3.org/standards/semanticweb/) and assumes that the knowledge base can be defined in a [SPARQL service](https://www.w3.org/TR/sparql11-service-description).
 
 The **Question** represents the reason for the the knowledge base existence. In other words, the knoledge base exists to answer to *questions*. Question are natural language expressions that can be expressed as parametric SPARQL queries on a populated knowledge graph. The answer to a question can be a table of data, a structured document, a boolean or a translation of these in a natural language sentences.
 
@@ -141,14 +140,16 @@ A KEES Agent MUST be able to:
     - kees:onlyIf "ASK {}"^^kees:sparqlQueryAskOperation .
     - kees:resilience 0 .
     - kees:script ""^^kees:sparqlUpdateScript .
-    - kees:resource <http://example.com/> if kees:into is missing otherwhise the same object kees:into property
+    - kees:from <http://example.com/> if kees:into is missing otherwhise the same object kees:into
     - kees:into the same object kees:into property
     - kees:with "CONSTRUCT WHERE {}"^^kees:sparqlQueryConstructOperation.
     - kees:answeredBy "ASK {}"^^kees:sparqlQueryAskOperation .
+    - kees:assert "ASK {}"^^kees:sparqlQueryAskOperation .
     - kees:AccrualPolicy kees:create .
 - all missing types MUST be inferred from functional properties.
-- all kees:Workflow object MUST be considered owl:sameAs, This meens that kees:boot and kees:cycle properties are merged
-- verify the validity of a kees configuration against KEES language profile
+- in a kees:KnowledgeBase, if sd:endpoit is not defined, hinerit the end point of the service where the kees:KnowledgrBase is 
+  found. This means that kees:answers and kees:workflow are always merged.
+- verify the validity of a kees configuration against KEES language profile.
 
 
 A KEES agent MUST update the RDF store when it enters or exits the teaching window. 
@@ -156,13 +157,18 @@ A KEES agent MUST update the RDF store when it enters or exits the teaching wind
 During teaching window these condition MUST be always true:
 
 - all named graph must expose a dct:created dct:modified properties
-- all nemed graph MUST be related to a kees:Plan
-- for all amed graph related to a kees:SingleGraphPlan, kees:resilience must be >= of the total count of the  prov:InvalidatedAtTime properties
+- all named graph MUST be related to a kees:Plan
+- for all named graph related to a kees:SingleGraphPlan, kees:resilience must be >= of the total count of the  prov:InvalidatedAtTime properties
  
 
 ## SPARQL service requirements
 
-A KEES compliant sparql endpoint MUST support the  **kees:guard** feature: a KEES compliant sparql endpoint SHOULD return 503 Error of any SPARQL QUERY that happens on a RDF Store that is not in the  *save* state.  A KEES compliant sparql endpoint SHOULD disable this feature if the http header "X-KEES-guard: disable" is present.
+A KEES compliant sparql endpoint SHOULD expose the  **kees:guard** feature. If a kees:guard feature is present
+the endpoint MUST return 503 Error of any SPARQL QUERY that happens on a RDF Store that is not in the  *safe* state.  A KEES compliant sparql endpoint SHOULD MUST this feature if the http header "X-KEES-guard: disable" is present.
+
+
+A KEES compliant sparql service MUST expose the  **kees:workflow** feature. The workflow plans must be attached to the defatul dataset of the service.
+
 
 A KEES compliant SPARQL service SHOULD alwais provide proper http caching information [as described in Section 13 of RFC2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html).
 
@@ -171,6 +177,7 @@ A KEES compliant SPARQL service SHOULD alwais provide proper http caching inform
 
 [** WARNING: THIS SECTION IS INFORMATIVE AND SUBJECTED TO MAYOR CHANGS **]
 
+This is a valid KEES knowledge base description
 
 
 ### TBD: Questions and Answers
