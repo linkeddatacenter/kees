@@ -1,0 +1,357 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://linkeddata.center/kees/v1#"
+     xml:base="http://linkeddata.center/kees/v1"
+     xmlns:void="http://rdfs.org/ns/void#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:llo="http://lodlaundromat.org/ontology/"
+     xmlns:sd="http://www.w3.org/ns/sparql-service-description#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:dcterms="http://purl.org/dc/terms/"
+     xmlns:v1="http://linkeddata.center/kees/v1#"
+     xmlns:prov="http://www.w3.org/ns/prov#"
+     xmlns:foaf="http://xmlns.com/foaf/0.1/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:wv="http://vocab.org/waiver/terms/norms">
+    <owl:Ontology rdf:about="http://linkeddata.center/kees/v1">
+        <dc:creator xml:lang="en">Enrico Fagnoni</dc:creator>
+        <dcterms:license rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
+        <owl:versionInfo>V 1.2.00 Release 2019-01-14</owl:versionInfo>
+        <foaf:homepage rdf:resource="http://linkeddata.center/kees/"/>
+        <dc:description rdf:resource="https://raw.githubusercontent.com/linkeddatacenter/kees/master/architecture/uml.png"/>
+        <dc:description xml:lang="en">KEES proposes some specifications to add metadata to a domain knowledge in order to make it tradeable and shareable.
+
+KEES allows to formalize and license:
+
+how to collect the right data,
+how much you can trust in your data,
+what new information you can deduct from the collected data,
+how to answer to specific questions using data
+
+Artificial intelligences and humans can use these know hows to reuse and enrich existing knowledge. KEES is a Semantic Web Application.</dc:description>
+        <rdfs:label xml:lang="en">KEES Ontology</rdfs:label>
+        <dc:rights xml:lang="en">The KEES ontology is available under the Creative Commons Attribution 4.0 Unported license; see http://creativecommons.org/licenses/by/4.0/. In a nutshell, you are free to copy, distribute and transmit the work; to remix/adapt the work (e.g. to import the ontology and create specializations of its elements), as long as you attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work). Proper Attribution: Simply include the statement &quot;This work is based on the KEES ontology, developed by Enrico Fagnoni&quot; and link back to http:/linkeddata.center/kees/v1</dc:rights>
+        <dc:title xml:lang="en">The KEES Vocabulary for knowledge  base management</dc:title>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/contributor -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/contributor"/>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/creator -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/creator"/>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/description -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/description"/>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/modifed -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/modifed"/>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/rights -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/rights"/>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/subject -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/subject"/>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/title -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/title"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/license -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/license"/>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#deprecated -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2002/07/owl#deprecated"/>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/homepage -->
+
+    <owl:AnnotationProperty rdf:about="http://xmlns.com/foaf/0.1/homepage"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#sparqlQueryAskOperation -->
+
+    <rdfs:Datatype rdf:about="http://linkeddata.center/kees/v1#sparqlQueryAskOperation">
+        <rdfs:comment xml:lang="en">States the datatype of a literal string containing a sparql query ASK operation.</rdfs:comment>
+        <rdfs:label xml:lang="en">SPARQL  query ask operation</rdfs:label>
+    </rdfs:Datatype>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#sparqlQueryConstructOperation -->
+
+    <rdfs:Datatype rdf:about="http://linkeddata.center/kees/v1#sparqlQueryConstructOperation">
+        <rdfs:comment xml:lang="en">States the datatype of a literal string containing a sparql query CONSTRUCT operation.</rdfs:comment>
+        <rdfs:label xml:lang="en">SPARQL query construct operation</rdfs:label>
+    </rdfs:Datatype>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#sparqlQueryDescribeOperation -->
+
+    <rdfs:Datatype rdf:about="http://linkeddata.center/kees/v1#sparqlQueryDescribeOperation">
+        <rdfs:comment xml:lang="en">States the datatype of a literal string containing a sparql query DESCRIBE operation</rdfs:comment>
+        <rdfs:label xml:lang="en">SPARQL query describe operation</rdfs:label>
+    </rdfs:Datatype>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#sparqlQuerySelectOperation -->
+
+    <rdfs:Datatype rdf:about="http://linkeddata.center/kees/v1#sparqlQuerySelectOperation">
+        <rdfs:comment xml:lang="en">States the datatype of a literal string containing a sparql query SELECT operation.</rdfs:comment>
+        <rdfs:label xml:lang="en">SPARQL query select operation</rdfs:label>
+    </rdfs:Datatype>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#sparqlUpdateScript -->
+
+    <rdfs:Datatype rdf:about="http://linkeddata.center/kees/v1#sparqlUpdateScript">
+        <rdfs:comment xml:lang="en">States the datatype of a literal string containing a sparql update scrirpt.</rdfs:comment>
+        <rdfs:label xml:lang="en">SPARQL update script</rdfs:label>
+    </rdfs:Datatype>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#AccrualPolicy -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#AccrualPolicy">
+        <rdfs:comment xml:lang="en">A KEES agent MUST recognize kees:modify and kees:create individuals as valid object for dct:accrualPolicy property in a kees:Plan. In case of inconsistencies or if no dct:accrualPolicy property is specified, the agent MUST choose kees:create.
+
+If the accrual policy is kees:create, the named graph and all related metadata MUST be deleted and recreated BEFORE to execute accrual policies.</rdfs:comment>
+        <rdfs:label xml:lang="en">AccrualPolicy</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#Agent -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#Agent">
+        <rdfs:label xml:lang="en">Agent</rdfs:label>
+        <rdfs:label xml:lang="en">Is a software process that understands a portion the KEES language profile and that it is able to do actions on a knowledge base. For instance, it could be able to ingest data and/or to answer some questions.</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#IngestionPlan -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#IngestionPlan">
+        <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Plan"/>
+        <owl:disjointWith rdf:resource="http://linkeddata.center/kees/v1#ReasoningPlan"/>
+        <rdfs:comment xml:lang="en">Is a specialization of prov:Plan class. Describes how to create a graph in the knowledge base extracting facts from a data source.</rdfs:comment>
+        <rdfs:label xml:lang="en">IngestionPlan</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#KnowledgeBase -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#KnowledgeBase">
+        <rdfs:comment xml:lang="en">A container of linked data with a purpose, that is a related set information that can be composed to provide answer to some questions.</rdfs:comment>
+        <rdfs:label xml:lang="en">KnowledgeBase</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#KnowledgeBaseDescrtiption -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#KnowledgeBaseDescrtiption">
+        <rdfs:comment xml:lang="en">A document describing a knowledge base configuration. A KEES Agent should be able to rebuild the whole knowlege graph just looking to the KEES configuration.</rdfs:comment>
+        <rdfs:label xml:lang="en">KnowledgeBaseDescrtiption</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#Plan -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#Plan">
+        <rdfs:comment xml:lang="en">A subclass of a prov:Plan. States a named graph accual activity plan</rdfs:comment>
+        <rdfs:label xml:lang="en">plan</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#Question -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#Question">
+        <rdfs:comment xml:lang="en">The Question represents the reason for the the knowledge base existence. In other words, the knoledge base exists to answer to questions. Question are natural language expressions that can be expressed as parametric SPARQL queries on a populated knowledge graph. The answer to a question can be a table of data, a structured document, a boolean or a translation of these in a natural language sentences.</rdfs:comment>
+        <rdfs:label xml:lang="en">Question</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#ReasoningPlan -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#ReasoningPlan">
+        <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Plan"/>
+        <rdfs:comment xml:lang="en">Describes how to materialize new information from existing knowledge base facts.</rdfs:comment>
+        <rdfs:label xml:lang="en">ReasoningPlan</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#create -->
+
+    <owl:NamedIndividual rdf:about="http://linkeddata.center/kees/v1#create">
+        <rdfs:comment xml:lang="en">An accrual policy where the named graph is re-created on data change</rdfs:comment>
+        <rdfs:isDefinedBy rdf:resource=":"/>
+        <rdfs:label xml:lang="en">create</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#guard -->
+
+    <owl:NamedIndividual rdf:about="http://linkeddata.center/kees/v1#guard">
+        <rdfs:comment xml:lang="en">A SPARQL service description feature that states that the RDF store supports KEES guard specifications</rdfs:comment>
+        <rdfs:label xml:lang="en">guard</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#sharableKnowledge -->
+
+    <owl:NamedIndividual rdf:about="http://linkeddata.center/kees/v1#sharableKnowledge">
+        <rdfs:comment xml:lang="en">the default name for a shared knowledge base</rdfs:comment>
+        <rdfs:label xml:lang="en">kees:sharableKnowledge</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#trustGraphMetric -->
+
+    <owl:NamedIndividual rdf:about="http://linkeddata.center/kees/v1#trustGraphMetric">
+        <rdfs:comment xml:lang="en">defines a metric that evaluate a trust value for a graph with a specific name. All can be used in graph quality observations.</rdfs:comment>
+        <rdfs:label xml:lang="en">trustGraphMetric</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#trustStatementMetric -->
+
+    <owl:NamedIndividual rdf:about="http://linkeddata.center/kees/v1#trustStatementMetric">
+        <rdfs:comment xml:lang="en">defines a trust metric computed on specific rdf statement.</rdfs:comment>
+        <rdfs:label xml:lang="en">trust statement metric</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#trustSubjectMetric -->
+
+    <owl:NamedIndividual rdf:about="http://linkeddata.center/kees/v1#trustSubjectMetric">
+        <rdfs:comment xml:lang="en">defines a trust metric computed on specific subject type</rdfs:comment>
+        <rdfs:label xml:lang="en">trustSubjectMetric</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#update -->
+
+    <owl:NamedIndividual rdf:about="http://linkeddata.center/kees/v1#update">
+        <rdfs:comment xml:lang="en">An accrual policy where the data ar appended to existing named graphs</rdfs:comment>
+        <rdfs:label xml:lang="en">update</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#kees:trustPropertytMetric -->
+
+    <owl:NamedIndividual rdf:about="http://linkeddata.center/kees/v1#kees:trustPropertytMetric">
+        <rdfs:comment xml:lang="en">defines a trust metric computed on specific property</rdfs:comment>
+        <rdfs:label xml:lang="en">kees:trustPropertytMetric</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotations
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description rdf:about="http://www.w3.org/2001/XMLSchema#success">
+        <rdfs:label xml:lang="en">has input</rdfs:label>
+        <owl:priorVersion xml:lang="en">task  processor input as a json structure.</owl:priorVersion>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->
+
