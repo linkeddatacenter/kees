@@ -168,6 +168,125 @@ Artificial intelligences and humans can use these know hows to reuse and enrich 
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#answers -->
+
+    <owl:ObjectProperty rdf:about="http://linkeddata.center/kees/v1#answers">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://linkeddata.center/kees/v1#KnowledgeBase"/>
+        <rdfs:range rdf:resource="http://linkeddata.center/kees/v1#Question"/>
+        <rdfs:comment xml:lang="en">answer a question</rdfs:comment>
+        <rdfs:label xml:lang="en">answers</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#answeredBy -->
+
+    <owl:DatatypeProperty rdf:about="http://linkeddata.center/kees/v1#answeredBy">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://linkeddata.center/kees/v1#Question"/>
+        <rdfs:comment xml:lang="en">a SPARQL query thath answer a question</rdfs:comment>
+        <rdfs:label xml:lang="en">answeredBy</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#asserts -->
+
+    <owl:DatatypeProperty rdf:about="http://linkeddata.center/kees/v1#asserts">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://linkeddata.center/kees/v1#Plan"/>
+        <rdfs:range>
+            <rdfs:Datatype>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://linkeddata.center/kees/v1#sparqlQueryAskOperation"/>
+                    <rdf:Description rdf:about="http://www.w3.org/2001/XMLSchema#anyURI"/>
+                </owl:unionOf>
+            </rdfs:Datatype>
+        </rdfs:range>
+        <rdfs:comment xml:lang="en">If is a string the condition is true if the SPARQL ASK operation construct returns &quot;true&quot;. An URI means that the named graph exists and it is updated.</rdfs:comment>
+        <rdfs:label xml:lang="en">asserts</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#axiom -->
+
+    <owl:DatatypeProperty rdf:about="http://linkeddata.center/kees/v1#axiom">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://linkeddata.center/kees/v1#ReasoningPlan"/>
+        <rdfs:range>
+            <rdfs:Datatype>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://linkeddata.center/kees/v1#sparqlQueryAskOperation"/>
+                    <rdf:Description rdf:about="http://www.w3.org/2001/XMLSchema#anyURI"/>
+                </owl:unionOf>
+            </rdfs:Datatype>
+        </rdfs:range>
+        <rdfs:comment xml:lang="en">An axiom describes how to generate/validate knowledge base statemensts using entailment inferred by language profile semantic.For example an axiom can be described with OWL and evaluated by a OWL reasoner or described with SPARQL QUERY construct or with SPARQL UPDATE statements.</rdfs:comment>
+        <rdfs:label xml:lang="en">axiom</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#builds -->
+
+    <owl:DatatypeProperty rdf:about="http://linkeddata.center/kees/v1#builds">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://linkeddata.center/kees/v1#Plan"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+        <rdfs:comment xml:lang="en">Related a graph name to a plan</rdfs:comment>
+        <rdfs:label xml:lang="en">builds</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#dataSource -->
+
+    <owl:DatatypeProperty rdf:about="http://linkeddata.center/kees/v1#dataSource">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://linkeddata.center/kees/v1#IngestionPlan"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+        <rdfs:comment xml:lang="en">a generic resource  that provides facts</rdfs:comment>
+        <rdfs:label xml:lang="en">dataSource</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#workflow -->
+
+    <owl:DatatypeProperty rdf:about="http://linkeddata.center/kees/v1#workflow">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://linkeddata.center/kees/v1#KnowledgeBase"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+        <rdfs:comment xml:lang="en">An ordered list of kees:Plan</rdfs:comment>
+        <rdfs:label xml:lang="en">workflow</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
     // Classes
     //
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -200,6 +319,13 @@ If the accrual policy is kees:create, the named graph and all related metadata M
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#IngestionPlan">
         <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Plan"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://linkeddata.center/kees/v1#dataSource"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <owl:disjointWith rdf:resource="http://linkeddata.center/kees/v1#ReasoningPlan"/>
         <rdfs:comment xml:lang="en">Is a specialization of prov:Plan class. Describes how to create a graph in the knowledge base extracting facts from a data source.</rdfs:comment>
         <rdfs:label xml:lang="en">IngestionPlan</rdfs:label>
@@ -216,9 +342,9 @@ If the accrual policy is kees:create, the named graph and all related metadata M
     
 
 
-    <!-- http://linkeddata.center/kees/v1#KnowledgeBaseDescrtiption -->
+    <!-- http://linkeddata.center/kees/v1#KnowledgeBaseDescription -->
 
-    <owl:Class rdf:about="http://linkeddata.center/kees/v1#KnowledgeBaseDescrtiption">
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#KnowledgeBaseDescription">
         <rdfs:comment xml:lang="en">A document describing a knowledge base configuration. A KEES Agent should be able to rebuild the whole knowlege graph just looking to the KEES configuration.</rdfs:comment>
         <rdfs:label xml:lang="en">KnowledgeBaseDescrtiption</rdfs:label>
     </owl:Class>
@@ -228,6 +354,13 @@ If the accrual policy is kees:create, the named graph and all related metadata M
     <!-- http://linkeddata.center/kees/v1#Plan -->
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#Plan">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://linkeddata.center/kees/v1#builds"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">A subclass of a prov:Plan. States a named graph accual activity plan</rdfs:comment>
         <rdfs:label xml:lang="en">plan</rdfs:label>
     </owl:Class>
@@ -247,6 +380,20 @@ If the accrual policy is kees:create, the named graph and all related metadata M
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#ReasoningPlan">
         <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Plan"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://linkeddata.center/kees/v1#axiom"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange>
+                    <rdfs:Datatype>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://www.w3.org/2001/XMLSchema#anyURI"/>
+                            <rdf:Description rdf:about="http://www.w3.org/2001/XMLSchema#string"/>
+                        </owl:unionOf>
+                    </rdfs:Datatype>
+                </owl:onDataRange>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment xml:lang="en">Describes how to materialize new information from existing knowledge base facts.</rdfs:comment>
         <rdfs:label xml:lang="en">ReasoningPlan</rdfs:label>
     </owl:Class>
