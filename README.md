@@ -50,12 +50,9 @@ The **Language Profile** (or **Application profile**) is the portion of the voca
 
 An **axiom** describes how to generate/validate knowledge base statemensts using entailment inferred by language profile semantic.For example an axiom can be described with OWL and evaluated by a OWL reasoner or described with SPARQL QUERY construct or with SPARQL UPDATE statements.
 
-A **rule** express a logic deduction in the form of if *some facts exists* then *new facts genetarted*. Like axioms ,rules can be 
-described with SPARQL QUERY construct or with SPARQL UPDATE statements.
+KEES allows to define **test conditions** that can be realized with a SPARQL ASK operation. 
 
-KEES allows to define **test conditions** that can be realized with an ASK SPARQL operation. 
-
-KEES does not restrict the specification for axioms, rules nor for tes condition representation to SPARQL. A KEES agent can recognize additional languages.
+KEES does not restrict the specification for axioms nor for tes condition representation to SPARQL. A KEES agent can recognize additional languages.
 
 
 ## KEES Specification
