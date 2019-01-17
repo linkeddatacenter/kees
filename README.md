@@ -102,7 +102,7 @@ The **KEES Language Profile** reuses following vocabularies:
 - kees: http://linkeddata.center/kees/v1#
 
 
-The following picture sumarize the KEES language profile.
+The following picture sumarizes the KEES language profile.
 
 ![uml](architecture/uml.png)
 
