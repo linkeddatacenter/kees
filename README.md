@@ -218,7 +218,7 @@ If  kees:builds attribute is not present a KEES agent MUST reuse  generate a new
 CONSTRUCT { ?plan kees:builds ?g } 
 WHERE {
    BIND( UUID() as ?g ? }
-   FILTER NOT EXISTS { ?plan kees:dataSource ?g }
+   FILTER NOT EXISTS { ?plan kees:builds ?g }
 }
 ```
 
