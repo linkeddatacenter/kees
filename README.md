@@ -48,27 +48,48 @@ The **Question** represents the reason for the the knowledge base existence. In 
 
 The **Language Profile** (or **Application profile**) is the portion of the vocabularies (TBOX) that describe the knowledge that are recognized by a specific software application. The language profile contains **domain specific axioms** and is normally contained in the Tbox partition of a knowledge base. 
 
+An **axiom** describes how to generate/validate knowledge base statemensts using entailment inferred by language profile semantic.For example an axiom can be described with OWL and evaluated by a OWL reasoner or described with SPARQL QUERY construct or with SPARQL UPDATE statements.
+
+A **rule** express a logic deduction in the form of if *some facts exists* then *new facts genetarted*. Like axioms ,rules can be 
+described with SPARQL QUERY construct or with SPARQL UPDATE statements.
+
+KEES allows to define **test conditions** that can be realized with an ASK SPARQL operation. 
+
+KEES does not restrict the specification for axioms, rules nor for tes condition representation to SPARQL. A KEES agent can recognize additional languages.
+
 
 ## KEES Specification
+
+## KEES Vocabulary
 
 The **KEES vocabulary** defines few new terms the  http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*). 
 It consists of some OWL classes and properties, mainly derived from existing ontologies. 
 
-A Reasoning describes how to materialize new informations from existing knowledge base facts. A reasoning should occurs only when a test conditions is true and it is related to a sequence of rules or axioms evaluation. An axiom describes how to generate/validate knowledge base statemensts using entailment inferred by language profile semantic; a rule express a logic deduction (if *facts exists* then *new facts genetarted*). For example an axiom can be described with OWL, rules can be represented with a sparql construct.
+All knowledge base building activities MUST be traced using PROV ontology. KEES require that every build activity must be associated with a plan.
 
-The test condition can be realized with an ASK SPARQL operation or in any other mode. KEES does not impose any specification for axioms nor for condition representation.
+The main classes introduced by KEES vocabulary are **kees:IngestionPlan** and **kees:ReasoningPlan**; both that are 
+specialization of prov:Plan class. The first describes how to create a graph in the knowledge base extracting facts from a data source, 
+the second describes how to materialize new information from existing knowledge base facts.
+
+KEES vocabulary is expressed with OWL RDF in [kees.rdf file](v1/kees.rdf). The file was edited wit Protégé editor.
 
 Besides few classes and properties, KEES vocabulary defines some individuals:
 
 - **kees:guard** a [SPARQL service description](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) feature that states that the RDF store supports KEES guard specifications (see below)
-- **kees:trustMetric** defines a generic trust metric computed on an arbitrary requirements.
-- **kees:trustGraphMetric** defines a metric that evaluate a subjective trust value for a graph with a specific name. Can be used in graph quality observations.
+- **kees:trustStatementMetric** defines a  trust metric computed on specific rdf statement.
+ **kees:trustPropertytMetric** defines a  trust metric computed on specific property, 
+ **kees:trustSubjectMetric** defines a  trust metric computed on specific subject type,
+ **kees:trustGraphMetric** defines a metric that evaluate a trust value for a graph with a specific name. 
+   All can be used in graph quality observations.
+- **kees:update** and **kees:create** state two possible graph accrual policies
+
+KEES vocabulary defines some datatypes:
+
 - **kees:sparqlQueryConstructOperation** states the datatype of a literal string containing a sparql query CONSTRUCT operation. 
 - **kees:sparqlQuerySelectOperation** states the datatype of a literal string containing a sparql query SELECT operation.
 - **kees:sparqlQueryDescribeOperation** states the datatype of a literal string containing a sparql query DESCRIBE operation.
 - **kees:sparqlQueryAskOperation** states the datatype of a literal string containing a sparql query ASK operation.
 - **kees:sparqlUpdateScript** states the datatype of a literal string containing a sparql update scrirpt.
-
 
 The **KEES Language Profile** reuses following vocabularies:
 
@@ -77,10 +98,11 @@ The **KEES Language Profile** reuses following vocabularies:
 - sdmx-code: http://purl.org/linked-data/sdmx/2009/code#
 - daq: http://purl.org/eis/vocab/daq# 
 - sd: http://www.w3.org/ns/sparql-service-description#
+- prov: http://www.w3.org/ns/prov#
 - kees: http://linkeddata.center/kees/v1#
 
 
-The following picture sumarize main aspects of the KEES language profile.
+The following picture sumarize the KEES language profile.
 
 ![uml](architecture/uml.png)
 
@@ -166,34 +188,56 @@ KEES agent to enter the teaching window.
 
 A KEES agent MUST abort if it was unable to find a way to build a graph. 
 
-A KEES agent must abort in case of semanti inconsistences in kees:KnowledgeBaseSpecification (e.g. two distinck individuals
-related to a kees:Plan through kees:builds property)
+A KEES agent must abort in case of semantic inconsistences in kees knowledge base definition. KEES does not impose
+restriction on knowledge base consistence.
 
-If a KEES agent was unable to complete succesfullya plan, it MUST abort if the target named graph was partially builded, otherwhise
+If a KEES agent was unable to complete succesfully a plan, it MUST abort if the target named graph was partially builded, otherwhise
 it MUST annotate the named graph with the prov:InvalidatedAtTime property and continue.
 
+## Ingestion plans behaviour and axioms
 
-During teaching window all these condition always MUST ensured:
+If  kees:dataSource attribute is not present a KEES agent MUST reuse  kees:builds value, e.g.:
 
-- all named graph created by the agent expose dct:created and dct:modified properties
-- all named graph are related to a kees:Plan throuhg a prov:Activity
- 
-## Conditional plan execution
+```
+CONSTRUCT { ?plan kees:dataSource ?g } 
+WHERE {
+   ?plan kees:builds ?g
+   FILTER NOT EXISTS { ?plan kees:dataSource ?g }
+}
+```
 
-The KEES agent MUST be able to evaluate  that kees:onlyIf and kees:Assert as SPARQL ASK operation construct (both as string or uri), 
-Other methods to evaluate conditions SHOULD implementation dependent.
-
-The KEES agent MUST abort if kees:assert is present and evaluates to anything different from "true".
-
-The KEES agent SHOULD ignore a plan if the named graph exists and it is newer respect to all required resources. 
-How to evaluate this condition is implementation dependent but a resoure without a clear modification date MUST 
+The KEES agent SHOULD ignore an ingestion plan if the named graph exists and it is newer than kees:dataSource. 
+How to evaluate this condition is implementation dependent but a data source without a clear modification date MUST 
 be considered always newer than any existing named graph.
 
 The KEES agent SHOULD recognize all concepts in sdmx-code:freq scheme for dct:accrualPeriodicity and use these information to
 decide if executing a plan or not. How to manage dct:accrualPeriodicity depends from KEES Agent implementation.
 
-The KEES agent MUST ignore a plan if all kees:onlyIf properties are evaluated to "true". If the property kees:onlyIf does not exists,
-the plan MUST be executed.
+## Reasoning plans behaviour and axioms
+
+If  kees:builds attribute is not present a KEES agent MUST reuse  generate a new unique graph name, e.g.:
+
+```
+CONSTRUCT { ?plan kees:builds ?g } 
+WHERE {
+   BIND( UUID() as ?g ? }
+   FILTER NOT EXISTS { ?plan kees:dataSource ?g }
+}
+```
+
+The KEES agent SHOULD execute an reasoning plan only if all required xonditions eval to "true". 
+
+ 
+## conditional properties evaluation in plan execution
+
+The KEES agent MUST be able to recognize  kees:assert and kees:requires properties as kees:sparqlQueryAskOperation string, or as
+a name of a graph.
+
+If is a string the condition is true if the SPARQL ASK operation construct returns "true". An URI means that the 
+named graph exists and it is updated.
+
+The KEES agent MUST abort if kees:assert is present and evaluates to anything different from "true".
+
 
 ### KEES agent protocol
 
@@ -209,7 +253,7 @@ KEES agent should be able to infer types from functional properties.
 
 ### Accrual policies
 
-A KEES agent MUST recognize *kees:modify* and *kees:create* individuals as valid object for dct:accrualPolicy property in a kees:Plan. In case of inconsistencies or if no dct:accrualPolicy property is specified, the agent MUST adopt kees:create.
+A KEES agent MUST recognize *kees:modify* and *kees:create* individuals as valid object for dct:accrualPolicy property in a kees:Plan. In case of inconsistencies or if no dct:accrualPolicy property is specified, the agent MUST choose kees:create.
 
 If the accrual policy is kees:create, the named graph and all related metadata MUST be deleted and recreated BEFORE
 to execute accrual policies.
@@ -236,8 +280,6 @@ If the dct:accrualMethod is a string with datatype *kees:sparqlUpdate* then then
 
 ```
 <> a kees:KnowledgeBaseDescription; foaf:primaryTopic kees:sharableKnowledge.
-	
-kees:sharableKnowledge a kees:KnowledgeBase ;
 ```
 
 ## Defining a workflow
@@ -302,7 +344,7 @@ kees:sharableKnowledge kees:answers [  a kees:Question
 Trust in a specific statement can be expessed with:
 ```
 [] a qb:Observation ;
-    daq:computedOn ( ".*" dbo:birthPlace :Berlin) ; 
+    daq:computedOn ( kees:anySubject, dbo:birthPlace, kees:anyObject) ; 
     daq:metric kees:trustMetric ;
     daq:value 0.10 ;
     daq:isEstimated true .
