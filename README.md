@@ -106,9 +106,38 @@ Any RDF Store that provides with a SPARQL endpoint and QUAD support is compliant
 
 - If a statement with subject <urn:kees:kb> and predicate dct:valid is present in the default graph, this  means that the Knowledge base is *safe* to be queried. Otherwhise the knowledge base should be considered *not safe*.
 
-to check if a RDF Store is ready to be safely queried `ASK { <urn:kees:kb> <http://purl.org/dc/terms/valid> [] }`
+For example: 
+
+to declare that a RDF Store is ready to be safely queried execute following SPARQL UPDATE statement
+
+```
+INSERT { <urn:kees:kb> <http://purl.org/dc/terms/valid> ?now }
+WHERE { BIND( NOW() AS ?now) }
+```
+To declare that a RDF Store is *not safe*
+
+```
+Delete { <urn:kees:kb> <http://purl.org/dc/terms/valid> ?x  } WHERE { <urn:kees:kb> <http://purl.org/dc/terms/valid> ?x }
+```
+
+To check if a RDF Store is ready to be safely queried `ASK { <urn:kees:kb> <http://purl.org/dc/terms/valid> [] }`
+
+
+## SPARQL service requirements
+
+A KEES compliant sparql endpoint SHOULD expose the  **kees:guard** feature. If a kees:guard feature is present
+the endpoint MUST return 503 Error of any SPARQL QUERY that happens on a RDF Store that is not in the  *safe* state.  A KEES compliant sparql endpoint SHOULD MUST this feature if the http header "X-KEES-guard: disable" is present.
+
+A KEES compliant sparql service MUST expose the  **kees:workflow** feature. The workflow plans must be attached to the defatul dataset of the service.
+
+A KEES compliant SPARQL service SHOULD alwais provide proper http caching information [as described in Section 13 of RFC2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html).
+
+
+
 
 ## KEES agent requirements
+
+### Workflow
 
 A KEES Agent SHOULD perform actions on a knowledge base on a sequence of four temporal phases called *windows*:
 
@@ -122,83 +151,74 @@ Step 2 and 3 can be iterated.
 This sequence is called **KEES workflow** and it is a continuous integration process that happens on scheduled time or 
 after triggering an event (e.g. a dataset change).
 
-### Error management
+### Error conditions and error management
 
 A KEES agent MUST update the RDF store safe statement when it enters or exits the teaching window. 
 
-For example: to declare that a RDF Store is ready to be safely queried execute following SPARQL UPDATE statement
-```
-INSERT { <urn:kees:kb> <http://purl.org/dc/terms/valid> ?now }
-WHERE { BIND( NOW() AS ?now) }
-```
-
 If the KEES agent abort execution, the knowledge base must be marked as "not safe", thus the knowledge base MAY be inconsistent.
-For example: to declare that a RDF Store is *not safe* execute following SPARQL UPDATE statement. E.g.:
-
-```
-Delete { <urn:kees:kb> <http://purl.org/dc/terms/valid> ?x  } WHERE { <urn:kees:kb> <http://purl.org/dc/terms/valid> ?x }
-```
 
 The existence of prov:InvalidatedAtTime in a named graph MUST prevent the KEES agent to enter the teaching window.
 
-The existence of prov:InvalidatedAtTime in SHOULD be signaled by KEES agent. How to signa is implementation dependent
+The existence of prov:InvalidatedAtTime in SHOULD be signaled by KEES agent. How to signal is implementation dependent
 
-The existence of activities without a plan  SHOULD be signaled by KEES agent. This condition does not prevent the 
+The existence of activities without a plan SHOULD be signaled by KEES agent. This condition does not prevent the 
 KEES agent to enter the teaching window.
 
-A KEES agent MUST abort if it was unable to find how to plan to build a graph. 
+A KEES agent MUST abort if it was unable to find a way to build a graph. 
 
-If a KEES agent was unable to complete succesfully a plan, it MUST abort if the target named graph was partially builded, otherwhise
-it MUST mark the named graph using prov:InvalidatedAtTime property and continue.
+A KEES agent must abort in case of semanti inconsistences in kees:KnowledgeBaseSpecification (e.g. two distinck individuals
+related to a kees:Plan through kees:builds property)
 
-During teaching window all these condition MUST ensured:
+If a KEES agent was unable to complete succesfullya plan, it MUST abort if the target named graph was partially builded, otherwhise
+it MUST annotate the named graph with the prov:InvalidatedAtTime property and continue.
 
-- all named graph created by the agent MUST expose dct:created and dct:modified properties
-- no named graphs expose prov:InvalidatedAtTime properties
-- all named graph  MUST be related to a kees:Plan throuhg a prov:Activity
-- for all named graph related to a kees:SingleGraphPlan, kees:resilience must be >= of the total count of the  prov:InvalidatedAtTime properties
+
+During teaching window all these condition always MUST ensured:
+
+- all named graph created by the agent expose dct:created and dct:modified properties
+- all named graph are related to a kees:Plan throuhg a prov:Activity
  
-
 ## Conditional plan execution
 
 The KEES agent MUST be able to evaluate  that kees:onlyIf and kees:Assert as SPARQL ASK operation construct (both as string or uri), 
 Other methods to evaluate conditions SHOULD implementation dependent.
 
-The KEES agent MUST abort if kees:assert is present evaluate to anything different from "true".
+The KEES agent MUST abort if kees:assert is present and evaluates to anything different from "true".
 
-The KEES agent MUST ignore a plan if the named graph exists and is newer of all required resource. 
+The KEES agent SHOULD ignore a plan if the named graph exists and it is newer respect to all required resources. 
 How to evaluate this condition is implementation dependent but a resoure without a clear modification date MUST 
-be considered always newer tha an existing named graph.
+be considered always newer than any existing named graph.
 
-The KEES agent SHOULD recognize all concepts in sdmx-code:freq scheme for dct:accrualPeriodicity and using these informations to
-decide if to execute a plan. How to manage dct:accrualPeriodicity is depends from KEES Agent implementation.
+The KEES agent SHOULD recognize all concepts in sdmx-code:freq scheme for dct:accrualPeriodicity and use these information to
+decide if executing a plan or not. How to manage dct:accrualPeriodicity depends from KEES Agent implementation.
 
 The KEES agent MUST ignore a plan if all kees:onlyIf properties are evaluated to "true". If the property kees:onlyIf does not exists,
 the plan MUST be executed.
 
 ### KEES agent protocol
 
-A KEES Agent MUST be able to:
+A KEES Agent MUST be able to accept in input one or more URL dereferencing to kees:KnowledgeBaseDescription resources.
+The input method is implentation dependent. A KEES agent can be implemented as a web service or as a command or as a job.
 
-- accept in input one or more URL dereferencing to kees:KnowledgeBaseDescription resources.
-- at least all missing kees types MUST be inferred from functional properties in kees ontology.
-
-The input method is implentation dependent. A KEES agent can be implemented as a web service or as a command.
-
-There is no standard way to detect if an agent is running or is aborted. But you can check if the knowledge is in a
+There is no direct way to detect if an agent is running or is aborted. But you can always check if the knowledge base is in a
 safe state. 
-KEES agent implementation SHOULD add some monitor capability and logs.
+
+KEES agent implementation SHOULD add some log and monitor features.
+
+KEES agent should be able to infer types from functional properties.
 
 ### Accrual policies
 
-A KEES agent MUST recognize *kees:modify* and *kees:create* individuals as valid object for dct:accrualPolicy property in a kees:Plan. In case of inconsistencies or if no dct:accrualPolicy property is specified, the agent MUST consider adopt kees:create.
+A KEES agent MUST recognize *kees:modify* and *kees:create* individuals as valid object for dct:accrualPolicy property in a kees:Plan. In case of inconsistencies or if no dct:accrualPolicy property is specified, the agent MUST adopt kees:create.
 
-If the accrual policy is kees:create the named graph and all related metadata is deleted and created BEFORE
+If the accrual policy is kees:create, the named graph and all related metadata MUST be deleted and recreated BEFORE
 to execute accrual policies.
 
 ### Accrual methods
 
-The KEES agent should try to load all required resources in the named graph taking into consideration the resource types and accual methods.
+A KEES agent should try to load all required resources specified by dct:requires property, in the named graph specified in
+kees:builds property taking into consideration the resource types and accual methods.
+
 At least, the agent is expected to execute perform like the SPARQL UPDATE statement "LOAD <url> INTO <graph>" construct.
 	
 If the dct:accrualMethod is a string with datatype *kees:sparqlQueryConstructOperation* then the agent MUST evaluate it
@@ -206,117 +226,95 @@ and add the constructed triples added to the named graph pointed by the plan
 
 If the dct:accrualMethod is a string with datatype *kees:sparqlUpdate* then then the agent MUST evaluate it.
 
-## SPARQL service requirements
-
-A KEES compliant sparql endpoint SHOULD expose the  **kees:guard** feature. If a kees:guard feature is present
-the endpoint MUST return 503 Error of any SPARQL QUERY that happens on a RDF Store that is not in the  *safe* state.  A KEES compliant sparql endpoint SHOULD MUST this feature if the http header "X-KEES-guard: disable" is present.
-
-A KEES compliant sparql service MUST expose the  **kees:workflow** feature. The workflow plans must be attached to the defatul dataset of the service.
-
-A KEES compliant SPARQL service SHOULD alwais provide proper http caching information [as described in Section 13 of RFC2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html).
-
 
 ## Examples
 
 [** WARNING: THIS SECTION IS INFORMATIVE AND SUBJECTED TO MAYOR CHANGS **]
 
-This is a valid KEES knowledge base description
+
+## a knowledge base description dectaration
 
 ```
-<> a kees:KnowledgeBaseDescription;
-	foaf:primaryTopic kees:sharableKnowledge.
+<> a kees:KnowledgeBaseDescription; foaf:primaryTopic kees:sharableKnowledge.
 	
 kees:sharableKnowledge a kees:KnowledgeBase ;
-	kees:answers [  a kees:Question
-    		kees:with """
-			PREFIX fr: <http://linkeddata.center/botk-fr/v1#>
-			PREFIX qb:	<http://purl.org/linked-data/cube#>
-			PREFIX interval: <http://reference.data.gov.uk/def/intervals/>
-			PREFIX time: <http://www.w3.org/2006/time#>
-			PREFIX ex: <http://example.org/app_data_model#>
+```
 
-			CONSTRUCT { 
-			    ?canonicalUri a ex:FinancialReport;
-				ex:year ?reportYear ;
-				ex:hasFact ?factUri.
-			    ?factUri ex:amount ?amount.
+## Defining a workflow
+
+```
+kees:sharableKnowledge kees:workflow (
+	[ 
+		kees:builds <http://data.example.com/peoples_from_europe.rdf> ;
+		dct:accrualPeriodicity sdmx-code:freq-Y
+	]		
+	[ 
+		dct:title "Compute if a people is to be considered a teenager";
+		kees:builds <urn:graph:inference1> ;
+		kees:onlyIf """
+			ASK {
+				GRAPH ?g { 
+					sd:name <http://data.example.com/peoples_from_europe.rdf> ;
+					dct:modified ?dataSourceUpdate;
+				}
+				GRAPH ?me {
+					sd:name <urn:graph:inference1> ;
+					dct:modified ?inferenceUpdate;
+				}
+				FILTER(  ?dataSourceUpdate > ?inferenceUpdate )
 			}
-			WHERE { 
-			    VALUES ?year { "2017" }
-
-			    ?financialReport a fr:FinancialReport; 
-				fr:refPeriod/time:hasBeginning/interval:ordinalYear ?reportYear
-			    .
-			    ?financialFact a fr:Fact ;
-				qb:dataSet ?finnacialReport ;
-				fr:amount ?amount  ;
-			    .
-			    FILTER(STR(?reportYear)=?year)
-			    BIND( IRI(CONCAT("http://example.org/ldp/report/",?year)) AS ?canonicalUri)
-			    BIND( IRI(CONCAT("http://example.org/ldp/report/",?year,"/",STRUUID())) AS ?factUri)
+		"""^^kees:sparqlQueryAskOperation; 	
+		dct:accrualMethod """
+			PREFIX dbo: <http://dbpedia.org/ontology/>
+			CONSTRUCT { ?person a <urn:class:teenager>  }
+			WHERE {
+				?person dbo:birthDate ?birth .
+				BIND( NOW() - ?birth AS ?age)
+				FILTER (?age > 11 && ?age < 20 )
 			}
-   	 	"""^^kees:sparqlQueryConstructOperation 
-	 ]
-.
-:keyQuestion2 a kees:Question; kees:answeredBy <http://example.com/example.rq>.
+		"""^^kees:sparqlQueryConstructOperation 	
+	]
+) .
+	
 ```
 
-### TBD: simple web resource (re)loading
-
-This states that an graph named `:example`  SHOULD exist in the knowledge base and that graph should be loaded with the content of the web resource "http://data.example.com/dataset1.ttl"
+### Attaching questions
 
 ```
-[]  kees:graphName <http://data.example.com/dataset1> .
+kees:sharableKnowledge kees:answers [  a kees:Question
+	dct:title "Teenagers born in Berlin"@en;
+	kees:answeredBy """
+		PREFIX dbo: <http://dbpedia.org/ontology/>
+		PREFIX : <http://dbpedia.org/resource/>
+
+		SELECT DISTINCT ?person  
+		WHERE { 
+			?person a <urn:class:teenager>;
+				dbo:birthPlace :Berlin. 
+		}
+	"""^^kees:sparqlQuerySelectOperation 
+ ].
 ```
-This RDF triple is equivalent to:
-
-```
-[] a kees:Learning;
-	kees:dataSource <http://data.example.com/dataset1> ;
-	kees:graphName <http://data.example.com/dataset1l> ;
-.
-```
-
-A KEES compliant agent implementation SHOULD check if the resource is newer 
-than named graph in the knowledge base using a default accrual policy; 
-if yes  it COULD upload athe resource into the graph named *http://data.example.com/dataset1l* using a default accrual Methods
-
-
-### The accrual periodicity
-
-A KEES compliant agent should take into account accrual periodicity. e.g:
-
-```
-[] a kees:Learning;;
-	kees:graphName <http://data.example.com/dataset1l> ;
-	dct:accrualPeriodicity sdmx-code:freq-W
-.
-```
-
-A KEES agent implementation SHOULD recognize at frequency instance in  
-the [Content-Oriented Guidelines Frq schema](http://purl.org/linked-data/sdmx/2009/code#freq) 
-developed as part of the W3C Data Cube Vocabulary efforts. 
-
 
 ### adding trust info
 
-Trust in dataset can be expessed with:
 
+Trust in a specific statement can be expessed with:
 ```
 [] a qb:Observation ;
-    daq:computedOn (:a_graph schema:LocalBusiness schema:legalName) ; 
+    daq:computedOn ( ".*" dbo:birthPlace :Berlin) ; 
     daq:metric kees:trustMetric ;
-    daq:value 0.99 ;
+    daq:value 0.10 ;
     daq:isEstimated true .
 ```
 
-or
+or trust in dataset can be expessed with:
 
 ```
 [] a qb:Observation ;
-    daq:computedOn :a_graph ; 
+    daq:computedOn <http://data.example.com/peoples_from_europe.rdf> ; 
     daq:metric kees:trustGraphMetric;
-    daq:value 0.9 ;
+    daq:value 0.98 ;
     daq:isEstimated true .
 ```
 
