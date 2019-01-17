@@ -40,7 +40,7 @@ knowledge domain (e.g. business entities, people, goods, friendship, offering, g
 *ABox statements* associate with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and 
 are populated from datasets available in the web or by reasonings. 
 
-For practical purposes, KEES knowledge base fully conforms to the [Semantic Web Standards](https://www.w3.org/standards/semanticweb/) and assumes that the knowledge base can be defined in a [SPARQL service](https://www.w3.org/TR/sparql11-service-description).
+For practical purposes, KEES assumes that the knowledge base can be defined in a [SPARQL service](https://www.w3.org/TR/sparql11-service-description).
 
 The **Question** represents the reason for the the knowledge base existence. In other words, the knoledge base exists to answer to *questions*. Question are natural language expressions that can be expressed as parametric SPARQL queries on a populated knowledge graph. The answer to a question can be a table of data, a structured document, a boolean or a translation of these in a natural language sentences.
 
@@ -104,14 +104,7 @@ Knowing the statement **provenance** is the most usefull way to get an idea abou
 
 Any RDF Store that provides with a SPARQL endpoint and QUAD support is compliant with KEES. Following requirement applies:
 
-- If a statement with subject <urn:kees:kb> and predicate dct:valid is present in the knowledge base, this  means that the Knowledge base is *safe* to be queried. Otherwhise the status of the knowledge base should be considered undefined.
-
-For example: to declare that a RDF Store is ready to be safely queried execute following SPARQL UPDATE statement
-
-```
-INSERT { <urn:kees:kb> <http://purl.org/dc/terms/valid> ?now }
-WHERE { BIND( NOW() AS ?now) }
-```
+- If a statement with subject <urn:kees:kb> and predicate dct:valid is present in the default graph, this  means that the Knowledge base is *safe* to be queried. Otherwhise the knowledge base should be considered *not safe*.
 
 to check if a RDF Store is ready to be safely queried `ASK { <urn:kees:kb> <http://purl.org/dc/terms/valid> [] }`
 
@@ -119,56 +112,106 @@ to check if a RDF Store is ready to be safely queried `ASK { <urn:kees:kb> <http
 
 A KEES Agent SHOULD perform actions on a knowledge base on a sequence of four temporal phases called *windows*:
 
-1. a startup  phase (**boot window**)  to initialize the knowledge base just with KEES description and TBOX statements
+1. a startup  phase (**boot window**)  to initialize the knowledge base strating from one or more knowledge base descriptions
 2. a time slot for the population of the Knowledge Base and to link data (**learning window**)
 3. a time slot for the data inference (**reasoning window**)
 4. a time slot to access the Knowledge Base and answering to questions  (**teaching window**)
 
 Step 2 and 3 can be iterated.
 
-This sequence is called **KEES workflow** and it is a continuous integration process. 
+This sequence is called **KEES workflow** and it is a continuous integration process that happens on scheduled time or 
+after triggering an event (e.g. a dataset change).
 
-A guard SHOULD allow user to query the knowledge base only during the teaching windows.
+### Error management
 
-A KEES Agent MUST know terms defined in  http://linkeddata.center/kees/v1 vocabulary.
+A KEES agent MUST update the RDF store safe statement when it enters or exits the teaching window. 
+
+For example: to declare that a RDF Store is ready to be safely queried execute following SPARQL UPDATE statement
+```
+INSERT { <urn:kees:kb> <http://purl.org/dc/terms/valid> ?now }
+WHERE { BIND( NOW() AS ?now) }
+```
+
+If the KEES agent abort execution, the knowledge base must be marked as "not safe", thus the knowledge base MAY be inconsistent.
+For example: to declare that a RDF Store is *not safe* execute following SPARQL UPDATE statement. E.g.:
+
+```
+Delete { <urn:kees:kb> <http://purl.org/dc/terms/valid> ?x  } WHERE { <urn:kees:kb> <http://purl.org/dc/terms/valid> ?x }
+```
+
+The existence of prov:InvalidatedAtTime in a named graph MUST prevent the KEES agent to enter the teaching window.
+
+The existence of prov:InvalidatedAtTime in SHOULD be signaled by KEES agent. How to signa is implementation dependent
+
+The existence of activities without a plan  SHOULD be signaled by KEES agent. This condition does not prevent the 
+KEES agent to enter the teaching window.
+
+A KEES agent MUST abort if it was unable to find how to plan to build a graph. 
+
+If a KEES agent was unable to complete succesfully a plan, it MUST abort if the target named graph was partially builded, otherwhise
+it MUST mark the named graph using prov:InvalidatedAtTime property and continue.
+
+During teaching window all these condition MUST ensured:
+
+- all named graph created by the agent MUST expose dct:created and dct:modified properties
+- no named graphs expose prov:InvalidatedAtTime properties
+- all named graph  MUST be related to a kees:Plan throuhg a prov:Activity
+- for all named graph related to a kees:SingleGraphPlan, kees:resilience must be >= of the total count of the  prov:InvalidatedAtTime properties
+ 
+
+## Conditional plan execution
+
+The KEES agent MUST be able to evaluate  that kees:onlyIf and kees:Assert as SPARQL ASK operation construct (both as string or uri), 
+Other methods to evaluate conditions SHOULD implementation dependent.
+
+The KEES agent MUST abort if kees:assert is present evaluate to anything different from "true".
+
+The KEES agent MUST ignore a plan if the named graph exists and is newer of all required resource. 
+How to evaluate this condition is implementation dependent but a resoure without a clear modification date MUST 
+be considered always newer tha an existing named graph.
+
+The KEES agent SHOULD recognize all concepts in sdmx-code:freq scheme for dct:accrualPeriodicity and using these informations to
+decide if to execute a plan. How to manage dct:accrualPeriodicity is depends from KEES Agent implementation.
+
+The KEES agent MUST ignore a plan if all kees:onlyIf properties are evaluated to "true". If the property kees:onlyIf does not exists,
+the plan MUST be executed.
+
+### KEES agent protocol
 
 A KEES Agent MUST be able to:
 
-- generate all missing mandatory properties and types in a KISS configuration according the KEES Language Profile. 
-  The KEES Agent MUST assume following default :
-    - kees:accrualPeriodicity sdmx-code:freq-N . Agent can interprete this value as a minimum  update frequency.
-    - kees:onlyIf "ASK {}"^^kees:sparqlQueryAskOperation .
-    - kees:resilience 0 .
-    - kees:script ""^^kees:sparqlUpdateScript .
-    - kees:from <http://example.com/> if kees:into is missing otherwhise the same object kees:into
-    - kees:into the same object kees:into property
-    - kees:with "CONSTRUCT WHERE {}"^^kees:sparqlQueryConstructOperation.
-    - kees:answeredBy "ASK {}"^^kees:sparqlQueryAskOperation .
-    - kees:assert "ASK {}"^^kees:sparqlQueryAskOperation .
-    - kees:AccrualPolicy kees:create .
-- all missing types MUST be inferred from functional properties.
-- in a kees:KnowledgeBase, if sd:endpoit is not defined, hinerit the end point of the service where the kees:KnowledgrBase is 
-  found. This means that kees:answers and kees:workflow are always merged.
-- verify the validity of a kees configuration against KEES language profile.
+- accept in input one or more URL dereferencing to kees:KnowledgeBaseDescription resources.
+- at least all missing kees types MUST be inferred from functional properties in kees ontology.
 
+The input method is implentation dependent. A KEES agent can be implemented as a web service or as a command.
 
-A KEES agent MUST update the RDF store when it enters or exits the teaching window. 
+There is no standard way to detect if an agent is running or is aborted. But you can check if the knowledge is in a
+safe state. 
+KEES agent implementation SHOULD add some monitor capability and logs.
 
-During teaching window these condition MUST be always true:
+### Accrual policies
 
-- all named graph must expose a dct:created dct:modified properties
-- all named graph MUST be related to a kees:Plan
-- for all named graph related to a kees:SingleGraphPlan, kees:resilience must be >= of the total count of the  prov:InvalidatedAtTime properties
- 
+A KEES agent MUST recognize *kees:modify* and *kees:create* individuals as valid object for dct:accrualPolicy property in a kees:Plan. In case of inconsistencies or if no dct:accrualPolicy property is specified, the agent MUST consider adopt kees:create.
+
+If the accrual policy is kees:create the named graph and all related metadata is deleted and created BEFORE
+to execute accrual policies.
+
+### Accrual methods
+
+The KEES agent should try to load all required resources in the named graph taking into consideration the resource types and accual methods.
+At least, the agent is expected to execute perform like the SPARQL UPDATE statement "LOAD <url> INTO <graph>" construct.
+	
+If the dct:accrualMethod is a string with datatype *kees:sparqlQueryConstructOperation* then the agent MUST evaluate it
+and add the constructed triples added to the named graph pointed by the plan
+
+If the dct:accrualMethod is a string with datatype *kees:sparqlUpdate* then then the agent MUST evaluate it.
 
 ## SPARQL service requirements
 
 A KEES compliant sparql endpoint SHOULD expose the  **kees:guard** feature. If a kees:guard feature is present
 the endpoint MUST return 503 Error of any SPARQL QUERY that happens on a RDF Store that is not in the  *safe* state.  A KEES compliant sparql endpoint SHOULD MUST this feature if the http header "X-KEES-guard: disable" is present.
 
-
 A KEES compliant sparql service MUST expose the  **kees:workflow** feature. The workflow plans must be attached to the defatul dataset of the service.
-
 
 A KEES compliant SPARQL service SHOULD alwais provide proper http caching information [as described in Section 13 of RFC2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html).
 
@@ -179,39 +222,41 @@ A KEES compliant SPARQL service SHOULD alwais provide proper http caching inform
 
 This is a valid KEES knowledge base description
 
-
-### TBD: Questions and Answers
-
 ```
-:keyQuestion1 a kees:Question
-    kees:answeredBy """
-        PREFIX fr: <http://linkeddata.center/botk-fr/v1#>
-        PREFIX qb:	<http://purl.org/linked-data/cube#>
-        PREFIX interval: <http://reference.data.gov.uk/def/intervals/>
-        PREFIX time: <http://www.w3.org/2006/time#>
-        PREFIX ex: <http://example.org/app_data_model#>
+<> a kees:KnowledgeBaseDescription;
+	foaf:primaryTopic kees:sharableKnowledge.
+	
+kees:sharableKnowledge a kees:KnowledgeBase ;
+	kees:answers [  a kees:Question
+    		kees:with """
+			PREFIX fr: <http://linkeddata.center/botk-fr/v1#>
+			PREFIX qb:	<http://purl.org/linked-data/cube#>
+			PREFIX interval: <http://reference.data.gov.uk/def/intervals/>
+			PREFIX time: <http://www.w3.org/2006/time#>
+			PREFIX ex: <http://example.org/app_data_model#>
 
-        CONSTRUCT { 
-            ?canonicalUri a ex:FinancialReport;
-                ex:year ?reportYear ;
-                ex:hasFact ?factUri.
-            ?factUri ex:amount ?amount.
-        }
-        WHERE { 
-            VALUES ?year { "2017" }
-            
-            ?financialReport a fr:FinancialReport; 
-                fr:refPeriod/time:hasBeginning/interval:ordinalYear ?reportYear
-            .
-            ?financialFact a fr:Fact ;
-                qb:dataSet ?finnacialReport ;
-                fr:amount ?amount  ;
-            .
-            FILTER(STR(?reportYear)=?year)
-            BIND( IRI(CONCAT("http://example.org/ldp/report/",?year)) AS ?canonicalUri)
-            BIND( IRI(CONCAT("http://example.org/ldp/report/",?year,"/",STRUUID())) AS ?factUri)
-        }
-    """^^kees:sparqlQueryConstructOperation 
+			CONSTRUCT { 
+			    ?canonicalUri a ex:FinancialReport;
+				ex:year ?reportYear ;
+				ex:hasFact ?factUri.
+			    ?factUri ex:amount ?amount.
+			}
+			WHERE { 
+			    VALUES ?year { "2017" }
+
+			    ?financialReport a fr:FinancialReport; 
+				fr:refPeriod/time:hasBeginning/interval:ordinalYear ?reportYear
+			    .
+			    ?financialFact a fr:Fact ;
+				qb:dataSet ?finnacialReport ;
+				fr:amount ?amount  ;
+			    .
+			    FILTER(STR(?reportYear)=?year)
+			    BIND( IRI(CONCAT("http://example.org/ldp/report/",?year)) AS ?canonicalUri)
+			    BIND( IRI(CONCAT("http://example.org/ldp/report/",?year,"/",STRUUID())) AS ?factUri)
+			}
+   	 	"""^^kees:sparqlQueryConstructOperation 
+	 ]
 .
 :keyQuestion2 a kees:Question; kees:answeredBy <http://example.com/example.rq>.
 ```
