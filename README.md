@@ -46,13 +46,13 @@ The **Question** represents the reason for the the knowledge base existence. In 
 
 **Trust** is another key concept in KEES. The [Open-world assumption] and RDF allow to mix any kind of information, even when information that are incoerent. For instance, suppose that your TBOX defines a property "person:hasMom" that require a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could contains two different fact (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), in order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are two names for the same person. If you are not so sure, you have two possibility: choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the TBOX , allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement (both ABox and Tbox) in the knowlege base. At least you want to know the **provenance** and all metadata of all information in your knowledge base because the trust on a single data often derives from the trust of its source or in the creator of the data source.
 
-The **Language Profile** (or **Application profile**) is the portion of the vocabularies (TBOX) that describe the knowledge that are recognized by a specific software application. The language profile contains **domain specific axioms** and is normally contained in the Tbox partition of a knowledge base. 
+The **Language Profile** (or **Application profile**) is the portion of the vocabularies (TBOX) that describe the knowledge that are recognized by a specific software application. The language profile contains *domain specific axioms* and is normally contained in the Tbox partition of a knowledge base. 
 
-An **axiom** describes how to generate/validate knowledge base statemensts using entailment inferred by language profile semantic.For example an axiom can be described with OWL and evaluated by a OWL reasoner or described with SPARQL QUERY construct or with SPARQL UPDATE statements.
+An **axiom** describes how to generate/validate knowledge base statemensts using entailment inferred by language profile semantic and known facts. For example an axiom can be described with OWL and evaluated by a OWL reasoner or described with SPARQL QUERY construct or with SPARQL UPDATE statements and evaluated in a SPARQL service.
 
-KEES allows to define **test conditions** that can be realized with a SPARQL ASK operation. 
+KEES allows to define **test conditions** that can be realized, for example, with a SPARQL ASK operation. 
 
-KEES does not restrict the specification for axioms nor for tes condition representation to SPARQL. A KEES agent can recognize additional languages.
+Beside SPARQL, a KEES agent can recognize other languages, including natural language.
 
 
 ## KEES Specification
@@ -68,13 +68,20 @@ The main classes introduced by KEES vocabulary are **kees:IngestionPlan** and **
 specialization of prov:Plan class. The first describes how to create a graph in the knowledge base extracting facts from a data source, 
 the second describes how to materialize new information from existing knowledge base facts.
 
-KEES vocabulary is expressed with OWL RDF in [kees.rdf file](v1/kees.rdf). The file was edited wit Protégé editor.
+A **kees:KnowledgeBase** is defined as a subclass of a sd:Dataset
+
+A **kees:KnowledgeBaseDescription** is a document to publishing and trasferring a KEES knowledge base bulding information.
+Think it as a subclass of a foaf:Document. This allow to attach license and metadata to your knowledge base description,
+thus making it sharable and tradeable.
+
+
+The KEES vocabulary is expressed with OWL RDF in [kees.rdf file](v1/kees.rdf). The file was edited with Protégé editor.
 
 Besides few classes and properties, KEES vocabulary defines some individuals:
 
 - **kees:guard** a [SPARQL service description](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) feature that states that the RDF store supports KEES guard specifications (see below)
 - **kees:trustStatementMetric** defines a  trust metric computed on specific rdf statement.
- **kees:trustPropertytMetric** defines a  trust metric computed on specific property, 
+ **kees:trustPropertytMetric** defines a  trust metric computed on specific properties, 
  **kees:trustSubjectMetric** defines a  trust metric computed on specific subject type,
  **kees:trustGraphMetric** defines a metric that evaluate a trust value for a graph with a specific name. 
    All can be used in graph quality observations.
@@ -82,27 +89,32 @@ Besides few classes and properties, KEES vocabulary defines some individuals:
 
 KEES vocabulary defines some datatypes:
 
-- **kees:sparqlQueryConstructOperation** states the datatype of a literal string containing a sparql query CONSTRUCT operation. 
-- **kees:sparqlQuerySelectOperation** states the datatype of a literal string containing a sparql query SELECT operation.
-- **kees:sparqlQueryDescribeOperation** states the datatype of a literal string containing a sparql query DESCRIBE operation.
-- **kees:sparqlQueryAskOperation** states the datatype of a literal string containing a sparql query ASK operation.
-- **kees:sparqlUpdateScript** states the datatype of a literal string containing a sparql update scrirpt.
+- **kees:sparqlQueryConstructOperation**, **kees:sparqlQuerySelectOperation**, 
+  **kees:sparqlQueryDescribeOperation**, **kees:sparqlQueryAskOperation** states the datatypes 
+  for literal strings containing a SPARQL QUERY operation.
+- **kees:sparqlUpdateScript** states the datatype of a literal string containing a SPARQL UPDATE scrirpt.
 
-The **KEES Language Profile** reuses following vocabularies:
+## The KEES Language profile
+
+The **KEES Language Profile** reuses some terms from existing vocabularies adding mappings and restriction to the KEES vocabulary:
 
 - dct: http://purl.org/dc/terms/
-- qb: http://purl.org/linked-data/cube#
 - sdmx-code: http://purl.org/linked-data/sdmx/2009/code#
-- daq: http://purl.org/eis/vocab/daq# 
 - sd: http://www.w3.org/ns/sparql-service-description#
+- foaf: <http://xmlns.com/foaf/0.1/>
 - prov: http://www.w3.org/ns/prov#
-- kees: http://linkeddata.center/kees/v1#
-
 
 The following picture sumarizes the KEES language profile.
 
 ![uml](architecture/uml.png)
 
+
+Trustability is enabled by attaching quality observation to ingested graph or to specific subset of statements. 
+For this feature KEES suggest to reuse the [Dataset Quality Vocabulary (daQ)](http://purl.org/eis/vocab/daq) that requires
+additional vocabularies:
+
+- qb: http://purl.org/linked-data/cube#
+- daq: http://purl.org/eis/vocab/daq# 
 
 TODO: KEES language profile restrictions is formally expressed in [SHACL constraints file](v1/kees-profile.rdf)
 
@@ -111,10 +123,8 @@ A **KEES compliant application** is a Semantic Web Application that is not in co
 A **KEES Agent** is a software process that understands a portion the KEES language profile and that it is able to do actions on a 
 knowledge base. For instance, it could be able to ingest data and/or to answer some questions.
 
-At the end, **KEES configuration** is a dataset describing a knowledge base. A KEES Agent should be able to rebuild the whole knowlege graph
-just looking to the KEES configuration. Because different KEES configurations can be safely merged in a single new configuration, and this make knowledge domains shareable. Because a dataset can be protected with a license, you can sell your knowledge base (that is different to sell the data contained in the  knowlede about the data) making knowledge tradeable. 
-
-The KEES configuration can be included in the knowledge base in the graph named <urn:kees:configuration> or kept as separate resource.
+If you want to share/trade your knowledge base, simply attach your KEES plan, questions, license and 
+workflow to **kees:sharableKnowledge** object.
 
 
 ## RDF Store requirement
@@ -191,6 +201,7 @@ restriction on knowledge base consistence.
 If a KEES agent was unable to complete succesfully a plan, it MUST abort if the target named graph was partially builded, otherwhise
 it MUST annotate the named graph with the prov:InvalidatedAtTime property and continue.
 
+
 ## Ingestion plans behaviour and axioms
 
 If  kees:dataSource attribute is not present a KEES agent MUST reuse  kees:builds value, e.g.:
@@ -210,6 +221,8 @@ be considered always newer than any existing named graph.
 The KEES agent SHOULD recognize all concepts in sdmx-code:freq scheme for dct:accrualPeriodicity and use these information to
 decide if executing a plan or not. How to manage dct:accrualPeriodicity depends from KEES Agent implementation.
 
+The KEES agent SHOULD recognize kees:sparqlQueryConstructOperation and kees:sparqlUpdateScript datatype in dct:accualMethod property
+
 ## Reasoning plans behaviour and axioms
 
 If  kees:builds attribute is not present a KEES agent MUST reuse  generate a new unique graph name, e.g.:
@@ -224,8 +237,27 @@ WHERE {
 
 The KEES agent SHOULD execute an reasoning plan only if all required xonditions eval to "true". 
 
+The KEES agent SHOULD recognize kees:sparqlQueryConstructOperation and kees:sparqlUpdateScript datatype in kess:axiom property
+
  
 ## conditional properties evaluation in plan execution
+
+The KEES agent SHOULD recognize kees:sparqlQueryAskOperation datatype in kees:asserts and kees:requires properties.
+
+The KEES agent SHOULD recognize URIs in kees:asserts and kees:requires properties. URI in such properties must be interpreted as
+a shortcut for :
+
+```
+ASK { 
+   VALUES ?objectUri { <here the object URI of the  conditional statement> }
+   VALUES ?subjectUri { <here the subject URI of the  conditional statement > }
+   
+   ?objectUri dct:modified ?objectModified.
+   ?subjectUri dct:created ?subjectCreated.
+   
+   FILTER( ?objectModified > ?subjectCreated )
+}
+```
 
 The KEES agent MUST be able to recognize  kees:assert and kees:requires properties as kees:sparqlQueryAskOperation string, or as
 a name of a graph.
@@ -268,41 +300,45 @@ and add the constructed triples added to the named graph pointed by the plan
 If the dct:accrualMethod is a string with datatype *kees:sparqlUpdate* then then the agent MUST evaluate it.
 
 
-## Examples
+## Example
 
 [** WARNING: THIS SECTION IS INFORMATIVE AND SUBJECTED TO MAYOR CHANGS **]
 
 
-## a knowledge base description dectaration
+## Publishing knowledge base description as linked data resource
+
+Create a file kees.ttl fit following content.
 
 ```
-<> a kees:KnowledgeBaseDescription; foaf:primaryTopic kees:sharableKnowledge.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .      
+@prefix kees: <http://linkeddata.center/kees/v1#> .
+
+<> a kees:KnowledgeBaseDescription; 
+	dct:title "This dummy knowledge base is about teenagers in Europe"@en;
+	dct:creator <https://example.org/profile/card#organization>;
+	dct:license <http://www.opendatacommons.org/odc-public-domain-dedication-and-licence/> .
+	foaf:primaryTopic kees:sharableKnowledge
+.
 ```
 
 ## Defining a workflow
 
+Add to kees.ttl file:
+
 ```
 kees:sharableKnowledge kees:workflow (
-	[ 
+	[ 	a kees:IngestionPlan;
+		dct:description "A Plan for creating a graph extracting facts from an URL using the same URL as the graph name."@en;
+		rdfs:comment "You should recreate the graph onece a year"@en;
 		kees:builds <http://data.example.com/peoples_from_europe.rdf> ;
 		dct:accrualPeriodicity sdmx-code:freq-Y
 	]		
-	[ 
-		dct:title "Compute if a people is to be considered a teenager";
+	[ 	a kees:ReasoningPlan;
+		dct:title "Compute if a people shoud to be considered a teenager"@en;
 		kees:builds <urn:graph:inference1> ;
-		kees:onlyIf """
-			ASK {
-				GRAPH ?g { 
-					sd:name <http://data.example.com/peoples_from_europe.rdf> ;
-					dct:modified ?dataSourceUpdate;
-				}
-				GRAPH ?me {
-					sd:name <urn:graph:inference1> ;
-					dct:modified ?inferenceUpdate;
-				}
-				FILTER(  ?dataSourceUpdate > ?inferenceUpdate )
-			}
-		"""^^kees:sparqlQueryAskOperation; 	
+		kees:requires <http://data.example.com/peoples_from_europe.rdf>; 	
 		dct:accrualMethod """
 			PREFIX dbo: <http://dbpedia.org/ontology/>
 			CONSTRUCT { ?person a <urn:class:teenager>  }
@@ -319,10 +355,13 @@ kees:sharableKnowledge kees:workflow (
 
 ### Attaching questions
 
+
+Add to kees.ttl file:
+
 ```
 kees:sharableKnowledge kees:answers [  a kees:Question
 	dct:title "Teenagers born in Berlin"@en;
-	kees:answeredBy """
+	kees:answerMethod """
 		PREFIX dbo: <http://dbpedia.org/ontology/>
 		PREFIX : <http://dbpedia.org/resource/>
 
