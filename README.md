@@ -237,7 +237,7 @@ KEES agent to enter the teaching window.
 A KEES agent MUST abort in case of semantic inconsistences in *KEES knowledge base definition*. KEES does not impose
 restriction on knowledge base semanti consistence apart from its definition.
 
-### KEES axioms
+### Axioms
 
 A KEES agent MUST ensure some  axioms before any plan execution.
 
@@ -276,6 +276,19 @@ WHERE {
    FILTER NOT EXISTS { ?plan kees:dataSource ?g }
 }
 ```
+
+If no *kees:accrualPolicy* exists, kees:replace is used:
+
+
+```
+CONSTRUCT { ?plan kees:accrualPolicy kees:replace} 
+WHERE {
+   FILTER NOT EXISTS { ?plan kees:accrualPolicy [] }
+}
+```
+
+Exactly one *kees:accrualPolicy* must be present.
+
 
 ## Plans execution process
 
