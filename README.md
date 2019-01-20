@@ -55,7 +55,7 @@ The **KEES Language Profile** is the set of all terms, rules and axioms that a s
 
 ## KEES Specification
 
-## KEES Vocabulary
+### KEES Vocabulary
 
 The **KEES vocabulary** defines few new terms the  http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*). 
 It consists of some OWL classes and properties, mainly derived from existing ontologies. 
@@ -88,7 +88,7 @@ they are to be appended to existing data. The *replace* policy sed that such dat
 - If you want to share/trade your knowledge base, simply attach your KEES plan, questions, license and 
 workflow to **kees:sharableKnowledge** object.
 
-## The KEES Language profile
+### The KEES Language profile
 
 The **KEES Language Profile** reuses some terms from existing vocabularies adding mappings and restriction to the KEES vocabulary:
 
@@ -116,7 +116,7 @@ additional vocabularies:
 TODO: KEES language profile restrictions is formally expressed in [SHACL constraints file](v1/kees-profile.rdf)
 
 
-## RDF Store requirement
+### RDF Store requirement
 
 To Know the **provenance** of each statement, it is of paramount imortance to get an idea about data quality. For this reason, KEES requires that all statements must have a fourth element that links to a data source. This means that, for pratical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to a metadata.
 
@@ -142,7 +142,7 @@ DELETE {<urn:kees:kb> dct:valid ?x} WHERE { <urn:kees:kb> dct:valid ?x }
 To check if a RDF Store is *safe*: `ASK { <urn:kees:kb> dct:valid [] }`
 
 
-## SPARQL service requirements
+### SPARQL service requirements
 
 A KEES compliant [SPARQL service](https://www.w3.org/TR/sparql11-service-description/) SHOULD expose the **kees:guard** feature. 
 If a this feature is present,
@@ -334,7 +334,7 @@ WHERE {
 Exactly one *kees:accrualPolicy* must be present.
 
 
-## Plans execution process
+### Plans execution process
 
 A KEES agent MUST implement a this process schema:
 
@@ -397,7 +397,7 @@ to execute accrual policies.
 [** WARNING: THIS SECTION IS INFORMATIVE AND SUBJECTED TO MAYOR CHANGS **]
 
 
-## Publishing knowledge base description as linked data resource
+### Publishing knowledge base description as linked data resource
 
 Create a file kees.ttl fit following content.
 
@@ -418,7 +418,7 @@ Create a file kees.ttl fit following content.
 
 
 
-## Defining TBOX vocabularies
+### Defining TBOX vocabularies
 
 ```
 kees:sharableKnowledge
@@ -440,7 +440,7 @@ kees:sharableKnowledge
 ```
 
 
-## Defining a workflow
+### Defining a workflow
 
 Add to kees.ttl file:
 
@@ -504,7 +504,7 @@ CONSTRUCT {
 }
 ```
 
-## Contributing to the site
+## Contributing to this site
 
 A great way to contribute to the site is to create an [issue](https://github.com/linkeddatacenter/kees/issues) on GitHub when you encounter a problem or something. We always appreciate it. You can also edit the code by yourself and create a pull request.
 
