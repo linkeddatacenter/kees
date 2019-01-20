@@ -42,17 +42,11 @@ are populated from datasets available in the web or by reasonings.
 
 For practical purposes, KEES assumes that the knowledge base can be defined in a [SPARQL service](https://www.w3.org/TR/sparql11-service-description).
 
-The **Question** represents the reason for the the knowledge base existence. In other words, the knoledge base exists to answer to *questions*. Question are natural language expressions that can be expressed as parametric SPARQL queries on a populated knowledge graph. The answer to a question can be a table of data, a structured document, a boolean or a translation of these in a natural language sentences.
-
-**Trust** is another key concept in KEES. The [Open-world assumption] and RDF allow to mix any kind of information, even when information that are incoerent. For instance, suppose that your TBOX defines a property "person:hasMom" that require a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could contains two different fact (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), in order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are two names for the same person. If you are not so sure, you have two possibility: choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the TBOX , allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement (both ABox and Tbox) in the knowlege base. At least you want to know the **provenance** and all metadata of all information in your knowledge base because the trust on a single data often derives from the trust of its source or in the creator of the data source.
-
 The **Language Profile** (or **Application profile**) is the portion of the vocabularies (TBOX) that describe the knowledge that are recognized by a specific software application. The language profile contains *domain specific axioms* and is normally contained in the Tbox partition of a knowledge base. 
 
-An **axiom** describes how to generate/validate knowledge base statemensts using entailment inferred by language profile semantic and known facts. For example an axiom can be described with OWL and evaluated by a OWL reasoner or described with SPARQL QUERY construct or with SPARQL UPDATE statements and evaluated in a SPARQL service.
+An **axiom** describes how to generate/validate knowledge base statemensts using entailment inferred by language profile semantic and known facts. For example an axiom can be described with OWL and evaluated by a OWL reasoner or described with SPARQL QUERY constructs or with SPARQL UPDATE scripts and evaluated in a SPARQL service.
 
-KEES allows to define **test conditions** that can be realized, for example, with a SPARQL ASK operation. 
-
-Beside SPARQL, a KEES agent can recognize other languages, including natural language.
+**Trust** is another key concept in KEES. The [Open-world assumption] and RDF allow to mix any kind of information, even when information that are incoerent. For instance, suppose that your TBOX defines a property "person:hasMom" that require a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could contains two different fact (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), in order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are two names for the same person. If you are not so sure, you have two possibility: choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the TBOX , allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement (both ABox and Tbox) in the knowlege base. At least you want to know the **provenance** and all metadata of all information in your knowledge base because the trust on a single data often derives from the trust of its source or in the creator of the data source.
 
 
 ## KEES Specification
@@ -62,11 +56,9 @@ Beside SPARQL, a KEES agent can recognize other languages, including natural lan
 The **KEES vocabulary** defines few new terms the  http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*). 
 It consists of some OWL classes and properties, mainly derived from existing ontologies. 
 
-All knowledge base building activities MUST be traced using PROV ontology. KEES require that every build activity must be associated with a plan.
+All knowledge base building activities MUST be traced using PROV ontology. KEES requires that every build activity must be associated with a plan.
 
-The main classes introduced by KEES vocabulary are **kees:IngestionPlan** and **kees:ReasoningPlan**; both that are 
-specialization of prov:Plan class. The first describes how to create a graph in the knowledge base extracting facts from a data source, 
-the second describes how to materialize new information from existing knowledge base facts.
+The main classes introduced by KEES vocabulary is the **kees:Plan**. A plan  describes how to create or update a named graph in the knowledge base extracting facts from a data source or from axioms.
 
 A **kees:KnowledgeBase** is defined as a subclass of a sd:Dataset
 
@@ -74,6 +66,12 @@ A **kees:KnowledgeBaseDescription** is a document to publishing and trasferring 
 Think it as a subclass of a foaf:Document. This allow to attach license and metadata to your knowledge base description,
 thus making it sharable and tradeable.
 
+The **kees:Question** represents the reason for the the knowledge base existence. In other words, the knoledge base exists to answer to *questions*. Question are natural language expressions that can be expressed as parametric SPARQL queries on a populated knowledge graph. The answer to a question can be a table of data, a structured document, a boolean or a translation of these in a natural language sentences.
+
+A **kees:Agent** is a software process that understands a portion the KEES language profile and that it is able to do actions on a 
+knowledge base. For instance, it could be able to ingest data and/or to answer some questions.
+
+KEES vocabulary provide classes to describe in rdf  SPARQL QUERY operation and SPARQL UPDATE scripts.
 
 The KEES vocabulary is expressed with OWL RDF in [kees.rdf file](v1/kees.rdf). The file was edited with Protégé editor.
 
@@ -85,14 +83,9 @@ Besides few classes and properties, KEES vocabulary defines some individuals:
  **kees:trustSubjectMetric** defines a  trust metric computed on specific subject type,
  **kees:trustGraphMetric** defines a metric that evaluate a trust value for a graph with a specific name. 
    All can be used in graph quality observations.
-- **kees:update** and **kees:create** state two possible graph accrual policies
-
-KEES vocabulary defines some datatypes:
-
-- **kees:sparqlQueryConstructOperation**, **kees:sparqlQuerySelectOperation**, 
-  **kees:sparqlQueryDescribeOperation**, **kees:sparqlQueryAskOperation** states the datatypes 
-  for literal strings containing a SPARQL QUERY operation.
-- **kees:sparqlUpdateScript** states the datatype of a literal string containing a SPARQL UPDATE scrirpt.
+- **kees:append** and **kees:replace** state two possible graph accrual policies.
+- If you want to share/trade your knowledge base, simply attach your KEES plan, questions, license and 
+workflow to **kees:sharableKnowledge** object.
 
 ## The KEES Language profile
 
@@ -120,11 +113,6 @@ TODO: KEES language profile restrictions is formally expressed in [SHACL constra
 
 A **KEES compliant application** is a Semantic Web Application that is not in conflict with the KEES Language Profile. 
 
-A **KEES Agent** is a software process that understands a portion the KEES language profile and that it is able to do actions on a 
-knowledge base. For instance, it could be able to ingest data and/or to answer some questions.
-
-If you want to share/trade your knowledge base, simply attach your KEES plan, questions, license and 
-workflow to **kees:sharableKnowledge** object.
 
 
 ## RDF Store requirement
