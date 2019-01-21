@@ -195,7 +195,7 @@ MUST be skipped or postponed without changing the knowledge base.
 There are two kinds of preconditions, related with two properties: kees:accualPeriodicity and kees:requires .
 
 
-### Required URI pre-conditions
+#### Required URI pre-conditions
 
 The **kees:requires** range MUST be an URI that represents a resource in the knowledge base. Multiple kees:requires are allowed.
 
@@ -236,7 +236,7 @@ ASK {
 ```
 
 
-### Accrual periodicity pre-condition
+#### Accrual periodicity pre-condition
 
 kees:accualPeriodicity expects exactly a URI that describes a frequency (i.e. once a month, once a year). 
 The KEES agent SHOULD recognize at least all concepts in sdmx-code:freq scheme for dct:accrualPeriodicity and use these information to
@@ -255,6 +255,27 @@ the accrual ferquency is less than current time.
 
 A KEES agent SHOULD recognize [void:uriSpace pattern](https://www.w3.org/TR/void/#pattern) in a knowledge base
 making it available with the reserved prefix **res_** in graph constructor.
+
+
+
+### Error conditions and error management
+
+A KEES agent MUST update the RDF store safe statement when it enters or exits the teaching window. 
+
+If a KEES agent was unable to complete succesfully a plan, it MUST abort if the target named graph was partially builded, otherwhise
+it MUST annotate the named graph with the prov:InvalidatedAtTime property and continue.
+
+If the KEES agent aborts its execution, the knowledge base MUST resulting in a "not safe" state.
+
+In normal operations, the existence of prov:InvalidatedAtTime in a named graph MUST prevent the KEES agent to enter the teaching window.
+A KEES agent COULD provide a way to force a safe state when some named graph contains a prov:InvalidatedAtTime property.
+
+The existence of prov:InvalidatedAtTime in SHOULD be signaled by KEES agent. How to signal is implementation dependent
+
+The existence of activities without a plan SHOULD be signaled by KEES agent. This condition does not prevent the 
+KEES agent to enter the teaching window.
+
+A KEES agent MUST abort in case of semantic inconsistences in *KEES knowledge base definition*.
 
 
 ### Graph constructors
@@ -281,60 +302,13 @@ SPARQL constructors should understand at least the sp:text property as defined i
 
 
 
-### plan pos-condition
-
-After a plan execution a KEES agent must evaluate the condition referred by the kees:assert property. Multiple kees:assert 
-properties can be defined.
-
-If just a post-condition fails, the KEES agent must invalidate the generated/updated graph and abort. KEES does not
-specify any pre-ondition test order (in principle they can be evaluated in parallel)
-
-Post conditions are always satisfied if no  kees:assert property is present.
-
-Post conditions are always not satisfied if the target graph was not updated for some reason.
-
-A KEES agent sholud be able to evaluate post-condition with at least two methods:
-
-- a post condition is satisfied if the range of the kees:assert property is the name of a graph defined in a plan and it exists
-- a post condition is satisfied if the range of the kees:assert is a sp:Ask that evaluated to true
-
-
-
-### Assertion
-
-- the range the *kees:from* property SHOULD accept a type sp:Construct or sp:Update that exposes a non empty sp:text property.
-- the range the *kees:assert* property SHOULD accept a type sp:Construct or sp:Ask that exposes a non empty sp:text property.
-- the range the *kees:answerMethod* property SHOULD accept a type sp:Select or sp:Ask or sp:Construct that exposes a non empty sp:text property.
-
-In sp:text is possible to use all prefixes defined in the knowledge base without declareing a prefix. The same for the
-default prefix.
-If you explicitely declare a prefix in the SPARQL rule text, your prefix will have the prioriry on vocabulary definition.
-
-When the *kees:from* is not a recognized constructor,  a KEES agent is expected to execute perform like the
-SPARQL UPDATE statement "LOAD <here the URI of kees:from property> INTO <here the URI of kees:builds property>" construct.
-	
-For example:
-
-this knowledge base description fragment:
+For example, if a KEES agent know this fact:
 
 ```
 :myplan kees:builds <http://example.com/dataset.ttl>.
 ```
 
-Can be considered equivalent to equivalent to:
-
-```
-:myplan a kees:Plan ;
-   kees:builds <http://example.com/dataset.ttl> ;
-   kees:from <http://example.com/dataset.ttl> ;
-   kees:requires <http://example.com/dataset.ttl> ;
-   kees:accualPeriodiciy sdmx-code:freq-m ;
-   kees:asserts <http://example.com/dataset.ttl> ;
-   kees:accrualPolicy kees:replace .
-.
-```
-
-that executes the following SPARQL update script:
+if all pre-conditions are satisfied, than it could  executes the following SPARQL update script:
 
 
 ```
@@ -370,53 +344,74 @@ MOVE SILENT GRAPH <urn:tmp:graph> TO <http://example.com/dataset.ttl>
 ```
 
 
-### Error conditions and error management
+### Plan pos-condition
 
-A KEES agent MUST update the RDF store safe statement when it enters or exits the teaching window. 
+After a plan execution a KEES agent must evaluate the condition referred by the kees:assert property. Multiple kees:assert 
+properties can be defined.
 
-If a KEES agent was unable to complete succesfully a plan, it MUST abort if the target named graph was partially builded, otherwhise
-it MUST annotate the named graph with the prov:InvalidatedAtTime property and continue.
+If just a post-condition fails, the KEES agent must invalidate the generated/updated graph and abort. KEES does not
+specify any pre-ondition test order (in principle they can be evaluated in parallel)
 
-If the KEES agent aborts its execution, the knowledge base MUST resulting in a "not safe" state.
+Post conditions are always satisfied if no  kees:assert property is present.
 
-In normal operations, the existence of prov:InvalidatedAtTime in a named graph MUST prevent the KEES agent to enter the teaching window.
-A KEES agent COULD provide a way to force a safe state when some named graph contains a prov:InvalidatedAtTime property.
+Post conditions are always not satisfied if the target graph was not updated for some reason.
 
-The existence of prov:InvalidatedAtTime in SHOULD be signaled by KEES agent. How to signal is implementation dependent
+A KEES agent sholud be able to evaluate post-condition with at least two methods:
 
-The existence of activities without a plan SHOULD be signaled by KEES agent. This condition does not prevent the 
-KEES agent to enter the teaching window.
+- a post condition is satisfied if the range of the kees:assert property is the name of a graph defined in a plan and it exists
+- a post condition is satisfied if the range of the kees:assert is a sp:Ask that evaluated to true
 
-A KEES agent MUST abort in case of semantic inconsistences in *KEES knowledge base definition*.
 
-### Axioms
 
-A KEES agent MUST ensure some axioms before any plan execution.
+### KEES Axioms
 
-If exists a plan  without kees:from fields, it MUST be generated from the kees:build property; e.g.:
+#### Functional property management
+
+A KEES agent MUST be able to infer types from kees ontology functional properties.
+
+```
+CONSTRUCT { ?s a ?c}
+WHERE {
+      ?s ?p ?o.
+      ?p a owl:FunctionalProperty; rdfs:domain ?c.
+      FILTER NOT EXISTS { ?s a ?c }
+}
+```
+
+
+#### A plan is alwais attached to a knowledge base
+
+If a stand alone pllan exists, it must be considered attached to the kees:sharedKnowledge. 
+
+```
+CONSTRUCT { kees:sharedKnowledge kees:hasPlan ?plan }
+WHERE {?plan a kees:Plan FILTER NOT EXISTS {  ?x kees:hasPlan ?plan }}
+```
+
+
+#### A question is alwais attached to a knowledge base
+
+If a stand alone question exists, it must be considered attached to the kees:sharedKnowledge. 
+
+```
+CONSTRUCT { kees:sharedKnowledge kees:answers ?question }
+WHERE {?question a kees:Question FILTER NOT EXISTS {  ?x kees:answers ?question }}
+```
+
+
+#### Inferred kees:from 
+
+If exists a plan  without kees:from fields, it MUST be generated from the kees:builds property; e.g.:
 
 ```
 CONSTRUCT { ?plan kees:from ?graphUri } 
 WHERE {
-   ?plan kees:build ?graphUri .
+   ?plan kees:builds ?graphUri .
    FILTER NOT EXISTS { ?plan  kees:from [] }
 }
 ```
 
-A plan exposes exactly one kees:build property; e.g. this query MUST return true:
-
-```
-ASK {
-   ?plan kees:build ?graphUri1 , ?graphUri2 .
-   FILTER NOT EXISTS { ?graphUri1 != ?graphUri2 }
-}
-```
-
-*kees:bulds* and *kees:required* referenced object must be interpreted as the sd:name of a named graph (existing or to be created)
-
-*kees:builds* must be recognized as functional inverse property.
-
-Only one instance of *kees:accrualPeriodicity* MUST exists.
+#### Inferred kees:accrualPeriodicity
 
 If no *kees:accrualPolicy* exists, *kees:replace* MUST be used:
 
@@ -430,21 +425,58 @@ WHERE {
 Exactly one *kees:accrualPolicy* must be present.
 
 
-### Plans execution process
+#### Default data quality
 
-A KEES agent MUST implement a this process schema:
 
-1. execute default axioms
-2. ensure the integrity of the knowledge base descriptions. Abort if errors;
-3. if the target graph exists, use kees:accrualPeriodicity to define if the plan can be skipped;  
-   how to evaluate this condition is implementation dependent;
-4. test that at least one kees:required named graph is newer tha the building graph;
-   if all named graph referenced by the *kees:required* properties are older than the target graph, the plan SHOULD be skipped.
-   If no kees:required propery exists the plan MUST be executed;
-5. decide and take the appropriate action looking inside the *kees:from* attribute
-6. if some kees:assert property exist, evaluate all assert conditions, aborting if one them return false. 
-   Assertion can be evaluated in parallel.
+If no explicit data quality observation records are present in the knowledge base, this axiom SHOULD applies:
 
+```
+CONSTRUCT {
+   [] a qb:Observation ;
+      daq:computedOn ?g ; 
+      daq:metric kees:trustGraphMetric;
+      daq:value 0.5 ;
+      daq:isEstimated true .
+} WHERE {
+      ?g sd:name ?name ;
+      FILTER NOT EXISTS { ?observation daq:computedOn ?g  }
+}
+```
+
+
+#### Example
+
+Suppose that there is knowledge base description file compsed by just one line:
+
+```
+:myplan kees:builds <http://example.com/dataset.ttl>.
+```
+
+A KEES agent MUST be considered it equivalent to:
+
+```
+<> a kees:KnowledgeBaseDescription;
+   foaf:primaryTopic kees:sharedKnowledge .
+   
+kees:sharedKnowledge a kees:KnowledgeBase;
+   kees:hasPlan :myplan .
+:myplan a kees:Plan ;
+   kees:builds <http://example.com/dataset.ttl> ;
+   kees:from <http://example.com/dataset.ttl> ;
+   kees:accrualPolicy kees:replace 
+.
+```
+
+Some smarter KEES agent SHOULD add also:
+```
+:myplan ;
+   kees:requires <http://example.com/dataset.ttl> ;
+   # Use  a minimal accualPeriodiciy to reduce DOS attacks
+   kees:accualPeriodiciy sdmx-code:freq-m ; 
+   kees:asserts 
+	[ a sp:Ask; sp:text "ASK {FILTER NOT EXISTS{ ?x sd:name <http://example.com/dataset.ttl>; prov:InvalidatedAtTime []}}"]
+.
+```
 
 
 ### KEES agent protocol
@@ -459,18 +491,26 @@ KEES agent implementation SHOULD add some log and monitor features.
 
 KEES agent should be able to infer types from functional properties.
 
-### Accrual policies
 
-A KEES agent MUST recognize *kees:append* and *kees:replace* individuals as valid object for kees:accrualPolicy property in a kees:Plan. In case of inconsistencies or if no dct:accrualPolicy property is specified, the agent MUST choose kees:replace.
+A KEES agent MUST implement a this process schema:
 
-If the accrual policy is kees:replace, the named graph and all related metadata MUST be deleted and recreated BEFORE
-to execute accrual policies.
+1. exit teaching window 
+2. execute axioms
+3. ensure the integrity of the knowledge base descriptions. Abort if errors;
+4. get a plan that matches all pre-conditions, then take the appropriate action looking  the *kees:from* attribute and
+   assert all post-conditions, aborting if one them return false or there if a computation error.
+5. repeat steps 2-3-4 until exists a matching plan
+6. check if there are unexecuted plan (i.e. plans with unsatisfied pre-condition). If yes abort.
+7. check no named graph was invalidated.  If yes abort.
+8. enter teaching window
+9. (Optional) print an execution report
 
 
 ## Example
 
 [** WARNING: THIS SECTION IS INFORMATIVE AND SUBJECTED TO MAYOR CHANGS **]
 
+NOTE: all namespace declarations omitted to improve readability.
 
 ### Publishing knowledge base description as linked data resource
 
@@ -493,49 +533,25 @@ Create a file kees.ttl fit following content.
 
 
 
-### Defining TBOX vocabularies
 
-```
-kees:sharableKnowledge
-	void:vocabulary 
-		<http://schema.org/> , 
-		<http://dbpedia.org/ontology/> ;
-	void:uriSpace <http://example.org/resource/> ;
-.
-
-<http://schema.org/> a voaf:Vocabulary;
-	vann:preferredNamespaceUri "http://schema.org/" ;
-	vann:preferredNamespacePrefix "schema"
-.
-<http://dbpedia.org/ontology/> a voaf:Vocabulary;
-	vann:preferredNamespaceUri "http://dbpedia.org/ontology/"
-	vann:preferredNamespacePrefix "dbo"
-.
-
-```
-
-
-### Defining a workflow
+### Defining plans
 
 Add to kees.ttl file:
 
 ```
-kees:sharableKnowledge kees:workflow (
-	[ kees:builds <http://data.example.com/peoples_from_europe.rdf> ]		
-	[ 	a kees:ReasoningPlan;
-		dct:title "Compute if a people shoud to be considered a teenager"@en;
-		kees:builds :inference1 ;
-		kees:requires <http://data.example.com/peoples_from_europe.rdf>; 	
-		kees:from [ a sp:Construct; sp:text """
-			CONSTRUCT { ?person a :class_teenager>  }
-			WHERE {
-				?person dbo:birthDate ?birth .
-				BIND( NOW() - ?birth AS ?age)
-				FILTER (?age > 11 && ?age < 20 )
-			}
-		"""]	
-	]
-) .
+:a_learning_plan kees:builds :some_facts; kees:from <http://data.example.com/peoples_from_europe.rdf> .
+:a_reasoning_plan dct:title "Compute if a people shoud to be considered a teenager"@en;
+	kees:builds :inferences ;
+	kees:requires :some_facts; 	
+	kees:from [ a sp:Construct; sp:text """
+		CONSTRUCT { ?person a ex:Teenager>  }
+		WHERE {
+			?person ex:birthDate ?birth .
+			BIND( NOW() - ?birth AS ?age)
+			FILTER (?age > 11 && ?age < 20 )
+		}
+	"""]	
+.
 	
 ```
 
@@ -545,9 +561,9 @@ kees:sharableKnowledge kees:workflow (
 Add to kees.ttl file:
 
 ```
-kees:sharableKnowledge kees:answers [  a kees:Question
-	dct:title "Teenagers born in Berlin"@en;
-	kees:answerMethod [ a sp:Ask; sp:text "SELECT DISTINCT ?person WHERE {?person a :class_teenager>}"]
+res_:teaching a kees:Question
+	dct:title "Teenagers in europe"@en;
+	kees:answerMethod [ a sp:Select; sp:text "SELECT (COUNT(DISTINT ?person) AS ?teenagers) WHERE {?person a ex:Teenager}"]
  ].
 ```
 
@@ -557,26 +573,17 @@ kees:sharableKnowledge kees:answers [  a kees:Question
 Trust in dataset can be expessed with:
 
 ```
-[] a qb:Observation ;
-    daq:computedOn <http://data.example.com/peoples_from_europe.rdf> ; 
+res_:data_quality a qb:Observation ;
+    daq:computedOn :some_facts ; 
     daq:metric kees:trustGraphMetric;
-    daq:value 0.98 ;
+    daq:value 0.78 ;
     daq:isEstimated true .
-```
 
-If no explicit observation records are present in the knowledge base, this axiom SHOULD applies:
-
-```
-CONSTRUCT {
-   [] a qb:Observation ;
-      daq:computedOn ?g ; 
-      daq:metric kees:trustGraphMetric;
-      daq:value 0.5 ;
-      daq:isEstimated true .
-} WHERE {
-      ?g sd:name ?name ;
-      FILTER NOT EXISTS { ?observation daq:computedOn ?g  }
-}
+res_:reasoning_quality a qb:Observation ;
+    daq:computedOn :inferences ; 
+    daq:metric kees:trustGraphMetric;
+    daq:value 1.00 ;
+    daq:isEstimated false .
 ```
 
 ## Contributing to this site
