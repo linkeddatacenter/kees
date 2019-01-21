@@ -52,7 +52,6 @@ The **KEES Language Profile** is the set of all terms, rules and axioms that a s
 
 **Trust** is another key concept in KEES. The [Open-world assumption] and RDF allow to mix any kind of information, even when information that are incoerent. For instance, suppose that an axiom in your knowledge base TBOX states that a property "person:hasMom" has a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could also contains two different facts (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), peraphs extracted from different datasources. In order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are two names for the same person. If you are not so sure, you have two possibility: deduct that the data source is wrong, so you have to choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the axiom in TBOX , allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement, both in ABox and in Tbox,  in the knowlege base. At least you want to know the **provenance** and all metadata of all information in your knowledge base because the trust on a single data often derives from the trust of its source or in the creator of the data source.
 
-
 ## KEES Specification
 
 ### KEES Vocabulary
@@ -72,8 +71,9 @@ metadata.
 
 The **kees:Question** represents the *purpose* for the the knowledge base existence. In other words, the knoledge base exists to answer to *questions*. Question are natural language expressions that can be expressed as a query on a populated knowledge graph. The answer to a question results in tabular data, structured document, logic assertion or a translation of these in a natural language sentences.
 
-A **kees:Agent** is a software process that understands a portion the *KEES language profile* and that it is able to do actions on a 
-knowledge base. For instance, it could be able to ingest data and/or to answer some questions.
+A **kees:Agent** describe a processor that understands the *KEES language profile*  and that it is able to do 
+actions on a  knowledge base starting from its descripion documents according with KEES specifications.
+It should be able to learn data, reasoning about data and to answer some questions starting from learned fact.
 
 The KEES vocabulary is expressed with OWL RDF in [kees.rdf file](v1/kees.rdf). The file was edited with Protégé editor.
 
@@ -176,12 +176,6 @@ The steps 2 and 3 can be iterated
 This sequence is called **KEES workflow** and it is a continuous integration process that starts on user request, scheduled time or 
 after triggering an event (e.g. a dataset change).
 
-
-### Default URI space prefix
-
-A KEES agent SHOULD recognize [void:uriSpace pattern](https://www.w3.org/TR/void/#pattern) in a knowledge base
-making it available with the reserved prefix **res_** in graph constructor.
-
 ### Plan target graph
 
 A target graph is a named graph in the knowledge base referenced by the property kees:build. In a KEES knowledge base,
@@ -193,26 +187,118 @@ A very smart KEES agent (for instance a human person) could be able to understan
 English senteces) deducting missing information from the agent context or from experience. 
 Not smart KEES agent could be able just to interpereter  low level language instruction.
 
+### Plan pre-conditions
+
+Plans MUST be evaluated only if all pre-conditions are satisfied. If just one pre-condition fails, the plan execution
+MUST be skipped or postponed without changing the knowledge base.
+
+There are two kinds of preconditions, related with two properties: kees:accualPeriodicity and kees:requires .
+
+
+### Required URI pre-conditions
+
+The **kees:requires** range MUST be an URI that represents a resource in the knowledge base. Multiple kees:requires are allowed.
+
+If no kees:requires is present, then the pre-condition is always satisfied.
+
+If the target graph is not jet created, then the pre-condition is always satisfied.
+
+If just one required URI is not present in the knowledge base, then the precondition is not satisfied and
+the rule execution MUST be potsponed.
+
+If all required resources exists and are older than the last target graph creation date, then the precondition is not satisfied 
+and the rule MUST be skipped. A KEES agent SHOLUD be able to use the dct:modified and dct:created properties to compare 
+modification date.
+
+If  one required URI has not modification date, then the pre-condition is  satisfied.
+
+A possible implementation on an algorithm that decides if all kees:requieres is satisfied :
+
+```
+ASK { 
+   VALUES ?plan { <here the uri of the plan> }
+   {
+      ?plan kees:requires ?uri; kees:builds ?graphName.
+      ?graph sd:name ?graphName; dct:created ?graphCreationDate .
+      OPTIONAL { ?uri dct:modified ?uriModificationDate }
+      BIND( COALESCE(?uriModificationDate, NOW()) as ?lastModified)
+      FILTER( ?lastModified > ?graphCreationDate )
+      
+   } UNION {
+      FILTER NOT EXISTS { ?plan kees:requires [] }
+   } UNION {
+      FILTER NOT EXISTS {
+      	?plan kees:builds ?graphName.
+        ?graph sd:name ?graphName; dct:created ?graphCreationDate .
+      }
+   }
+}
+```
+
+
+### Accrual periodicity pre-condition
+
+kees:accualPeriodicity expects exactly a URI that describes a frequency (i.e. once a month, once a year). 
+The KEES agent SHOULD recognize at least all concepts in sdmx-code:freq scheme for dct:accrualPeriodicity and use these information to
+decide if executing a plan or not. 
+
+The accrual periodicity pre-condition is satisfied if 
+
+- no kees:accualPeriodicity properties is defined or
+- no target graph exists
+
+The accrual periodicity pre-condition is not satisfied and the rule MUST be skipped if the last update date of the target graph plus
+the accrual ferquency is less than current time.
+
+
+### Default URI space prefix
+
+A KEES agent SHOULD recognize [void:uriSpace pattern](https://www.w3.org/TR/void/#pattern) in a knowledge base
+making it available with the reserved prefix **res_** in graph constructor.
+
+
 ### Graph constructors
 
 A constructor is a resource referenced by the kees:from property that MUST provide enough information to a KEES agent to populate
-the target named graph. A constructor can be script in some language (i.e. SPARQL) or a data provider
+the target named graph. A constructor can be a script in some language (i.e. SPARQL) or a data provider.
 
-KEES does not impose any requirement for a constructor, but expect that a KEES agent SHOULD be smart enough to 
-recognize and manage follwing range for the kees:from property:
+KEES does not impose any requirement for a constructor, but expects that a KEES agent SHOULD be smart enough to 
+recognize and manage at least following kind of constructors:
 
-- a **dereferenceable resource URL** that provides RDF triple using one of the standard serialization. In this case
-  the Agent SHOULD be able to dounload the resource content from the URL following HTTP(s) GET protocol specification (e.g. managin 
-  redirection) and  content negotiation. It SHOULD accept all standard graph RDF serialization protocol: RDF/XML, turtle, json-ld,
-  RDFa, Microdata, n3, N-Triples.
+- a **dereferenceable URL** that provides RDF triple using one of the standard RDF serialization. In this case
+  the Agent SHOULD be able to download the resource content from the URL following HTTP(s) GET protocol specification (e.g. managing 
+  redirection and  content negotiation) and to extract from it the information serialized according with one of the RDF standards:
+  RDF/XML, turtle, json-ld, RDFa, Microdata, n3, N-Triples.
 - an object of  type **sp:Construct** . In this case the KEES agent
-  should create RDF triple running a SPARQL query on the knowledge base and injecting the resuts in the target graph
+  should be able to run a SPARQL query described in the object and injecting the results in the target graph specified in
+  kees:builds property.
 - an object of  type **sp:Update** . In this case the KEES agent
-  should be able to execute the SPARQL Update script in the knowledge graph database. There is no restrictions on
-  what the SPARQL script can do. This means that the coherence with the kees:builds depends from the script programmer.
+  should be able to execute the SPARQL Update script y described in the object  in the knowledge graph database. 
+  The update script MUST NOT modify any  graph described in other plans.
 
 SPARQL constructors should understand at least the sp:text property as defined in the
 [SPIN W3C Member Submission 22 February 2011, updated 07 November, 2014](http://spinrdf.org/spin.html) .
+
+
+
+### plan pos-condition
+
+After a plan execution a KEES agent must evaluate the condition referred by the kees:assert property. Multiple kees:assert 
+properties can be defined.
+
+If just a post-condition fails, the KEES agent must invalidate the generated/updated graph and abort. KEES does not
+specify any pre-ondition test order (in principle they can be evaluated in parallel)
+
+Post conditions are always satisfied if no  kees:assert property is present.
+
+Post conditions are always not satisfied if the target graph was not updated for some reason.
+
+A KEES agent sholud be able to evaluate post-condition with at least two methods:
+
+- a post condition is satisfied if the range of the kees:assert property is the name of a graph defined in a plan and it exists
+- a post condition is satisfied if the range of the kees:assert is a sp:Ask that evaluated to true
+
+
 
 ### Assertion
 
@@ -359,27 +445,6 @@ A KEES agent MUST implement a this process schema:
 6. if some kees:assert property exist, evaluate all assert conditions, aborting if one them return false. 
    Assertion can be evaluated in parallel.
 
-The KEES agent SHOULD ignore a plan if the named graph exists and points to da dataset that is older than all kees:from properties
-How to evaluate this condition is implementation dependent but a data source without a clear modification date MUST 
-be considered always newer than any existing named graph.
-
-The KEES agent SHOULD recognize all concepts in sdmx-code:freq scheme for dct:accrualPeriodicity and use these information to
-decide if executing a plan or not. How to manage dct:accrualPeriodicity depends from KEES Agent implementation.
-
-
-A possible inmplementation on an algoritm that decide if all kees:requieres is satisfied :
-
-```
-ASK { 
-   VALUES ?objectUri { <here the object URI of the  conditional statement> }
-   VALUES ?subjectUri { <here the subject URI of the  conditional statement > }
-   
-   ?objectUri dct:modified ?objectModified.
-   ?subjectUri dct:created ?subjectCreated.
-   
-   FILTER( ?objectModified > ?subjectCreated )
-}
-```
 
 
 ### KEES agent protocol
