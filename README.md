@@ -117,11 +117,11 @@ Knowledge base building activities MUST be traced using [PROV ontology](https://
 reuses prov:wasGeneratedBy, prov:wasInvalidatedBy, prov:qualifiedAssociation, prov:agent, prov:hadRole properties and prov:Role,
 prov:Plan, prov:Activity classes.
 
-Trustability is enabled by attaching quality observation to ingested graph or to specific subset of statements. 
+Trustability is enabled by attaching quality observation to ingested graph. 
 For this feature KEES language profile reuses the [Dataset Quality Vocabulary (daQ)](http://purl.org/eis/vocab/daq) with
-qb:Observation lass and daq:computedOn , daq:metric kees:trustGraphMetric, daq:valueand daq:isEstimated properties
+qb:Observation class and daq:computedOn , daq:metric, daq:value and daq:isEstimated properties
 
-The foaf:primaryTopic property is used just to link a kees:KnowledgeBaseDescription document to a kees:KnowledgeBase individual.
+The foaf:primaryTopic property is used to link a kees:KnowledgeBaseDescription document to a kees:KnowledgeBase individual.
 
 ### RDF Store requirement
 
@@ -179,22 +179,42 @@ after triggering an event (e.g. a dataset change).
 
 ### Default URI space prefix
 
-A KEES agent MUST recognize *void:vocabulary* property in a knowledge base. The object referred by the void:vocabulary property MUST point to a vocabulary defined as a [voaf:Vocabulary](http://purl.org/vocommons/voaf) that, in turn, exposes at least a *vann:preferredNamespacePrefix* and *vann:preferredNamespaceUri* in [vann properties](http://vocab.org/vann/).
+A KEES agent SHOULD recognize [void:uriSpace pattern](https://www.w3.org/TR/void/#pattern) in a knowledge base
+making it available with the reserved prefix **res_** in graph constructor.
 
-A KEES agent MUST known at least following vocabularies:
+### Plan target graph
 
+A target graph is a named graph in the knowledge base referenced by the property kees:build. In a KEES knowledge base,
+every named graph shoud be referenced by exactly one plan through the kees:builds property.
 
+Plans MUST provide enough information to describe how to build a new named graph or to update an existing one.
 
-A KEES agent MUST recognize [void:uriSpace pattern](https://www.w3.org/TR/void/#pattern) in a knowledge base
-making it available woth the reserved prefix "res_" every where a name space is required:
+A very smart KEES agent (for instance a human person) could be able to understand higt level instructions (for instance, plain
+English senteces) deducting missing information from the agent context or from experience. 
+Not smart KEES agent could be able just to interpereter  low level language instruction.
 
+### Graph constructors
 
+A constructor is a resource referenced by the kees:from property that MUST provide enough information to a KEES agent to populate
+the target named graph. A constructor can be script in some language (i.e. SPARQL) or a data provider
 
-### Graph building rules rules 
+KEES does not impose any requirement for a constructor, but expect that a KEES agent SHOULD be smart enough to 
+recognize and manage follwing range for the kees:from property:
 
-KEES does not impose any reasoner nor method to build named graph in the knowledge base, 
-but a KEES agent MUST support at least some feature defined in the
-[SPIN W3C Member Submission 22 February 2011, updated 07 November, 2014](http://spinrdf.org/spin.html) and in particular:
+- a **dereferenceable resource URL** that provides RDF triple using one of the standard serialization. In this case
+  the Agent SHOULD be able to dounload the resource content from the URL following HTTP(s) GET protocol specification (e.g. managin 
+  redirection) and  content negotiation. It SHOULD accept all standard graph RDF serialization protocol: RDF/XML, turtle, json-ld,
+  RDFa, Microdata, n3, N-Triples.
+- an object of  type **sp:Construct** . In this case the KEES agent
+  should create RDF triple running a SPARQL query on the knowledge base and injecting the resuts in the target graph
+- an object of  type **sp:Update** . In this case the KEES agent
+  should be able to execute the SPARQL Update script in the knowledge graph database. There is no restrictions on
+  what the SPARQL script can do. This means that the coherence with the kees:builds depends from the script programmer.
+
+SPARQL constructors should understand at least the sp:text property as defined in the
+[SPIN W3C Member Submission 22 February 2011, updated 07 November, 2014](http://spinrdf.org/spin.html) .
+
+### Assertion
 
 - the range the *kees:from* property SHOULD accept a type sp:Construct or sp:Update that exposes a non empty sp:text property.
 - the range the *kees:assert* property SHOULD accept a type sp:Construct or sp:Ask that exposes a non empty sp:text property.
