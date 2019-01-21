@@ -19,7 +19,7 @@ Artificial intelligences and humans can use these *know hows* to reuse and enric
 
 See [KEES presentation slides](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
-## Core KEES concepts
+## Definitions
 
 Lot of concepts used by KEES refer to the well known [Semantic Web Standards](https://www.w3.org/standards/semanticweb/) published by the World Wide Web Consortium ([W3C](https://w3.org/)).
 
@@ -57,20 +57,18 @@ The **KEES Language Profile** is the set of all terms, rules and axioms that a s
 
 ### KEES Vocabulary
 
-The **KEES vocabulary** defines few new terms the  http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*). 
+The **KEES vocabulary** defines few new terms in the  http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*). 
 It consists of some OWL classes and properties, mainly derived from existing ontologies. 
 
-
 A **kees:KnowledgeBase** is defined as a subclass of a [sd:Dataset](https://www.w3.org/TR/sparql11-service-description/#sd-Dataset) that, in turn, is a specialization of  a dataset as described in the [VoID](https://www.w3.org/TR/void/). A kees:KnowledgeBase is
-a collection of [sd:namedGraph](https://www.w3.org/TR/sparql11-service-description/#sd-NamedGraph) that ctansi the linked data.
+a collection of [sd:namedGraph](https://www.w3.org/TR/sparql11-service-description/#sd-NamedGraph) that contain the linked data.
 
-The main class introduced by KEES vocabulary is the **kees:Plan** that describes how to create and update a named graph in the knowledge base, extracting facts from a data source or generating them from axioms. 
+The main class introduced by KEES vocabulary is the **kees:Plan** that describes how to create and update a named graph in the knowledge base, extracting facts extracted from a data source or derived from axioms. 
 
-All knowledge base building activities MUST be traced using [PROV ontology](https://www.w3.org/TR/prov-overview/). KEES requires that every build activity has an associated kees:Plan.
-
-A **kees:KnowledgeBaseDescription** is a document that contains the description of the plan, to publishing and trasferring a KEES knowledge base bulding information.
-Think it as a subclass of a [foaf:Document](http://xmlns.com/foaf/spec/#term_Document). This allow to attach license and other 
-metadata to your knowledge base description, thus making it sharable and tradeable.
+A **kees:KnowledgeBaseDescription** is a document that contains the description of the knowledge base with the purpose of
+publishing and trasferring  knowledge base bulding information.
+Think it as a subclass of a [foaf:Document](http://xmlns.com/foaf/spec/#term_Document) that allows to attach license and other 
+metadata.
 
 The **kees:Question** represents the *purpose* for the the knowledge base existence. In other words, the knoledge base exists to answer to *questions*. Question are natural language expressions that can be expressed as a query on a populated knowledge graph. The answer to a question results in tabular data, structured document, logic assertion or a translation of these in a natural language sentences.
 
@@ -81,40 +79,49 @@ The KEES vocabulary is expressed with OWL RDF in [kees.rdf file](v1/kees.rdf). T
 
 Besides few classes and properties, KEES vocabulary defines some individuals:
 
-- **kees:guard** a [SPARQL service description](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) feature that states that the RDF store supports KEES guard specifications (see below)
- **kees:trustGraphMetric** defines a metric that allows to evaluate a trust rank for selected information. 
-- **kees:append** and **kees:replace** state two possible graph accrual policies; *append* policy sed that,  if new facts found,
-they are to be appended to existing data. The *replace* policy sed that such data must replace existing information.
-- If you want to share/trade your knowledge base, simply attach your KEES plan, questions, license and 
-workflow to **kees:sharableKnowledge** object.
+- **kees:guard** a [SPARQL service description feature](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) that states that the RDF store supports KEES guard specifications (see below)
+ **kees:trustGraphMetric** defines a metric that allows to evaluate a trust rank for selected information in [daq framework](http://purl.org/eis/vocab/daq). 
+- **kees:append** and **kees:replace** state two possible graph accrual policies: *append* policy affirms that,  if new facts found,
+they are to be appended to existing data. The *replace* policy affirms that new data must replace all existing information.
+- If you want to share/trade your knowledge base, simply attach your KEES plan, questions and  license to **kees:sharableKnowledge** object.
+- **kees:namedGraphGenerator** is the role that a kees:Agent must use in building/updating a named graph.
 
 ### The KEES Language profile
 
-The **KEES Language Profile** reuses some terms from existing vocabularies adding mappings and restriction to the KEES vocabulary:
+The **KEES Language Profile** reuses some terms from existing vocabularies to add mappings and restriction to the KEES vocabulary.
+In the rest of the document these namespaces are used:
 
 - dct: http://purl.org/dc/terms/
-- sdmx-code: http://purl.org/linked-data/sdmx/2009/code#
-- sd: http://www.w3.org/ns/sparql-service-description#
-- foaf: <http://xmlns.com/foaf/0.1/>
-- prov: http://www.w3.org/ns/prov#
-- vann:<http://purl.org/vocab/vann/>
-- voaf:<http://purl.org/vocommons/voaf#>
-- spin: <http://spinrdf.org/spin#>
+- dcterms: http://purl.org/dc/terms/
+- sdmx-code: http://purl.org/linked-data/sdmx/2009/code
+- sd: http://www.w3.org/ns/sparql-service-description
+- foaf: http://xmlns.com/foaf/0.1/
+- prov: http://www.w3.org/ns/prov
+- void: http://rdfs.org/ns/void
+- vann: http://purl.org/vocab/vann/
+- voaf: http://purl.org/vocommons/voaf
+- spin:  http://spinrdf.org/spin
+- rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns
+- rdfs:	http://www.w3.org/2000/01/rdf-schema
+- owl: http://www.w3.org/2002/07/owl
+- kees: http://linkeddata.center/kees/v1
+
 
 The following picture sumarizes the KEES language profile.
 
 ![uml](architecture/uml.png)
 
+Dublin core vocabulary is used to annotate dataset. The properties dct:created, dct:modified are part of the KEES Language profile.
+
+Knowledge base building activities MUST be traced using [PROV ontology](https://www.w3.org/TR/prov-overview/). KEES language profile
+reuses prov:wasGeneratedBy, prov:wasInvalidatedBy, prov:qualifiedAssociation, prov:agent, prov:hadRole properties and prov:Role,
+prov:Plan, prov:Activity classes.
 
 Trustability is enabled by attaching quality observation to ingested graph or to specific subset of statements. 
-For this feature KEES suggest to reuse the [Dataset Quality Vocabulary (daQ)](http://purl.org/eis/vocab/daq) that requires
-additional vocabularies:
+For this feature KEES language profile reuses the [Dataset Quality Vocabulary (daQ)](http://purl.org/eis/vocab/daq) with
+qb:Observation lass and daq:computedOn , daq:metric kees:trustGraphMetric, daq:valueand daq:isEstimated properties
 
-- qb: http://purl.org/linked-data/cube#
-- daq: http://purl.org/eis/vocab/daq# 
-
-TODO: KEES language profile restrictions is formally expressed in [SHACL constraints file](v1/kees-profile.rdf)
-
+The foaf:primaryTopic property is used just to link a kees:KnowledgeBaseDescription document to a kees:KnowledgeBase individual.
 
 ### RDF Store requirement
 
@@ -155,49 +162,32 @@ A KEES compliant SPARQL service SHOULD alwais provide optimized http caching inf
 
 ### Workflow
 
-A KEES Agent SHOULD perform actions on a knowledge base on a sequence of four temporal phases called *windows*:
+A KEES Agent SHOULD perform actions on a knowledge base on a logical sequence of four temporal phases called *windows*:
 
 1. a startup  phase (**boot window**)  to initialize the knowledge base starting from one or more knowledge base descriptions
-2. a time slot for the population of the Knowledge Base and to link data (**learning window**)
-3. a time slot for the data inference (**reasoning window**)
+2. a time slot for the population of the Knowledge Base and to link data (**learning window**). It consists in the 
+   execution of a plan that requires the downloading of at least an external resource.
+3. a time slot for the data inference (**reasoning window**). It consists in the execution of a plan that requires only axioms and
+   learned facts.
 4. a time slot to access the Knowledge Base and to answering questions (**teaching window**)
 
-The steps 2 and 3 can be iterated.
+The steps 2 and 3 can be iterated 
 
-This sequence is called **KEES workflow** and it is a continuous integration process that happens on user request, scheduled time or 
+This sequence is called **KEES workflow** and it is a continuous integration process that starts on user request, scheduled time or 
 after triggering an event (e.g. a dataset change).
 
-One or more **kees:workflow** property can be attached to the knowledge base. A workflow points to a rdf
-list of kees:Plan objects. The execution order of plans, is strictly determined by the ordered list.
 
-If more than a workflow is present, the execution order of workflow is implementation dependent. 
-A KEES agen can decide to execute different workflow in parallel.
-
-
-### Vocabulary knowledge
+### Default URI space prefix
 
 A KEES agent MUST recognize *void:vocabulary* property in a knowledge base. The object referred by the void:vocabulary property MUST point to a vocabulary defined as a [voaf:Vocabulary](http://purl.org/vocommons/voaf) that, in turn, exposes at least a *vann:preferredNamespacePrefix* and *vann:preferredNamespaceUri* in [vann properties](http://vocab.org/vann/).
 
 A KEES agent MUST known at least following vocabularies:
 
-- dct: http://purl.org/dc/terms/
-- sdmx-code: http://purl.org/linked-data/sdmx/2009/code
-- sd: http://www.w3.org/ns/sparql-service-description
-- foaf: http://xmlns.com/foaf/0.1/
-- prov: http://www.w3.org/ns/prov
-- void: http://rdfs.org/ns/void
-- vann: http://purl.org/vocab/vann/
-- voaf: http://purl.org/vocommons/voaf
-- spin:  http://spinrdf.org/spin
-- rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns
-- rdfs:	http://www.w3.org/2000/01/rdf-schema
-- owl: http://www.w3.org/2002/07/owl
-- kees: http://linkeddata.center/kees/v1
-- dct: http://purl.org/dc/terms/
-- dcterms: http://purl.org/dc/terms/
 
-A KEES agent MUST recognize [void:uriSpace pattern](https://www.w3.org/TR/void/#pattern) in a knowledge base. 
-The  string referred by the void:uriSpace property MUST be used to define the default namespace.
+
+A KEES agent MUST recognize [void:uriSpace pattern](https://www.w3.org/TR/void/#pattern) in a knowledge base
+making it available woth the reserved prefix "res_" every where a name space is required:
+
 
 
 ### Graph building rules rules 
