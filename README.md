@@ -54,12 +54,18 @@ The language profile can contain *axioms* . An **axiom** describes how to genera
 
 The **KEES Language Profile** is the set of all terms, rules and axioms that a software application that want to use a knowledge base should to understand.
 
+A **KEES Agent** describes a processor that understands the *KEES language profile*  and that it is able to do 
+actions on a knowledge base  according with KEES specifications.
+It should be able to learn data, reasoning about data and to answer some questions starting from learned fact.
+
 **Trust** is another key concept in KEES. The [Open-world assumption] and RDF allow to mix any kind of information, even when information that are incoerent. For instance, suppose that an axiom in your knowledge base TBOX states that a property "person:hasMom" has a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could also contains two different facts (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), peraphs extracted from different datasources. In order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are two names for the same person. If you are not so sure, you have two possibility: deduct that the data source is wrong, so you have to choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the axiom in TBOX , allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement, both in ABox and in Tbox,  in the knowlege base. At least you want to know the **provenance** and all metadata of all information in your knowledge base because the trust on a single data often derives from the trust of its source or in the creator of the data source.
 
 ## KEES Vocabulary
 
 The **KEES vocabulary** defines few new terms in the  http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*). 
 It consists of some OWL classes and properties, mainly derived from existing ontologies. 
+
+![uml](v1/images/uml.png)
 
 A **kees:KnowledgeBase** is defined as a subclass of a [sd:Dataset](https://www.w3.org/TR/sparql11-service-description/#sd-Dataset) that, in turn, is a specialization of  a dataset as described in the [VoID](https://www.w3.org/TR/void/). A kees:KnowledgeBase is
 a collection of [sd:namedGraph](https://www.w3.org/TR/sparql11-service-description/#sd-NamedGraph) that contain the linked data.
@@ -72,12 +78,8 @@ It is a a subclass of a [foaf:Document](http://xmlns.com/foaf/spec/#term_Documen
 metadata to publish your knowledge base.
 The foaf:primaryTopic property could be used to link a kees:KnowledgeBaseDescription document to a kees:KnowledgeBase individual.
 
-
 The **kees:Question** represents the *purpose* for the the knowledge base existence. In other words, the knoledge base exists to answer to *questions*. Question are natural language expressions that can be expressed as a query on a populated knowledge graph. The answer to a question results in tabular data, structured document, logic assertion or a translation of these in a natural language sentences.
 
-A **kees:Agent** describes a processor that understands the *KEES language profile*  and that it is able to do 
-actions on a  knowledge base starting from its descripion documents according with KEES specifications.
-It should be able to learn data, reasoning about data and to answer some questions starting from learned fact.
 
 The KEES vocabulary is expressed with OWL RDF in [kees.rdf file](v1/kees.rdf). The file was edited with Protégé editor.
 
