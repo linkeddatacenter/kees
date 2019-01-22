@@ -23,7 +23,7 @@ See [KEES presentation slides](https://docs.google.com/presentation/d/1mv9XO0Q9Q
 
 Lot of concepts used by KEES refer to the well known [Semantic Web Standards](https://www.w3.org/standards/semanticweb/) published by the World Wide Web Consortium ([W3C](https://w3.org/)).
 
-What is **data**? According with common sense, KEES defines data as words, numbers or in general *any string of symbols*.  This concept is equivalent to the definition of "literal" in the [RDF] (Resource Data Framework). Example of data is the string  `xyz`, the numbers `123`, `33.22` or the URI `http://LinkedData.Center`. Note that the data is usually associated with a  _data type_ it is just a name that states a set of restrictions on symbols string that build up the data;  _data type_ is not the data meaning.
+What is **data**? According with common sense, KEES defines data as words, numbers or in general *any string of symbols*.  This concept is equivalent to the definition of "literal" in the RDF (Resource Data Framework). Example of data is the string  `xyz`, the numbers `123`, `33.22` or the URI `http://LinkedData.Center`. Note that the data is usually associated with a  _data type_ it is just a name that states a set of restrictions on symbols string that build up the data;  _data type_ is not the data meaning.
 
 What is **information**? KEES defines information as *data with a meaning*. The meaning can be 
 learned from the context where a data is found or explicitly defined. From a practical point of view, because KEES adopts the [RDF standards](https://www.w3.org/RDF/), an information is defined by three data that build up a _triple_ (also known as a RDF statement): a _subject_, a _predicate_ and an _object_. The data type for the first two triple elements (subject and predicate) must be an URIs, the last element of the triple (object) can be anything. A triple can be also rapresented as an [unidirected labeled graph](https://mathinsight.org/definition/undirected_graph)
@@ -32,9 +32,9 @@ KEES defines **knowledge** as a graph of linked information (i.e. linked data). 
 
 ![triples](architecture/triples.png)
 
-KEES defines **knowledge base** (or **knowledge graph** ) as a container of *linked data with a purpose*, that is a related set information that can be composed to provide answer to some questions. 
+KEES defines **knowledge base** (or **knowledge graph** ) as a container of *linked data with a purpose*, that is a related set information that can be queried to provide answers to some questions. 
 
-From a theoretical point of view, a knowledge base is composed by information (i.e. fatcs), plus a formal system of logic used for knowledge representation, plus the [Open-world assumption](https://en.wikipedia.org/w/index.php?title=Open-world_assumption&oldid=871019791).
+From a theoretical point of view, a knowledge base is composed by information (i.e. fatcs), plus a formal system of logic used for knowledge representation, plus the [Open-world assumption](https://en.wikipedia.org/w/index.php?title=Open-world_assumption&oldid=871019791), plus an inference engine that demonstrates theorems. 
 
 The information are partitioned in two set: *TBox* and *ABox*. *ABox statements* describe facts,  *TBox statements* describe the terms used to qualify the facts meaning. If you are familiar with object-oriented paradigm, TBox statements sometimes associate with classes, while ABox associate with individual class instances. 
 *TBox statements* tend to be more permanent within a knowledge base and are often grouped in *ontologies* that describe a specific 
@@ -42,7 +42,8 @@ knowledge domain (e.g. business entities, people, goods, friendship, offering, g
 *ABox statements* associate with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and 
 are populated from datasets available in the web or by reasonings. 
 
-For practical purposes, KEES assumes that the knowledge base can be defined in a [SPARQL service](https://www.w3.org/TR/sparql11-service-description).
+KEES assumes that [RDF](https://www.w3.org/RDF/) is used for knowledge representation, and that the knowledge base is implemented 
+as a dataset in a [SPARQL service](https://www.w3.org/TR/sparql11-service-description).
 
 The **Language Profile** (or **Application profile**) is the portion of the TBOX that is recognized by a specific software application.
 
