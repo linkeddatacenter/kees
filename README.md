@@ -368,15 +368,6 @@ A KEES agent sholud be able to evaluate post-condition with at least two methods
 ## KEES Axioms
 
 
-### Implicit declaration of kees:sharedKnowledge 
-
-The individual kees:sharedKnowledge  is alwas defined as 
-
-```sparql
-CONSTRUCT {kees:sharedKnowledge a kees:KnowledgeBase}
-WHERE { FILTER NOT EXISTS {  kees:sharedKnowledge a kees:KnowledgeBase }}
-```
-
 ### Functional property management
 
 A KEES agent MUST be able to infer types from kees ontology functional properties.
@@ -457,9 +448,10 @@ CONSTRUCT {
 
 ### Example
 
-Suppose that there is knowledge base description file compsed by just one line:
+Suppose that there is knowledge base description file compsed by just two lines:
 
 ```turtle
+kees:sharedKnowledge kees:hasPlan :myplan.
 :myplan kees:builds <http://example.com/dataset.ttl>.
 ```
 
@@ -504,13 +496,17 @@ All OWL restrictions in KEES ontology that require a cardinality 1 MUST be satis
 
 ### Cardinality = some
 
-All OWL "sameof" restrictions in KEES ontology  MUST be satisfied.
+All OWL "same of" cardinality restrictions in KEES ontology  MUST be satisfied.
+
 
 
 ## KEES agent protocol
 
-A KEES Agent SHOULD accept as input one or more URL dereferencing to kees:KnowledgeBaseDescription resources
-A KEES Agent SHOULD accept as input at least one kees:KnowledgeBaseDescription document
+A KEES Agent MUST accept as input the URI of a KnowledgeBase to be processed. If none provided, kees:sharedKnowledge MUST be used.
+
+A KEES Agent SHOULD accept as input one or more URL dereferencing to kees:KnowledgeBaseDescription resources.
+
+A KEES Agent SHOULD accept as input at least one kees:KnowledgeBaseDescription document.
 
 The input method is implentation dependent: a KEES agent can be implemented as a web service or as a command or as a job.
 
