@@ -66,8 +66,10 @@ The main class introduced by KEES vocabulary is the **kees:Plan** that describes
 
 A **kees:KnowledgeBaseDescription** is a document that contains the description of the knowledge base with the purpose of
 publishing and trasferring  knowledge base bulding information.
-Think it as a subclass of a [foaf:Document](http://xmlns.com/foaf/spec/#term_Document) that allows to attach license and other 
-metadata.
+It is a a subclass of a [foaf:Document](http://xmlns.com/foaf/spec/#term_Document) that allows to attach license and other 
+metadata to publish your knowledge base.
+The foaf:primaryTopic property could be used to link a kees:KnowledgeBaseDescription document to a kees:KnowledgeBase individual.
+
 
 The **kees:Question** represents the *purpose* for the the knowledge base existence. In other words, the knoledge base exists to answer to *questions*. Question are natural language expressions that can be expressed as a query on a populated knowledge graph. The answer to a question results in tabular data, structured document, logic assertion or a translation of these in a natural language sentences.
 
@@ -106,11 +108,6 @@ In the rest of the document these namespaces are used:
 - owl: http://www.w3.org/2002/07/owl
 - kees: http://linkeddata.center/kees/v1
 
-
-The following picture sumarizes the KEES language profile.
-
-![uml](architecture/uml.png)
-
 Dublin core vocabulary is used to annotate dataset. The properties dct:created, dct:modified are part of the KEES Language profile.
 
 Knowledge base building activities MUST be traced using [PROV ontology](https://www.w3.org/TR/prov-overview/). KEES language profile
@@ -121,7 +118,10 @@ Trustability is enabled by attaching quality observation to ingested graph.
 For this feature KEES language profile reuses the [Dataset Quality Vocabulary (daQ)](http://purl.org/eis/vocab/daq) with
 qb:Observation class and daq:computedOn , daq:metric, daq:value and daq:isEstimated properties
 
-The foaf:primaryTopic property is used to link a kees:KnowledgeBaseDescription document to a kees:KnowledgeBase individual.
+The following picture sumarizes the main elements of the KEES language profile.
+
+![uml](architecture/uml.png)
+
 
 ### RDF Store requirement
 
@@ -251,13 +251,6 @@ The accrual periodicity pre-condition is not satisfied and the rule MUST be skip
 the accrual ferquency is less than current time.
 
 
-### Default URI space prefix
-
-A KEES agent SHOULD recognize [void:uriSpace pattern](https://www.w3.org/TR/void/#pattern) in a knowledge base
-making it available with the reserved prefix **res_** in graph constructor.
-
-
-
 ### Error conditions and error management
 
 A KEES agent MUST update the RDF store safe statement when it enters or exits the teaching window. 
@@ -302,18 +295,18 @@ SPARQL constructors should understand at least the sp:text property as defined i
 
 
 
-For example, if a KEES agent know this fact:
+For example, suppose that a KEES agent knows this plan:
 
 ```
-:myplan kees:builds <http://example.com/dataset.ttl>.
+:myplan kees:builds :mygraph kees:from <http://example.com/dataset.ttl> .
 ```
 
-if all pre-conditions are satisfied, than it could  executes the following SPARQL update script:
+if all pre-conditions are satisfied, than it could execute the following SPARQL update script:
 
 
 ```
-# if something goes wrong
-INSERT {[] sd:name <http://example.com/dataset.ttl>; prov:invalidatedAtTime ?now} WHERE {BIND(NOW() AS ?now)} ;
+# prepare if something goes wrong
+INSERT {[] sd:name :mygraph; prov:invalidatedAtTime ?now} WHERE {BIND(NOW() AS ?now)} ;
 
 # Load resource in a temporary graph
 LOAD <http://example.com/dataset.ttl> INTO GRAPH  <urn:tmp:graph>;
@@ -321,28 +314,32 @@ LOAD <http://example.com/dataset.ttl> INTO GRAPH  <urn:tmp:graph>;
 # REPLACE graph metadata in the default graph
 DELETE { ?s ?p ?o }
 INSERT {
-   [] sd:name <http://example.com/dataset.ttl>;
-      dct:creator "A KEES compliant smart agent" ;
+   [] sd:name :mygraph;
+      dct:creator  ;
       dct:created ?now;
       dct:modified ?now;
-      prov:wasGeneratedBy [
-         a prov:Activity ;
-	 prov:startedAtTime ?now ;
-	 prov:endedAtTime ?now ;
-	 prov:qualifiedAssociation [ prov:hadPlan ?plan ];     
+      prov:wasGeneratedBy [ a prov:Activity ;
+         prov:used <http://example.com/dataset.ttl> ;
+	 prov:qualifiedAssociation [ 
+            prov:agent [ a prov:SoftwareAgent ] ;
+	    prov:hadRole kees:namedGraphGenerator ;
+	    prov:hadPlan ?plan 
+	 ] ;     
       ]
 } WHERE {
-  ?g a sd:NamedGraph; sd:name <http://example.com/dataset.ttl>; (<>|!<>)* ?s . 
+  ?g a sd:NamedGraph; sd:name :mygraph; (<>|!<>)* ?s . 
   ?s ?p ?o .
   
-  ?plan kees:builds <http://example.com/dataset.ttl>.
+  ?plan kees:builds :mygraph.
   BIND( NOW() AS ?now )
 };
 
 # commit the transaction
-MOVE SILENT GRAPH <urn:tmp:graph> TO <http://example.com/dataset.ttl>
+MOVE SILENT GRAPH <urn:tmp:graph> TO :mygraph
 ```
 
+In this case the KEES agent decided to store graph metadata in the default graph. Other agents could choice to store
+graph metadata  in a separate named graph.
 
 ### Plan pos-condition
 
@@ -363,7 +360,17 @@ A KEES agent sholud be able to evaluate post-condition with at least two methods
 
 
 
-### KEES Axioms
+## KEES Axioms
+
+
+#### implecit declaration of kees:sharedKnowledge 
+
+The individual kees:sharedKnowledge  is alwas defined as 
+
+```
+CONSTRUCT {kees:sharedKnowledge a kees:KnowledgeBase}
+WHERE { FILTER NOT EXISTS {  kees:sharedKnowledge a kees:KnowledgeBase }}
+```
 
 #### Functional property management
 
@@ -381,13 +388,12 @@ WHERE {
 
 #### A plan is alwais attached to a knowledge base
 
-If a stand alone pllan exists, it must be considered attached to the kees:sharedKnowledge. 
+If a stand alone plan exists, it must be considered part of the kees:sharedKnowledge. 
 
 ```
 CONSTRUCT { kees:sharedKnowledge kees:hasPlan ?plan }
 WHERE {?plan a kees:Plan FILTER NOT EXISTS {  ?x kees:hasPlan ?plan }}
 ```
-
 
 #### A question is alwais attached to a knowledge base
 
@@ -467,43 +473,61 @@ kees:sharedKnowledge a kees:KnowledgeBase;
 .
 ```
 
-Some smarter KEES agent SHOULD add also:
+A smarter KEES agent SHOULD consider also:
 ```
 :myplan ;
    kees:requires <http://example.com/dataset.ttl> ;
    # Use  a minimal accualPeriodiciy to reduce DOS attacks
-   kees:accualPeriodiciy sdmx-code:freq-m ; 
-   kees:asserts 
-	[ a sp:Ask; sp:text "ASK {FILTER NOT EXISTS{ ?x sd:name <http://example.com/dataset.ttl>; prov:InvalidatedAtTime []}}"]
+   kees:accualPeriodiciy sdmx-code:freq-m ; # a minute
+   kees:asserts [ a sp:Ask; sp:text """ASK {
+     ?x sd:name <http://example.com/dataset.ttl>; dct:created ?created; dct:modified ?modified.
+     FILTER( ?modified >= ?created )
+     FILTER NOT EXISTS{ ?x prov:InvalidatedAtTime []}}
+   }"""]
 .
 ```
 
 
-### KEES agent protocol
+## Integrity tests
 
-A KEES Agent MUST be able to accept in input one or more URL dereferencing to kees:KnowledgeBaseDescription resources.
+Following axioms MUST always eval to true after the execution of the KEES axioms. If not KEES agent should abort.
+
+### Cardinality = 1 
+
+All OWL restrictions in KEES ontology that require a cardinality 1 MUST be satisfied.
+
+
+### Cardinality = some
+
+All OWL "sameof" restrictions in KEES ontology  MUST be satisfied.
+
+
+## KEES agent protocol
+
+A KEES Agent SHOULD accept as input one or more URL dereferencing to kees:KnowledgeBaseDescription resources
+A KEES Agent SHOULD accept as input at least one kees:KnowledgeBaseDescription document
+
 The input method is implentation dependent: a KEES agent can be implemented as a web service or as a command or as a job.
 
-There is no direct way to detect if an agent is running or is aborted. But you can always check if the knowledge base is in a
-safe state. 
+A KEES agent SHOULD accept, as optional parameter, a namespace to be used when it needs to create new resources.
+
+KEES does not impose a way to detect if an agent is running or is aborted. 
+But you MUST can always able to check if the knowledge base is in a safe state or not
 
 KEES agent implementation SHOULD add some log and monitor features.
 
-KEES agent should be able to infer types from functional properties.
+A KEES agent is expected to implement a process like:
 
-
-A KEES agent MUST implement a this process schema:
-
-1. exit teaching window 
-2. execute axioms
-3. ensure the integrity of the knowledge base descriptions. Abort if errors;
-4. get a plan that matches all pre-conditions, then take the appropriate action looking  the *kees:from* attribute and
-   assert all post-conditions, aborting if one them return false or there if a computation error.
-5. repeat steps 2-3-4 until exists a matching plan
-6. check if there are unexecuted plan (i.e. plans with unsatisfied pre-condition). If yes abort.
-7. check no named graph was invalidated.  If yes abort.
-8. enter teaching window
-9. (Optional) print an execution report
+1. Put the knowledge base in a *not safe* status.
+2. Execute KEES axioms.
+3. Ensure the integrity of the knowledge base descriptions. Abort if errors;
+4. Find a plan that matches all pre-conditions, then take the appropriate action using the constructor and post-conditions.
+5. Repeat steps 2-3-4 until it finds a matching plan.
+6. Check if there are pending plan (i.e. plans with unsatisfied pre-condition). If yes abort.
+7. Check that no named graph was invalidated.  If yes abort.
+8. Enter teaching window and put the knowledge base in a *safe* status
+9. (Optional) Print an execution report summary
+10. (Optional) Provide execution log
 
 
 ## Example
@@ -524,7 +548,7 @@ Create a file kees.ttl fit following content.
 
 <> a kees:KnowledgeBaseDescription; 
 	dct:title "This dummy knowledge base is about teenagers in Europe"@en;
-	dct:creator <https://example.org/profile/card#organization>;
+	dct:creator <https://example.org/profile/card#me>;
 	dct:license <http://www.opendatacommons.org/odc-public-domain-dedication-and-licence/> .
 	foaf:primaryTopic kees:sharableKnowledge
 .
