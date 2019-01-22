@@ -20,11 +20,11 @@
         <dcterms:license rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
         <foaf:homepage rdf:resource="http://linkeddata.center/kees/"/>
         <dc:description xml:lang="en">KEES ontology Defines few new terms used in KEES Language Application as defined in http://linkeddata.center/kees</dc:description>
-        <dc:description rdf:resource="https://raw.githubusercontent.com/linkeddatacenter/kees/master/architecture/uml.png"/>
-        <owl:versionInfo>V 1.2.2 Release 2019-01-18</owl:versionInfo>
+        <dc:description rdf:resource="https://raw.githubusercontent.com/linkeddatacenter/kees/master/v1/images/uml.png"/>
+        <owl:versionInfo>V 1.2.3 Release 2019-01-22</owl:versionInfo>
         <rdfs:label xml:lang="en">KEES Ontology</rdfs:label>
         <dc:rights xml:lang="en">The KEES ontology is available under the Creative Commons Attribution 4.0 Unported license; see http://creativecommons.org/licenses/by/4.0/. In a nutshell, you are free to copy, distribute and transmit the work; to remix/adapt the work (e.g. to import the ontology and create specializations of its elements), as long as you attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work). Proper Attribution: Simply include the statement &quot;This work is based on the KEES ontology, developed by Enrico Fagnoni&quot; and link back to http:/linkeddata.center/kees/v1</dc:rights>
-        <dc:title xml:lang="en">The KEES Vocabulary for knowledge  base sharing</dc:title>
+        <dc:title xml:lang="en">The KEES Vocabulary</dc:title>
     </owl:Ontology>
     
 
@@ -288,15 +288,6 @@ plan execution.</rdfs:comment>
 
 If the accrual policy is kees:create, the named graph and all related metadata MUST be deleted and recreated BEFORE to execute accrual policies.</rdfs:comment>
         <rdfs:label xml:lang="en">AccrualPolicy</rdfs:label>
-    </owl:Class>
-    
-
-
-    <!-- http://linkeddata.center/kees/v1#Agent -->
-
-    <owl:Class rdf:about="http://linkeddata.center/kees/v1#Agent">
-        <rdfs:label xml:lang="en">Agent</rdfs:label>
-        <rdfs:label xml:lang="en">Is a software process that understands a portion the KEES language profile and that it is able to do actions on a knowledge base. For instance, it could be able to ingest data and/or to answer some questions.</rdfs:label>
     </owl:Class>
     
 
