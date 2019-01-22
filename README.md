@@ -53,9 +53,7 @@ The **KEES Language Profile** is the set of all terms, rules and axioms that a s
 
 **Trust** is another key concept in KEES. The [Open-world assumption] and RDF allow to mix any kind of information, even when information that are incoerent. For instance, suppose that an axiom in your knowledge base TBOX states that a property "person:hasMom" has a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could also contains two different facts (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), peraphs extracted from different datasources. In order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are two names for the same person. If you are not so sure, you have two possibility: deduct that the data source is wrong, so you have to choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the axiom in TBOX , allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement, both in ABox and in Tbox,  in the knowlege base. At least you want to know the **provenance** and all metadata of all information in your knowledge base because the trust on a single data often derives from the trust of its source or in the creator of the data source.
 
-## KEES Specification
-
-### KEES Vocabulary
+## KEES Vocabulary
 
 The **KEES vocabulary** defines few new terms in the  http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*). 
 It consists of some OWL classes and properties, mainly derived from existing ontologies. 
@@ -89,7 +87,7 @@ they are to be appended to existing data. The *replace* policy affirms that new 
 - If you want to share/trade your knowledge base, simply attach your KEES plan, questions and  license to **kees:sharableKnowledge** object.
 - **kees:namedGraphGenerator** is the role that a kees:Agent must use in building/updating a named graph.
 
-### The KEES Language profile
+## The KEES Language profile
 
 The **KEES Language Profile** reuses some terms from existing vocabularies to add mappings and restriction to the KEES vocabulary.
 In the rest of the document these namespaces are used:
@@ -124,7 +122,7 @@ The following picture sumarizes the main elements of the KEES language profile.
 ![uml](architecture/uml.png)
 
 
-### RDF Store requirement
+## RDF Store requirement
 
 To Know the **provenance** of each statement, it is of paramount imortance to get an idea about data quality. For this reason, KEES requires that all statements must have a fourth element that links to a data source. This means that, for pratical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to a metadata.
 
@@ -150,7 +148,7 @@ DELETE {<urn:kees:kb> dct:valid ?x} WHERE { <urn:kees:kb> dct:valid ?x }
 To check if a RDF Store is *safe*: `ASK { <urn:kees:kb> dct:valid [] }`
 
 
-### SPARQL service requirements
+## SPARQL service requirements
 
 A KEES compliant [SPARQL service](https://www.w3.org/TR/sparql11-service-description/) SHOULD expose the **kees:guard** feature. 
 If a this feature is present,
@@ -177,7 +175,7 @@ The steps 2 and 3 can be iterated
 This sequence is called **KEES workflow** and it is a continuous integration process that starts on user request, scheduled time or 
 after triggering an event (e.g. a dataset change).
 
-### Plan target graph
+### The plan target graph
 
 A target graph is a named graph in the knowledge base referenced by the property kees:build. In a KEES knowledge base,
 every named graph shoud be referenced by exactly one plan through the kees:builds property.
@@ -196,7 +194,7 @@ MUST be skipped or postponed without changing the knowledge base.
 There are two kinds of preconditions, related with two properties: kees:accualPeriodicity and kees:requires .
 
 
-#### Required URI pre-conditions
+#### Required URI
 
 The **kees:requires** range MUST be an URI that represents a resource in the knowledge base. Multiple kees:requires are allowed.
 
@@ -237,7 +235,7 @@ ASK {
 ```
 
 
-#### Accrual periodicity pre-condition
+#### Accrual periodicity
 
 kees:accualPeriodicity expects exactly a URI that describes a frequency (i.e. once a month, once a year). 
 The KEES agent SHOULD recognize at least all concepts in sdmx-code:freq scheme for dct:accrualPeriodicity and use these information to
@@ -342,7 +340,7 @@ MOVE SILENT GRAPH <urn:tmp:graph> TO :mygraph
 In this case the KEES agent decided to store graph metadata in the default graph. Other agents could choice to store
 graph metadata  in a separate named graph.
 
-### Plan pos-condition
+### Plan post-conditions
 
 After a plan execution a KEES agent must evaluate the condition referred by the kees:assert property. Multiple kees:assert 
 properties can be defined.
@@ -364,7 +362,7 @@ A KEES agent sholud be able to evaluate post-condition with at least two methods
 ## KEES Axioms
 
 
-#### implecit declaration of kees:sharedKnowledge 
+### Implicit declaration of kees:sharedKnowledge 
 
 The individual kees:sharedKnowledge  is alwas defined as 
 
@@ -373,7 +371,7 @@ CONSTRUCT {kees:sharedKnowledge a kees:KnowledgeBase}
 WHERE { FILTER NOT EXISTS {  kees:sharedKnowledge a kees:KnowledgeBase }}
 ```
 
-#### Functional property management
+### Functional property management
 
 A KEES agent MUST be able to infer types from kees ontology functional properties.
 
@@ -387,7 +385,7 @@ WHERE {
 ```
 
 
-#### A plan is alwais attached to a knowledge base
+### A plan is alwais attached to a knowledge base
 
 If a stand alone plan exists, it must be considered part of the kees:sharedKnowledge. 
 
@@ -396,7 +394,7 @@ CONSTRUCT { kees:sharedKnowledge kees:hasPlan ?plan }
 WHERE {?plan a kees:Plan FILTER NOT EXISTS {  ?x kees:hasPlan ?plan }}
 ```
 
-#### A question is alwais attached to a knowledge base
+### A question is alwais attached to a knowledge base
 
 If a stand alone question exists, it must be considered attached to the kees:sharedKnowledge. 
 
@@ -406,7 +404,7 @@ WHERE {?question a kees:Question FILTER NOT EXISTS {  ?x kees:answers ?question 
 ```
 
 
-#### Inferred kees:from 
+### Inferred kees:from 
 
 If exists a plan  without kees:from fields, it MUST be generated from the kees:builds property; e.g.:
 
@@ -418,7 +416,7 @@ WHERE {
 }
 ```
 
-#### Inferred kees:accrualPeriodicity
+### Inferred kees:accrualPeriodicity
 
 If no *kees:accrualPolicy* exists, *kees:replace* MUST be used:
 
@@ -432,7 +430,7 @@ WHERE {
 Exactly one *kees:accrualPolicy* must be present.
 
 
-#### Default data quality
+### Default data quality
 
 
 If no explicit data quality observation records are present in the knowledge base, this axiom SHOULD applies:
@@ -451,7 +449,7 @@ CONSTRUCT {
 ```
 
 
-#### Example
+### Example
 
 Suppose that there is knowledge base description file compsed by just one line:
 
@@ -531,7 +529,7 @@ A KEES agent is expected to implement a process like:
 10. (Optional) Provide execution log
 
 
-## Example
+## Example of a KEES knowledge Base Desctiption document
 
 [** WARNING: THIS SECTION IS INFORMATIVE AND SUBJECTED TO MAYOR CHANGS **]
 
@@ -555,8 +553,6 @@ Create a file kees.ttl fit following content.
 .
 
 ```
-
-
 
 
 ### Defining plans
