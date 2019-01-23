@@ -403,7 +403,7 @@ WHERE {?question a kees:Question FILTER NOT EXISTS {  ?x kees:answers ?question 
 
 ### Inferred kees:from 
 
-If exists a plan  without kees:from property, a default MUST be provided; e.g.:
+If exists a plan without kees:from property, a default MUST be provided; e.g.:
 
 ```sparql
 CONSTRUCT { ?plan kees:from ?graphUri } 
@@ -412,6 +412,21 @@ WHERE {
    FILTER NOT EXISTS { ?plan  kees:from [] }
 }
 ```
+
+
+
+###  Constructor must have always a type
+
+The object refereed by the  of kees:from propery MUS have a type. If not provided rdfs:Resource MUST be used.
+
+```sparql
+CONSTRUCT { ?fromUri a rdfs:Resource } 
+WHERE {
+   ?plan kees:from ?fromUri .
+   FILTER NOT EXISTS { ?fromUri a [] }
+}
+```
+
 
 ### Inferred kees:accrualPeriodicity
 
