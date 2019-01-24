@@ -528,40 +528,90 @@ WHERE {
 
 ### Example
 
-Suppose that there is knowledge base description file compsed by just two lines:
+Suppose that there is knowledge base description file composed by this lines:
 
 ```turtle
-kees:sharedKnowledge kees:hasPlan :myplan.
-:myplan kees:builds <http://example.com/dataset.ttl>.
+kees:sharedKnowledge kees:planSequence( 
+	[kees:builds <http://example.com/dataset.ttl>]
+	[kees:builds ex:g1 kees:from <http://example.com/dataset2.ttl>]
+) .
 ```
 
-A KEES agent MUST be considered it equivalent to:
+A KEES agent MUST be considered it equivalent to the configuration:
 
 ```turtle
 <> a kees:KnowledgeBaseDescription;
    foaf:primaryTopic kees:sharedKnowledge .
    
 kees:sharedKnowledge a kees:KnowledgeBase;
-   kees:hasPlan :myplan .
-:myplan a kees:Plan ;
+   kees:hasPlan _:p1 , _:p2.
+   
+_:p1  a kees:Plan ;
    kees:builds <http://example.com/dataset.ttl> ;
    kees:from <http://example.com/dataset.ttl> ;
+   kees:changes <http://example.com/dataset.ttl> ;
+   kees:requires <http://example.com/dataset.ttl> ;
+   kees:accualPeriodiciy sdmx-code:freq-m ; # minimum a minute to avoid DOS
+   kees:accrualPolicy kees:replace 
+.
+
+_:p2  a kees:Plan ;
+   kees:builds ex:g1 ;
+   kees:from <http://example.com/dataset2.ttl> ;
+   kees:changes ex:g1 ;
+   kees:requires <http://example.com/dataset2.ttl>, <http://example.com/dataset.ttl> ;
+   kees:accualPeriodiciy sdmx-code:freq-m ; # minimum a minute to avoid DOS
    kees:accrualPolicy kees:replace 
 .
 ```
 
-A smarter KEES agent SHOULD consider also:
+Supposing that a KEES Agent runs on 06/11/2019, it could produce following contents in the knowledge base:
+
 ```turtle
-:myplan ;
-   kees:requires <http://example.com/dataset.ttl> ;
-   # Use  a minimal accualPeriodiciy to reduce DOS attacks
-   kees:accualPeriodiciy sdmx-code:freq-m ; # a minute
-   kees:asserts [ a sp:Ask; sp:text """ASK {
-     ?x sd:name <http://example.com/dataset.ttl>; dct:created ?created; dct:modified ?modified.
-     FILTER( ?modified >= ?created )
-     FILTER NOT EXISTS{ ?x prov:InvalidatedAtTime []}}
-   }"""]
-.
+<urn:agent:config>: {
+	#... same as previus configuration
+	
+	ex:theAgent a foaf:Agent, prov:SoftwareAgent; foaf:name "A smart KEES agent".
+}
+
+<http://example.com/dataset.ttl> : {
+	_:g1 [ a sd:NamedGraph; sd:name <http://example.com/dataset.ttl>
+		dct:created "2019-11-06"^^xsd:date;
+		dct:modified "2019-11-06"^^xsd:date;
+		prov:wasGeneratedBy [ a prov:Activity ;
+			prov:used 
+				<http://example.com/dataset.ttl>;
+			prov:qualifiedAssociation [
+				prov:agent ex:theAgent;
+				prov:role kees:namedGraphGenerator;
+				prov:plan _:p1
+			]
+		]
+	]
+	
+	#... here the data extracted from http://example.com/dataset.ttl
+    
+}
+
+ex:g1 : {
+	_:g2 [ a sd:NamedGraph sd:name ex:g1
+		dct:created "2019-11-06"^^xsd:date;
+		dct:modified "2019-11-06"^^xsd:date;
+		prov:wasGeneratedBy [ a prov:Activity ;		
+   			kees:used 
+				<http://example.com/dataset2.ttl>, 
+				<http://example.com/dataset.ttl> ;
+			prov:qualifiedAssociation [
+				prov:agent ex:theAgent;;
+				prov:role kees:namedGraphGenerator;
+				prov:plan _:p2
+			]
+		]
+		
+		#... here the data extracted from http://example.com/dataset2.ttl
+	]
+}
+
 ```
 
 
