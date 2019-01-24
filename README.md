@@ -167,7 +167,7 @@ A KEES compliant SPARQL service SHOULD alwais provide optimized http caching inf
 
 ## KEES agent requirements
 
-### Workflow
+### KEES Workflow
 
 A KEES Agent SHOULD perform actions on a knowledge base on a logical sequence of four temporal phases called *windows*:
 
@@ -180,8 +180,11 @@ A KEES Agent SHOULD perform actions on a knowledge base on a logical sequence of
 
 The steps 2 and 3 can be iterated.
 
-This sequence is called **KEES workflow** and it is a continuous integration process that starts on user request, scheduled time or 
-after triggering an event (e.g. a dataset change).
+The plans depend from each other. Dependecis can be explicitelly defined using the kees:requieres properties in plans or implicitelly
+defining an rdf list of plans referenced by the kees:planSequence in a kees:Knowledgbase resource. A knowledge base can enter the
+teaching window only when all plans requirement are satisfied.
+
+The sequence of plan execution is called **KEES workflow** and it is a continuous integration process that starts on a triggered event (e.g change in source data, a user request or a scheduled job) on knowledge base that is in the teaching windows.
 
 ### The Target graph
 
@@ -276,10 +279,10 @@ KEES agent to enter the teaching window.
 A KEES agent MUST abort in case of semantic inconsistences in *KEES knowledge base definition*.
 
 
-### Graph constructors
+### Plan constructors
 
 A constructor is a resource referenced by the kees:from property that MUST provide enough information to a KEES agent to populate
-the target named graph. A constructor can be a script in some language (i.e. SPARQL) or a data provider.
+the knowledge base. A constructor can be a script in some language (i.e. SPARQL) or a data provider.
 
 KEES does not impose any requirement for a constructor, but expects that a KEES agent SHOULD be smart enough to 
 recognize and manage at least following kind of constructors:
@@ -346,6 +349,25 @@ MOVE SILENT GRAPH <urn:tmp:graph> TO :mygraph
 In this case the KEES agent decided to store graph metadata in the default graph. Other agents could choice to store
 graph metadata  in a separate named graph.
 
+
+### Plan destructor
+
+A destructor is a resource referenced by the kees:destructor property that MUST provide enough information to a KEES agent to remove
+from the knowledge created by constructors.
+A destructor can be a script in some language (i.e. SPARQL) 
+
+KEES does not impose any requirement for a destructor, but expects that a KEES agent SHOULD be smart enough to 
+recognize and manage at least a resource of  type **sp:Update** . In this case the KEES agent
+should be able to execute the SPARQL Update script described in the resouce in the knowledge graph database. 
+The update script MUST NOT destroy any  graph described in other plans.
+
+SPARQL destructors should understand at least the sp:text property as defined in the
+[SPIN W3C Member Submission 22 February 2011, updated 07 November, 2014](http://spinrdf.org/spin.html) .
+
+If no destructor is specified, as default behaviour, all named graph referenced by kees:changes propery MUST be silent dropped.
+
+
+
 ### Plan post-conditions
 
 After a plan execution a KEES agent must evaluate the condition referred by the kees:assert property. Multiple kees:assert 
@@ -401,7 +423,7 @@ WHERE {?question a kees:Question FILTER NOT EXISTS {  ?x kees:answers ?question 
 ```
 
 
-### Inferred kees:from 
+### Inferred constructor
 
 If exists a plan without kees:from property, a default MUST be provided; e.g.:
 
@@ -413,6 +435,36 @@ WHERE {
 }
 ```
 
+### Inferred  plan dependencies
+
+The kees:planSequence propery MUST refer a rdf:list that MUST be  considered as a shortcut to specify plan dependencies. 
+
+For example:
+
+`ex:kb kees:workflow ( ex:plan1 ex:plan2)` means that  `ex:plan2 kees:requires ex:plan1`
+
+This implies that all list element are kees:Plan
+
+CONSTRUCT { ?plan2 kees:requires ?plan1 } 
+WHERE {
+   ?x rdf:first ?plan1; rdf:rest/rdf:first ?plan2.
+   ?plan1 a kees:Plan.
+   ?plan2 a kees:Plan
+   FILTER NOT EXISTS { ?plan2 kees:requires ?plan1 }
+}
+
+### kees:changes always include constructor
+
+The resources referred by kees:from MUST be referenced also by kees:changes
+
+
+```sparql
+CONSTRUCT { ?plan kees:changes ?resource } 
+WHERE {
+   ?plan kees:builds ?resource .
+   FILTER NOT EXISTS { ?plan  kees:changes resource }
+}
+```
 
 
 ###  Constructor must have always a type
@@ -460,6 +512,19 @@ CONSTRUCT {
 }
 ```
 
+### Graph invalidation
+
+If a terminated prov:activity invalidates a graph, then the graph is invalidated when the activity ended
+
+
+```sparql
+CONSTRUCT  {?graph prov:invalidatedAtTime ?endTime} 
+WHERE {
+      ?activiti a prov:Activity; prov:endedAtTime ?endTime; prov:invalidated ?name.
+      ?graph sd:name ?name.
+      FILTER NOT EXISTS { ?graph prov:invalidatedAtTime ?endTime }
+}
+```
 
 ### Example
 
@@ -513,6 +578,12 @@ All OWL restrictions in KEES ontology that require a cardinality 1 MUST be satis
 
 All OWL "same of" cardinality restrictions in KEES ontology  MUST be satisfied.
 
+
+### No circular references exists
+
+Plan dependency can determine  circulal referenca (i.e. planA requires planB and planB requires plan A.
+
+Such circular references SHOULD be early detected by the KEES agent.
 
 
 ## KEES agent protocol
