@@ -575,7 +575,7 @@ Supposing that a KEES Agent runs on 06/11/2019, it could produce following conte
 }
 
 <http://example.com/dataset.ttl> : {
-	_:g1 [ a sd:NamedGraph; sd:name <http://example.com/dataset.ttl>
+	_:g1 a sd:NamedGraph; sd:name <http://example.com/dataset.ttl>
 		dct:created "2019-11-06"^^xsd:date;
 		dct:modified "2019-11-06"^^xsd:date;
 		prov:wasGeneratedBy [ a prov:Activity ;
@@ -587,14 +587,14 @@ Supposing that a KEES Agent runs on 06/11/2019, it could produce following conte
 				prov:plan _:p1
 			]
 		]
-	]
+	.
 	
 	#... here the data extracted from http://example.com/dataset.ttl
     
 }
 
 ex:g1 : {
-	_:g2 [ a sd:NamedGraph sd:name ex:g1
+	_:g2  a sd:NamedGraph sd:name ex:g1
 		dct:created "2019-11-06"^^xsd:date;
 		dct:modified "2019-11-06"^^xsd:date;
 		prov:wasGeneratedBy [ a prov:Activity ;		
@@ -609,7 +609,7 @@ ex:g1 : {
 		]
 		
 		#... here the data extracted from http://example.com/dataset2.ttl
-	]
+	.
 }
 
 ```
