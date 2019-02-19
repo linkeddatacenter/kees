@@ -13,52 +13,49 @@ KEES allows to formalize and license:
 - how to collect the right data, 
 - how much you can trust in your data, 
 - what new information you can deduct from the collected data,
-- how to answer to specific questions using data
+- how to answer specific questions using data
 
-Artificial intelligences and humans can use these *know hows* to reuse and enrich existing knowledge. KEES is a Semantic Web Application.
+A.I. and humans can use these *know hows* to reuse and enrich existing knowledge. KEES is a Semantic Web Application.
 
 See [KEES presentation slides](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
 ## Definitions
 
-Lot of concepts used by KEES refer to the well known [Semantic Web Standards](https://www.w3.org/standards/semanticweb/) published by the World Wide Web Consortium ([W3C](https://w3.org/)).
+A lot of concepts used by KEES refer to the well known [Semantic Web Standards](https://www.w3.org/standards/semanticweb/) published by the World Wide Web Consortium ([W3C](https://w3.org/)).
 
-What is **data**? According with common sense, KEES defines data as words, numbers or in general *any string of symbols*.   Example of data is the strins  `xyz`, `123`, `33.22` or  `http://LinkedData.Center`. Data is usually associated with a  _data type_ that states a set of restrictions on symbols dequence that build up the data For example:  the number `123`, the float `33.22` or  the URI `http://LinkedData.Center`. The _data type_ is not the data meaning.
+What is **data**? According to common sense, KEES defines data as words, numbers or in general *any string of symbols*.   Example of data is the strings  `xyz`, `123`, `33.22` or  `http://LinkedData.Center`. Data is usually associated with a  _data type_ that states a set of restrictions on symbols sequence that build up the data For example the number `123`, the float `33.22` or the URI `http://LinkedData.Center`. The _data type_ is not the data meaning.
 
-What is **information**? KEES defines information as *data with a meaning*. The meaning can be 
-learned from the context where a data is found or explicitly defined. KEES adopts the [RDF standards](https://www.w3.org/RDF/) to
-describe information by tuple of three data, i.e. a _triple_ (also known as a RDF statement): a _subject_, a _predicate_ and an _object_. The data type for the first two elements of a triple (i.e. the subject and the predicate) must be an URIs, the last element of the triple (i.e. the object) can be anything. A triple can be also represented as an [unidirected labeled graph](https://mathinsight.org/definition/undirected_graph)
+What is **information**? KEES defines information as *data with a meaning*. The meaning can be learned from the context where a data is found or explicitly defined. KEES adopts the [RDF standards](https://www.w3.org/RDF/) to
+describe information by a tuple of three data, i.e. a _triple_ (also known as an RDF statement): a _subject_, a _predicate_, and an _object_. The data type for the first two elements of a triple (i.e. the subject and the predicate) must be a URIs, the last element of the triple (i.e. the object) can be anything. A triple can be also represented as an [unidirected labeled graph](https://mathinsight.org/definition/undirected_graph)
 
 ![a triple](architecture/triple.jpg)
 
-KEES defines **knowledge** as a graph of linked information (i.e. linked data). This graph is possible because, in RDF, any URI can be both the object of a triple  and the subject of another one or even the predicate for another.
+KEES defines **knowledge** as a graph of linked information (i.e. linked data). This graph is possible because, in RDF, any URI can be both the object of a triple and the subject of another one or even the predicate for another.
 
 ![triples](architecture/triples.png)
 
-KEES defines **knowledge base** (or **knowledge graph** ) as a container of *linked data with a purpose*, that is a related set information that can be queried to provide answers to some questions. 
+KEES defines **knowledge base** (or **knowledge graph** ) as a container of *linked data with a purpose*, that is a piece of related information that can be queried to provide answers to some questions. 
 
-From a theoretical point of view, a knowledge base is composed by information (i.e. fatcs), plus a formal system of logic used for knowledge representation, plus the [Open-world assumption](https://en.wikipedia.org/w/index.php?title=Open-world_assumption&oldid=871019791), plus an inference engine that demonstrates theorems. 
+From a theoretical point of view, a knowledge base is composed by information (i.e. facts), plus a formal system of logic used for knowledge representation, plus the [Open-world assumption](https://en.wikipedia.org/w/index.php?title=Open-world_assumption&oldid=871019791), plus an inference engine that demonstrates theorems. 
 
-The information are partitioned in two set: *TBox* and *ABox*. *ABox statements* describe facts,  *TBox statements* describe the terms used to qualify the facts meaning. If you are familiar with object-oriented paradigm, TBox statements sometimes associate with classes, while ABox associate with individual class instances. 
-*TBox statements* tend to be more permanent within a knowledge base and are often grouped in *ontologies* that describe a specific 
-knowledge domain (e.g. business entities, people, goods, friendship, offering, geocoding, etc, etc).
-*ABox statements* associate with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and 
-are populated from datasets available in the web or by reasonings. 
+The information is partitioned in two sets: *TBox* and *ABox*. *ABox statements* describe facts,  *TBox statements* describe the terms used to qualify the facts meaning. If you are familiar with the object-oriented paradigm, TBox statements sometimes associate with classes, while ABox associate with individual class instances. 
+*TBox statements* tend to be more permanent within a knowledge base and are often grouped in *ontologies* that describe a specific knowledge domain (e.g. business entities, people, goods, friendship, offering, geocoding, etc, etc).
+*ABox statements* associated with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and are populated from datasets available in the web or by reasonings. 
 
 KEES assumes that RDF is used for knowledge representation  and that the knowledge base is implemented 
 as a dataset in a [SPARQL service](https://www.w3.org/TR/sparql11-service-description).
 
 The **Language Profile** (or **Application profile**) is the portion of the TBOX that is recognized by a specific software application.
 
-The language profile can contain *axioms* . An **axiom** describes how to generate/validate knowledge base statemensts using entailment inferred by language profile semantic and known facts. For example an axiom can be described with OWL and evaluated by a OWL reasoner or described with SPARQL QUERY constructs or with SPARQL UPDATE scripts and evaluated in a SPARQL service.
+The language profile can contain *axioms *. An **axiom** describes how to generate/validate knowledge base statements using entailment inferred by language profile semantic and known facts. For example, an axiom can be described with OWL and evaluated by an OWL reasoner or described with SPARQL QUERY constructs or with SPARQL UPDATE scripts and evaluated in a SPARQL service.
 
-The **KEES Language Profile** is the set of all terms, rules and axioms that a software application that want to use a knowledge base should to understand.
+The **KEES Language Profile** is the set of all terms, rules, and axioms that a software application that wants to use a knowledge base should understand.
 
 A **KEES Agent** describes a processor that understands the *KEES language profile*  and that it is able to do 
-actions on a knowledge base  according with KEES specifications.
+actions on a knowledge base according to KEES specifications.
 It should be able to learn data, reasoning about data and to answer some questions starting from learned fact.
 
-**Trust** is another key concept in KEES. The [Open-world assumption] and RDF allow to mix any kind of information, even when information that are incoerent. For instance, suppose that an axiom in your knowledge base TBOX states that a property "person:hasMom" has a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could also contains two different facts (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), peraphs extracted from different datasources. In order to take decision about who is jack's mom you need trust in your data. If you are sure about the veridicicy of all data in the knowledge base, you can deduct that :Mary and :Giulia are two names for the same person. If you are not so sure, you have two possibility: deduct that the data source is wrong, so you have to choose the most trusted statement with respect some criteria (even casually if both statemenst have the same trust rank) or to change the axiom in TBOX , allowing a person to have more than one mom. In any case you need to get an idea about _your_ trust on each statement, both in ABox and in Tbox,  in the knowlege base. At least you want to know the **provenance** and all metadata of all information in your knowledge base because the trust on a single data often derives from the trust of its source or in the creator of the data source.
+**Trust** is another key concept in KEES. The [Open-world assumption] and RDF allow mixing any kind of information, even when information that is incoherent. For instance, suppose that an axiom in your knowledge base TBOX states that a property "person:hasMom" has a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could also contains two different facts (:jack person:hasMom :Mary) and (:jack person:hasMom :Giulia), perhaps extracted from different data sources. In order to take a decision about who is Jack's mom, you need trust in your data. If you are sure about the veracity of all data in the knowledge base, you can deduct that: Mary and  Giulia are two names for the same person. If you are not so sure, you have two possibility: deduct that the data source is wrong, so you have to choose the most trusted statement with respect some criteria (even casually if both statements have the same trust rank) or to change the axiom in TBOX, allowing a person to have more than one mom. In any case, you need to get an idea about _your_ trust on each statement, both in ABox and in Tbox,  in the knowledge base. At least you want to know the **provenance** and all metadata of all information in your knowledge base because the trust on a single data often derives from the trust of its source or in the creator of the data source.
 
 ## KEES Vocabulary
 
@@ -67,29 +64,29 @@ It consists of some OWL classes and properties, mainly derived from existing ont
 
 ![uml](v1/images/uml.png)
 
-A **kees:KnowledgeBase** is defined as a subclass of a [sd:Dataset](https://www.w3.org/TR/sparql11-service-description/#sd-Dataset) that, in turn, is a specialization of  a dataset as described in the [VoID](https://www.w3.org/TR/void/). A kees:KnowledgeBase is
+A **kees:KnowledgeBase** is defined as a subclass of a [sd:Dataset](https://www.w3.org/TR/sparql11-service-description/#sd-Dataset) that, in turn, is a specialization of a dataset as described in the [VoID](https://www.w3.org/TR/void/). A kees:KnowledgeBase is
 a collection of [sd:namedGraph](https://www.w3.org/TR/sparql11-service-description/#sd-NamedGraph) that contain the linked data.
 
 The main class introduced by KEES vocabulary is the **kees:Plan** that describes how to create and update a named graph in the knowledge base, extracting facts extracted from a data source or derived from axioms. 
 
 A **kees:KnowledgeBaseDescription** is a document that contains the description of the knowledge base with the purpose of
-publishing and trasferring  knowledge base bulding information.
-It is a a subclass of a [foaf:Document](http://xmlns.com/foaf/spec/#term_Document) that allows to attach license and other 
+publishing and transferring  knowledge base building information.
+It is a subclass of a [foaf:Document](http://xmlns.com/foaf/spec/#term_Document) that allows attaching license and other 
 metadata to publish your knowledge base.
 The foaf:primaryTopic property could be used to link a kees:KnowledgeBaseDescription document to a kees:KnowledgeBase individual.
 
-The **kees:Question** represents the *purpose* for the the knowledge base existence. In other words, the knoledge base exists to answer to *questions*. Question are natural language expressions that can be expressed as a query on a populated knowledge graph. The answer to a question results in tabular data, structured document, logic assertion or a translation of these in a natural language sentences.
+The **kees:Question** represents the *purpose* for the knowledge base existence. In other words, the knowledge base exists to answer *questions*. Questions are natural language expressions that can be expressed as a query on a populated knowledge graph. The answer to a question results in tabular data, structured document, logic assertion or a translation of these in natural language sentences.
 
 
 The KEES vocabulary is expressed with OWL RDF in [kees.rdf file](v1/kees.rdf). The file was edited with Protégé editor.
 
-Besides few classes and properties, KEES vocabulary defines some individuals:
+Besides a few classes and properties, KEES vocabulary defines some individuals:
 
 - **kees:guard** a [SPARQL service description feature](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) that states that the RDF store supports KEES guard specifications (see below)
  **kees:trustGraphMetric** defines a metric that allows to evaluate a trust rank for selected information in [daq framework](http://purl.org/eis/vocab/daq). 
 - **kees:append** and **kees:replace** state two possible graph accrual policies: *append* policy affirms that,  if new facts found,
 they are to be appended to existing data. The *replace* policy affirms that new data must replace all existing information.
-- If you want to share/trade your knowledge base, simply attach your KEES plan, questions and  license to **kees:sharableKnowledge** object.
+- If you want to share/trade your knowledge base, simply attach your KEES plan, questions and license to **kees:sharableKnowledge** object.
 - **kees:namedGraphGenerator** is the role that a kees:Agent must use in building/updating a named graph.
 
 ## The KEES Language profile
@@ -108,34 +105,34 @@ In the rest of this document following  namespaces are used:
 - voaf: http://purl.org/vocommons/voaf
 - spin:  http://spinrdf.org/spin
 - rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns
-- rdfs:	http://www.w3.org/2000/01/rdf-schema
+- rdfs:    http://www.w3.org/2000/01/rdf-schema
 - owl: http://www.w3.org/2002/07/owl
 - kees: http://linkeddata.center/kees/v1
 
 Dublin core vocabulary is used to annotate dataset. The properties dct:created, dct:modified are part of the KEES Language profile.
 
-Knowledge base building activities MUST be traced using [PROV ontology](https://www.w3.org/TR/prov-overview/). KEES language profile
+Knowledgebase building activities MUST be traced using [PROV ontology](https://www.w3.org/TR/prov-overview/). KEES language profile
 reuses prov:wasGeneratedBy, prov:wasInvalidatedBy, prov:qualifiedAssociation, prov:agent, prov:hadRole properties and prov:Role,
 prov:Plan, prov:Activity classes.
 
-Trustability is enabled by attaching quality observation to ingested graph. 
+Trustability is enabled by attaching quality observation to the ingested graph. 
 For this feature KEES language profile reuses the [Dataset Quality Vocabulary (daQ)](http://purl.org/eis/vocab/daq) with
 qb:Observation class and daq:computedOn , daq:metric, daq:value and daq:isEstimated properties
 
-The following picture sumarizes the main elements of the KEES language profile.
+The following picture summarizes the main elements of the KEES language profile.
 
 ![uml](architecture/uml.png)
 
 
 ## RDF Store requirement
 
-To Know the **provenance** of each statement, it is of paramount imortance to get an idea about data quality. For this reason, KEES requires that all statements must have a fourth element that links to a data source. This means that, for pratical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to a metadata.
+To Know the **provenance** of each statement, it is of paramount importance to get an idea about data quality. For this reason, KEES requires that all statements must have a fourth element that links to a data source. This means that, for practical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to metadata.
 
 Any RDF Store that provides with a SPARQL endpoint and QUAD support is compliant with KEES. 
 
 During knowledge base building and update the knowledge base could be in an inconsistent state.
 If a statement with the subject <urn:kees:kb> and the predicate *dct:valid* exists, 
-then it means that the Knowledge base is *safe* to be queried. Otherwhise queries the knowledge base should be considered *not safe*.
+then it means that the Knowledge base is *safe* to be queried. Otherwise queries the knowledge base should be considered *not safe*.
 
 To declare that a RDF Store is ready to be safely queried, execute following SPARQL UPDATE statement:
 
@@ -159,10 +156,10 @@ ASK { <urn:kees:kb> dct:valid [] }`
 ## SPARQL service requirements
 
 A KEES compliant [SPARQL service](https://www.w3.org/TR/sparql11-service-description/) SHOULD expose the **kees:guard** feature. 
-If a this feature is present,
-the SPARQL endpoint MUST return the http *503 Error* when someone try to query a RDF Store that is not in the *safe* state.  A KEES compliant SPARQL endpoint SHOULD disable the guard feature if the http header "X-KEES-guard: disable" is present in the HTTP request.
+If this feature is present,
+the SPARQL endpoint MUST return the http *503 Error* when someone tries to query an RDF Store that is not in the *safe* state.  A KEES compliant SPARQL endpoint SHOULD disable the guard feature if the http header "X-KEES-guard: disable" is present in the HTTP request.
 
-A KEES compliant SPARQL service SHOULD alwais provide optimized http caching information [as described in Section 13 of RFC2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html).
+A KEES compliant SPARQL service SHOULD always provide optimized http caching information [as described in Section 13 of RFC2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html).
 
 
 ## KEES agent requirements
@@ -172,24 +169,24 @@ A KEES compliant SPARQL service SHOULD alwais provide optimized http caching inf
 A KEES Agent SHOULD perform actions on a knowledge base on a logical sequence of four temporal phases called *windows*:
 
 1. a startup  phase (**boot window**)  to initialize the knowledge base starting from one or more knowledge base descriptions
-2. a time slot for the population of the Knowledge Base and to link data (**learning window**). It consists in the 
+2. a time slot for the population of the Knowledge Base and to link data (**learning window**). It consists of the 
    execution of a plan that requires the downloading of at least an external resource.
-3. a time slot for the data inference (**reasoning window**). It consists in the execution of a plan that requires only axioms and
+3. a time slot for the data inference (**reasoning window**). It consists of the execution of a plan that requires only axioms and
    learned facts.
 4. a time slot to access the Knowledge Base and to answering questions (**teaching window**)
 
-The steps 2 and 3 can be iterated.
+Steps 2 and 3 can be iterated.
 
-The plans depend from each other. Dependecis can be explicitelly defined using the kees:requieres properties in plans or implicitelly
-defining an rdf list of plans referenced by the kees:planSequence in a kees:Knowledgbase resource. A knowledge base can enter the
-teaching window only when all plans requirement are satisfied.
+The plans depend on each other. Dependencies can be explicitly defined using the kees:requieres properties in plans or implicitly
+defining an RDF list of plans referenced by the kees:planSequence in a kees:Knowledgbase resource. A knowledge base can enter the
+teaching window only when all plans are fulfilled.
 
-The sequence of plan execution is called **KEES workflow** and it is a continuous integration process that starts on a triggered event (e.g change in source data, a user request or a scheduled job) on knowledge base that is in the teaching windows.
+The sequence of plan execution is called **KEES workflow** and it is a continuous integration process that starts on a triggered event (e.g change in source data, a user request or a scheduled job) on the knowledge base that is in the teaching windows.
 
 ### The Target graph
 
 A target graph is a named graph in the knowledge base referenced by the property kees:build. In a KEES knowledge base,
-every named graph shoud be referenced by exactly one plan through the kees:builds property.
+every named graph should be referenced by exactly one plan through the kees:builds property.
 
 Plans MUST provide to a KEES agent enough information to describe how to build or update the target graph.
 
@@ -199,27 +196,26 @@ Plans MUST provide to a KEES agent enough information to describe how to build o
 Plans MUST be evaluated only if all pre-conditions are satisfied. If just one pre-condition fails, the plan execution
 MUST be skipped or postponed without changing the knowledge base.
 
-There are two kinds of preconditions, related with two properties: kees:accualPeriodicity and kees:requires .
+There are two kinds of preconditions, related to two properties: kees:accualPeriodicity and kees:requires .
 
 
 #### kees:requires pre-condition
 
-The **kees:requires** range MUST be an URI that represents a resource in the knowledge base. Multiple kees:requires are allowed.
+The **kees:requires** range MUST be a URI that represents a resource in the knowledge base. Multiple kees:requires are allowed.
 
 If no kees:requires is present, then the pre-condition is always satisfied and the rule MUST be executed.
 
 If the target graph is not created, then the pre-condition is always satisfied and the rule MUST be executed.
 
 If just one required URI is not present in the knowledge base, then the precondition is not satisfied and
-the rule execution MUST be potsponed.
+the rule execution MUST be postponed.
 
-If all required resources exists and are older than the target graph creation date, then the precondition is  satisfied 
-but the rule MUST be skipped. A KEES agent SHOLUD be able to use the dct:modified and dct:created properties to compare 
-modification date.
+If all required resources exist and are older than the target graph creation date, then the precondition is satisfied
+but the rule MUST be skipped. A KEES agent SHOULD be able to use the dct:modified and dct:created properties to compare modification date.
 
-If one required URI has not modification date, then the pre-condition is satisfied  and the rule MUST be executed.
+If one required URI has not modification date, then the pre-condition is satisfied and the rule MUST be executed.
 
-A possible implementation on an algorithm that decides if all kees:requieres is satisfied :
+A possible implementation on an algorithm that decides if all kees:requires is satisfied :
 
 ```sparql
 ASK { 
@@ -235,7 +231,7 @@ ASK {
       FILTER NOT EXISTS { ?plan kees:requires [] }
    } UNION {
       FILTER NOT EXISTS {
-      	?plan kees:builds ?graphName.
+          ?plan kees:builds ?graphName.
         ?graph sd:name ?graphName; dct:created ?graphCreationDate .
       }
    }
@@ -247,14 +243,14 @@ ASK {
 
 kees:accualPeriodicity expects exactly a URI that describes an expected frequency (i.e. once a month, once a year) for updating a target graph.
 
-The KEES agent SHOULD recognize at least all concepts in sdmx-code:freq scheme for dct:accrualPeriodicity and use these information to
+The KEES agent SHOULD recognize at least all concepts in sdmx-code:freq scheme for dct:accrualPeriodicity and use this information to
 decide if executing a plan or not. 
 
-The accrual periodicity pre-condition is satisfied if one of this conditions matches:
+The accrual periodicity pre-condition is satisfied if one of these conditions matches:
 
 - no kees:accualPeriodicity properties is defined 
 - no target graph exists 
-- the last modification date of the target graph plus the accrual frequency is greather of than current time
+- the last modification date of the target graph plus the accrual frequency is greater of than current time
 
 If accrual periodicity pre-condition is not satisfied then the rule MUST be skipped.
 
@@ -263,10 +259,10 @@ If accrual periodicity pre-condition is not satisfied then the rule MUST be skip
 
 A KEES agent MUST update the RDF store safe statement when it enters or exits the teaching window. 
 
-If a KEES agent was unable to complete succesfully a plan, it MUST abort if the target named graph was partially builded, otherwhise
+If a KEES agent was unable to complete successfully a plan, it MUST abort if the target named graph was partially built, otherwise
 it MUST annotate the named graph with the prov:InvalidatedAtTime property and continue.
 
-If the KEES agent aborts its execution, the knowledge base MUST resulting in a "not safe" state.
+If the KEES agent aborts its execution, the knowledge base MUST result in a "not safe" state.
 
 In normal operations, the existence of prov:InvalidatedAtTime in a named graph MUST prevent the KEES agent to enter the teaching window.
 A KEES agent COULD provide a way to force a safe state when some named graph contains a prov:InvalidatedAtTime property.
@@ -276,7 +272,7 @@ The existence of prov:InvalidatedAtTime in SHOULD be signaled by KEES agent. How
 The existence of activities without a plan SHOULD be signaled by KEES agent. This condition does not prevent the 
 KEES agent to enter the teaching window.
 
-A KEES agent MUST abort in case of semantic inconsistences in *KEES knowledge base definition*.
+A KEES agent MUST abort in case of semantic inconsistencies in *KEES knowledge base definition*.
 
 
 ### Plan constructors
@@ -287,16 +283,16 @@ the knowledge base. A constructor can be a script in some language (i.e. SPARQL)
 KEES does not impose any requirement for a constructor, but expects that a KEES agent SHOULD be smart enough to 
 recognize and manage at least following kind of constructors:
 
-- a **dereferenceable URL** that provides RDF triple using one of the standard RDF serialization. In this case
+- a **dereferenceable URL** that provides RDF triple using one of the standard RDF serializations. In this case
   the Agent SHOULD be able to download the resource content from the URL following HTTP(s) GET protocol specification (e.g. managing 
-  redirection and  content negotiation) and to extract from it the information serialized according with one of the RDF standards:
+  redirection and  content negotiation) and to extract from it the information serialized according to one of the RDF standards:
   RDF/XML, turtle, json-ld, RDFa, Microdata, n3, N-Triples.
-- an object of  type **sp:Construct** . In this case the KEES agent
+- an object of type **sp:Construct** . In this case the KEES agent
   should be able to run a SPARQL query described in the object and injecting the results in the target graph specified in
   kees:builds property.
-- an object of  type **sp:Update** . In this case the KEES agent
-  should be able to execute the SPARQL Update script y described in the object  in the knowledge graph database. 
-  The update script MUST NOT modify any  graph described in other plans.
+- an object of type **sp:Update** . In this case the KEES agent
+  should be able to execute the SPARQL Update script y described in the object in the knowledge graph database. 
+  The update script MUST NOT modify any graph described in other plans.
 
 SPARQL constructors should understand at least the sp:text property as defined in the
 [SPIN W3C Member Submission 22 February 2011, updated 07 November, 2014](http://spinrdf.org/spin.html) .
@@ -328,11 +324,11 @@ INSERT {
       dct:modified ?now;
       prov:wasGeneratedBy [ a prov:Activity ;
          prov:used <http://example.com/dataset.ttl> ;
-	 prov:qualifiedAssociation [ 
+     prov:qualifiedAssociation [ 
             prov:agent [ a prov:SoftwareAgent ] ;
-	    prov:hadRole kees:namedGraphGenerator ;
-	    prov:hadPlan ?plan 
-	 ] ;     
+        prov:hadRole kees:namedGraphGenerator ;
+        prov:hadPlan ?plan 
+     ] ;     
       ]
 } WHERE {
   ?g a sd:NamedGraph; sd:name :mygraph; (<>|!<>)* ?s . 
@@ -346,8 +342,8 @@ INSERT {
 MOVE SILENT GRAPH <urn:tmp:graph> TO :mygraph
 ```
 
-In this case the KEES agent decided to store graph metadata in the default graph. Other agents could choice to store
-graph metadata  in a separate named graph.
+In this case, the KEES agent decided to store graph metadata in the default graph. Other agents could choose to store
+graph metadata in a separate named graph.
 
 
 ### Plan destructor
@@ -356,15 +352,14 @@ A destructor is a resource referenced by the kees:destructor property that MUST 
 from the knowledge created by constructors.
 A destructor can be a script in some language (i.e. SPARQL) 
 
-KEES does not impose any requirement for a destructor, but expects that a KEES agent SHOULD be smart enough to 
-recognize and manage at least a resource of  type **sp:Update** . In this case the KEES agent
-should be able to execute the SPARQL Update script described in the resouce in the knowledge graph database. 
-The update script MUST NOT destroy any  graph described in other plans.
+KEES does not impose any requirement for a destructor but expects that a KEES agent SHOULD be smart enough to recognize and manage at least a resource of type **sp:Update** . In this case, the KEES agent
+should be able to execute the SPARQL Update script described in the resource in the knowledge graph database. 
+The update script MUST NOT destroy any graph described in other plans.
 
 SPARQL destructors should understand at least the sp:text property as defined in the
 [SPIN W3C Member Submission 22 February 2011, updated 07 November, 2014](http://spinrdf.org/spin.html) .
 
-If no destructor is specified, as default behaviour, all named graph referenced by kees:changes propery MUST be silent dropped.
+If no destructor is specified, as default behavior, all named graph referenced by kees:changes propery MUST be silently dropped.
 
 
 
@@ -374,16 +369,16 @@ After a plan execution a KEES agent must evaluate the condition referred by the 
 properties can be defined.
 
 If just a post-condition fails, the KEES agent must invalidate the generated/updated graph and abort. KEES does not
-specify any pre-ondition test order (in principle they can be evaluated in parallel)
+specify any pre-condition test order (in principle they can be evaluated in parallel)
 
-Post conditions are always satisfied if no kees:assert property is present.
+Postconditions are always satisfied if no kees:assert property is present.
 
-Post conditions are always not satisfied if the target graph was not updated for some reason.
+Postconditions are always not satisfied if the target graph was not updated for some reason.
 
-A KEES agent sholud be able to evaluate post-condition with at least two methods:
+A KEES agent should be able to evaluate post-condition with at least two methods:
 
-- a post condition is satisfied if the range of the kees:assert property is the name of a graph defined in a plan and it exists
-- a post condition is satisfied if the range of the kees:assert is a sp:Ask that evaluated to true
+- a postcondition is satisfied if the range of the kees:assert property is the name of a graph defined in a plan and it exists
+- a postcondition is satisfied if the range of the kees:assert is an sp:Ask that evaluated to true
 
 
 
@@ -406,16 +401,16 @@ WHERE {
 
 ### A plan is alwais attached to a knowledge base
 
-If a stand alone plan exists, it must be considered part of the kees:sharedKnowledge. 
+If a stand-alone plan exists, it must be considered part of the kees:sharedKnowledge. 
 
 ```sparql
 CONSTRUCT { kees:sharedKnowledge kees:hasPlan ?plan }
 WHERE {?plan a kees:Plan FILTER NOT EXISTS {  ?x kees:hasPlan ?plan }}
 ```
 
-### A question is alwais attached to a knowledge base
+### A question is always attached to a knowledge base
 
-If a stand alone question exists, it must be considered attached to the kees:sharedKnowledge. 
+If a stand-alone question exists, it must be considered attached to the kees:sharedKnowledge. 
 
 ```sparql
 CONSTRUCT { kees:sharedKnowledge kees:answers ?question }
@@ -437,7 +432,7 @@ WHERE {
 
 ### Inferred  plan dependencies
 
-The kees:planSequence propery MUST refer a rdf:list that MUST be  considered as a shortcut to specify plan dependencies. 
+The kees:planSequence propery MUST refer an rdf:list that MUST be considered as a shortcut to specify plan dependencies. 
 
 For example:
 
@@ -453,7 +448,7 @@ WHERE {
    FILTER NOT EXISTS { ?plan2 kees:requires ?plan1 }
 }
 
-### kees:changes always include constructor
+### kees:changes always includes a constructor
 
 The resources referred by kees:from MUST be referenced also by kees:changes
 
@@ -469,7 +464,7 @@ WHERE {
 
 ###  Constructor must have always a type
 
-The object refereed by the  of kees:from propery MUS have a type. If not provided rdfs:Resource MUST be used.
+The object referred by the of kees:from propery, MUS have a type. If not provided rdfs:Resource MUST be used.
 
 ```sparql
 CONSTRUCT { ?fromUri a rdfs:Resource } 
@@ -497,7 +492,7 @@ Exactly one *kees:accrualPolicy* must be present.
 ### Default data quality
 
 
-If no explicit data quality observation records are present in the knowledge base, this axiom SHOULD applies:
+If no explicit data quality observation records are present in the knowledge base, this axiom SHOULD apply:
 
 ```sparql
 CONSTRUCT {
@@ -528,12 +523,12 @@ WHERE {
 
 ### Example
 
-Suppose that there is knowledge base description file composed by this lines:
+Suppose that there is a knowledge base description file composed by these lines:
 
 ```turtle
 kees:sharedKnowledge kees:planSequence( 
-	[kees:builds <http://example.com/dataset.ttl>]
-	[kees:builds ex:g1 kees:from <http://example.com/dataset2.ttl>]
+    [kees:builds <http://example.com/dataset.ttl>]
+    [kees:builds ex:g1 kees:from <http://example.com/dataset2.ttl>]
 ) .
 ```
 
@@ -569,47 +564,47 @@ Supposing that a KEES Agent runs on 06/11/2019, it could produce following conte
 
 ```turtle
 <urn:agent:config>: {
-	#... same as previus configuration
-	
-	ex:theAgent a foaf:Agent, prov:SoftwareAgent; foaf:name "A smart KEES agent".
+    #... same as the previous configuration
+    
+    ex:theAgent a foaf:Agent, prov:SoftwareAgent; foaf:name "A smart KEES agent".
 }
 
 <http://example.com/dataset.ttl> : {
-	_:g1 a sd:NamedGraph; sd:name <http://example.com/dataset.ttl>
-		dct:created "2019-11-06"^^xsd:date;
-		dct:modified "2019-11-06"^^xsd:date;
-		prov:wasGeneratedBy [ a prov:Activity ;
-			prov:used 
-				<http://example.com/dataset.ttl>;
-			prov:qualifiedAssociation [
-				prov:agent ex:theAgent;
-				prov:role kees:namedGraphGenerator;
-				prov:plan _:p1
-			]
-		]
-	.
-	
-	#... here the data extracted from http://example.com/dataset.ttl
+    _:g1 a sd:NamedGraph; sd:name <http://example.com/dataset.ttl>
+        dct:created "2019-11-06"^^xsd:date;
+        dct:modified "2019-11-06"^^xsd:date;
+        prov:wasGeneratedBy [ a prov:Activity ;
+            prov:used 
+                <http://example.com/dataset.ttl>;
+            prov:qualifiedAssociation [
+                prov:agent ex:theAgent;
+                prov:role kees:namedGraphGenerator;
+                prov:plan _:p1
+            ]
+        ]
+    .
+    
+    #... here the data extracted from http://example.com/dataset.ttl
     
 }
 
 ex:g1 : {
-	_:g2  a sd:NamedGraph sd:name ex:g1
-		dct:created "2019-11-06"^^xsd:date;
-		dct:modified "2019-11-06"^^xsd:date;
-		prov:wasGeneratedBy [ a prov:Activity ;		
-   			kees:used 
-				<http://example.com/dataset2.ttl>, 
-				<http://example.com/dataset.ttl> ;
-			prov:qualifiedAssociation [
-				prov:agent ex:theAgent;;
-				prov:role kees:namedGraphGenerator;
-				prov:plan _:p2
-			]
-		]
-		
-		#... here the data extracted from http://example.com/dataset2.ttl
-	.
+    _:g2  a sd:NamedGraph sd:name ex:g1
+        dct:created "2019-11-06"^^xsd:date;
+        dct:modified "2019-11-06"^^xsd:date;
+        prov:wasGeneratedBy [ a prov:Activity ;        
+               kees:used 
+                <http://example.com/dataset2.ttl>, 
+                <http://example.com/dataset.ttl> ;
+            prov:qualifiedAssociation [
+                prov:agent ex:theAgent;;
+                prov:role kees:namedGraphGenerator;
+                prov:plan _:p2
+            ]
+        ]
+        
+        #... here the data extracted from http://example.com/dataset2.ttl
+    .
 }
 
 ```
@@ -621,7 +616,7 @@ Following axioms MUST always eval to true after the execution of the KEES axioms
 
 ### Cardinality = 1 
 
-All OWL restrictions in KEES ontology that require a cardinality 1 MUST be satisfied.
+All OWL restrictions in KEES ontology that requires a cardinality 1 MUST be satisfied.
 
 
 ### Cardinality = some
@@ -644,9 +639,9 @@ A KEES Agent SHOULD accept as input one or more URL dereferencing to kees:Knowle
 
 A KEES Agent SHOULD accept as input at least one kees:KnowledgeBaseDescription document.
 
-The input method is implentation dependent: a KEES agent can be implemented as a web service or as a command or as a job.
+The input method is implementation dependent: a KEES agent can be implemented as a web service or as a command or as a job.
 
-A KEES agent SHOULD accept, as optional parameter, a namespace to be used when it needs to create new resources.
+A KEES agent SHOULD accept, as an optional parameter, a namespace to be used when it needs to create new resources.
 
 KEES does not impose a way to detect if an agent is running or is aborted. 
 But you MUST can always able to check if the knowledge base is in a safe state or not
@@ -667,15 +662,15 @@ A KEES agent is expected to implement a process like:
 10. (Optional) Provide execution log
 
 
-## Example of a KEES knowledge Base Desctiption document
+## Example of a KEES knowledge Base Description document
 
 [** WARNING: THIS SECTION IS INFORMATIVE AND SUBJECTED TO MAYOR CHANGS **]
 
 NOTE: all namespace declarations omitted to improve readability.
 
-### Publishing knowledge base description as linked data resource
+### Publishing knowledge base description as a linked data resource
 
-Create a file kees.ttl fit following content.
+Create a file kees.ttl fit the following content.
 
 ```turtle
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -684,10 +679,10 @@ Create a file kees.ttl fit following content.
 @prefix kees: <http://linkeddata.center/kees/v1#> .
 
 <> a kees:KnowledgeBaseDescription; 
-	dct:title "This dummy knowledge base is about teenagers in Europe"@en;
-	dct:creator <https://example.org/profile/card#me>;
-	dct:license <http://www.opendatacommons.org/odc-public-domain-dedication-and-licence/> .
-	foaf:primaryTopic kees:sharableKnowledge
+    dct:title "This dummy knowledge base is about teenagers in Europe"@en;
+    dct:creator <https://example.org/profile/card#me>;
+    dct:license <http://www.opendatacommons.org/odc-public-domain-dedication-and-licence/> .
+    foaf:primaryTopic kees:sharableKnowledge
 .
 
 ```
@@ -700,18 +695,18 @@ Add to kees.ttl file:
 ```turtle
 :a_learning_plan kees:builds :some_facts; kees:from <http://data.example.com/peoples_from_europe.rdf> .
 :a_reasoning_plan dct:title "Compute if a people shoud to be considered a teenager"@en;
-	kees:builds :inferences ;
-	kees:requires :some_facts; 	
-	kees:from [ a sp:Construct; sp:text """
-		CONSTRUCT { ?person a ex:Teenager>  }
-		WHERE {
-			?person ex:birthDate ?birth .
-			BIND( NOW() - ?birth AS ?age)
-			FILTER (?age > 11 && ?age < 20 )
-		}
-	"""]	
+    kees:builds :inferences ;
+    kees:requires :some_facts;     
+    kees:from [ a sp:Construct; sp:text """
+        CONSTRUCT { ?person a ex:Teenager>  }
+        WHERE {
+            ?person ex:birthDate ?birth .
+            BIND( NOW() - ?birth AS ?age)
+            FILTER (?age > 11 && ?age < 20 )
+        }
+    """]    
 .
-	
+    
 ```
 
 ### Attaching questions
@@ -721,15 +716,15 @@ Add to kees.ttl file:
 
 ```turtle
 res_:teaching a kees:Question
-	dct:title "Teenagers in europe"@en;
-	kees:answerMethod [ a sp:Select; sp:text "SELECT (COUNT(DISTINT ?person) AS ?teenagers) WHERE {?person a ex:Teenager}"]
+    dct:title "Teenagers in europe"@en;
+    kees:answerMethod [ a sp:Select; sp:text "SELECT (COUNT(DISTINT ?person) AS ?teenagers) WHERE {?person a ex:Teenager}"]
  ].
 ```
 
 ### adding trust info
 
 
-Trust in dataset can be expessed with:
+Trust in the dataset can be expressed with:
 
 ```turtle
 res_:data_quality a qb:Observation ;
