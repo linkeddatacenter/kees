@@ -77,6 +77,8 @@ The foaf:primaryTopic property could be used to link a kees:KnowledgeBaseDescrip
 
 The **kees:Question** represents the *purpose* for the knowledge base existence. In other words, the knowledge base exists to answer *questions*. Questions are natural language expressions that can be expressed as a query on a populated knowledge graph. The answer to a question results in tabular data, structured document, logic assertion or a translation of these in natural language sentences.
 
+The **kees:Anomaly** is an annotation (oa:Annotation) thah mark a potential inconsistence of data respect language profile. 
+
 
 The KEES vocabulary is expressed with OWL RDF in [kees.rdf file](v1/kees.rdf). The file was edited with Protégé editor.
 
@@ -99,15 +101,16 @@ In the rest of this document following  namespaces are used:
 - sdmx-code: http://purl.org/linked-data/sdmx/2009/code
 - sd: http://www.w3.org/ns/sparql-service-description
 - foaf: http://xmlns.com/foaf/0.1/
-- prov: http://www.w3.org/ns/prov
+- prov: http://www.w3.org/ns/prov#
+- ao: http://www.w3.org/ns/oa#
 - void: http://rdfs.org/ns/void
 - vann: http://purl.org/vocab/vann/
-- voaf: http://purl.org/vocommons/voaf
+- voaf: http://purl.org/vocommons/voaf#
 - spin:  http://spinrdf.org/spin
 - rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns
-- rdfs:    http://www.w3.org/2000/01/rdf-schema
-- owl: http://www.w3.org/2002/07/owl
-- kees: http://linkeddata.center/kees/v1
+- rdfs:    http://www.w3.org/2000/01/rdf-schema#
+- owl: http://www.w3.org/2002/07/owl#
+- kees: http://linkeddata.center/kees/v1#
 
 Dublin core vocabulary is used to annotate dataset. The properties dct:created, dct:modified are part of the KEES Language profile.
 
@@ -118,6 +121,8 @@ prov:Plan, prov:Activity classes.
 Trustability is enabled by attaching quality observation to the ingested graph. 
 For this feature KEES language profile reuses the [Dataset Quality Vocabulary (daQ)](http://purl.org/eis/vocab/daq) with
 qb:Observation class and daq:computedOn , daq:metric, daq:value and daq:isEstimated properties
+
+The annotation use [WEB Annotation](http://www.w3.org/ns/oa) vocabulary.
 
 The following picture summarizes the main elements of the KEES language profile.
 
