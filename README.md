@@ -76,7 +76,7 @@ A KEES agent performs actions on a knowledge base on a logical sequence of four 
 3. a time slot for the data inference (**reasoning window**). 
 4. a time slot to access the Knowledge Base and to answering questions (**teaching window**)
 
-Steps 2 and 3 can be iterated.
+Steps 2, 3 and 4 can be iterated till the system converges in a stable configuration.
 
 ![KEES cycle](v1/images/cycle.png)
 
