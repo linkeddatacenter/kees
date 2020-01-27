@@ -1,7 +1,8 @@
+![logo](http://linkeddata.center/resources/v4/logo/Logo-colori-trasp_oriz-640x220.png)
+
 Describing knowledge with KEES 
 =======================================
 
-**WARNING: WORKING IN PROGRESS**
 
 In order to let computers to work for us, they must understand data: 
 not just the grammar and the syntax, but the real meaning of things. 
