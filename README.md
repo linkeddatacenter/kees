@@ -62,11 +62,12 @@ It should be able to learn data, reasoning about data and to answer some questio
 
 A KEES system is composed by a **Knowledge Graph** that persists the most updated Knowledge Base. The Knowledge Graph adopts [RDF] and provides an interface to query the Knowledge Base (e.g. a SPARQL service)
 
-Some **Agents**, interacting with the knowledge graph,  ingest new data, reason about existing data and query the knowledge base.
+Some orchestrated software components, interacting with the knowledge graph, ingest new data, reason about existing data and query the knowledge base.
 
-Agents orchestrate some **KEES components** that perform atomic tasks on the Knowledge base. Example of such components are:
+Example of such components are:
 
-- **gateways** that translates RAW data into linked data according a language profiles
+- **legacy connectors** that extracts RAW data from legaci systems preparining data for ingestion
+- **ingestion agents** that translates RAW data into linked data according a language profiles
 - **reasoners** that make inferences on ABOX using TBOX or rules
 - **answerers** that answer some question by querying the Knowledge base
 
