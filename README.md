@@ -69,7 +69,7 @@ Example of such components are:
 - **legacy connectors** that extracts RAW data from legaci systems preparining data for ingestion
 - **ingestion agents** that translates RAW data into linked data according a language profiles
 - **reasoners** that make inferences on ABOX using TBOX or rules
-- **answerers** that answer some question by querying the Knowledge base
+- **api** that perform specific queries to the Knowledge Base in order to answer some question
 
 A KEES agent performs actions on a knowledge base on a logical sequence of four temporal phases called *windows*:
 

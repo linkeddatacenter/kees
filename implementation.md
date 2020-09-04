@@ -126,8 +126,8 @@ A KEES Agent SHOULD perform actions on a knowledge base on a logical sequence of
 
 1. a startup  phase (**boot window**)  to initialize the knowledge base starting from one or more knowledge base descriptions
 2. a time slot for the population of the Knowledge Base and to link data (**learning window**). It consists of the 
-   execution of a plan that requires the downloading of at least an external resource.
-3. a time slot for the data inference (**reasoning window**). It consists of the execution of a plan that requires only axioms and
+   execution of some plans that requires the downloading of at least an external resource.
+3. a time slot for the data inference (**reasoning window**). It consists of the execution of some plans that requires only axioms and
    learned facts.
 4. a time slot to access the Knowledge Base and to answering questions (**teaching window**)
 
@@ -357,19 +357,19 @@ WHERE {
 
 ### A plan is alwais attached to a knowledge base
 
-If a stand-alone plan exists, it must be considered part of the kees:sharedKnowledge. 
+If a stand-alone plan exists, it must be considered part of the kees:shared_knowledge. 
 
 ```sparql
-CONSTRUCT { kees:sharedKnowledge kees:hasPlan ?plan }
+CONSTRUCT { kees:shared_knowledge kees:hasPlan ?plan }
 WHERE {?plan a kees:Plan FILTER NOT EXISTS {  ?x kees:hasPlan ?plan }}
 ```
 
 ### A question is always attached to a knowledge base
 
-If a stand-alone question exists, it must be considered attached to the kees:sharedKnowledge. 
+If a stand-alone question exists, it must be considered attached to the kees:shared_knowledge. 
 
 ```sparql
-CONSTRUCT { kees:sharedKnowledge kees:answers ?question }
+CONSTRUCT { kees:shared_knowledge kees:answers ?question }
 WHERE {?question a kees:Question FILTER NOT EXISTS {  ?x kees:answers ?question }}
 ```
 
@@ -482,7 +482,7 @@ WHERE {
 Suppose that there is a knowledge base description file composed by these lines:
 
 ```turtle
-kees:sharedKnowledge kees:planSequence( 
+kees:shared_knowledge kees:planSequence( 
     [kees:builds <http://example.com/dataset.ttl>]
     [kees:builds ex:g1 kees:from <http://example.com/dataset2.ttl>]
 ) .
@@ -492,9 +492,9 @@ A KEES agent MUST be considered it equivalent to the configuration:
 
 ```turtle
 <> a kees:KnowledgeBaseDescription;
-   foaf:primaryTopic kees:sharedKnowledge .
+   foaf:primaryTopic kees:shared_knowledge .
    
-kees:sharedKnowledge a kees:KnowledgeBase;
+kees:shared_knowledge a kees:KnowledgeBase;
    kees:hasPlan _:p1 , _:p2.
    
 _:p1  a kees:Plan ;
@@ -589,7 +589,7 @@ Such circular references SHOULD be early detected by the KEES agent.
 
 ## KEES agent protocol
 
-A KEES Agent MUST accept as input the URI of a KnowledgeBase to be processed. If none provided, kees:sharedKnowledge MUST be used.
+A KEES Agent MUST accept as input the URI of a KnowledgeBase to be processed. If none provided, kees:shared_knowledge MUST be used.
 
 A KEES Agent SHOULD accept as input one or more URL dereferencing to kees:KnowledgeBaseDescription resources.
 
