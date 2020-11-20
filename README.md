@@ -8,16 +8,17 @@ Describing knowledge with KEES (Knowledge Exchange Engine Specification/Services
 
 KEES  proposes some specifications to describe a *domain knowledge* in order to **make it tradeable and shareable**. 
 
-A *domain knowledg* is something known about a specific argument (e.g. a set of producs, commercial offerings, a social network, etc. etc). Knowledge domains are additive, there is no limit to the knowledge domain perimether.
+A *domain knowledge* is something known about a specific argument (e.g. a set of producs, commercial offerings, a social network, etc. etc). Knowledge domains are additive, there is no limit to the knowledge domain perimether.
 
-KEES allows to *formalize* and *license*:
+KEES allows to *formalize* and *license* all you need to build a knowledge domain, that is:
 
-- how to collect the right data, 
-- how much you can trust in your data, 
+- how to collect the right data,
+- the meaning of the data,
+- how much you can trust in your information, 
 - what new information you can deduct from the collected data,
-- how to answer specific questions using data
+- how to answer specific questions using information
 
-A.I. and humans can use these *know hows* to reuse and enrich existing knowledge. KEES is a Semantic Web Application.
+Both machines and humans can use this *know how* to increase their knowledge. KEES is a Semantic Web Application.
 
 See [KEES presentation slides](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
 
