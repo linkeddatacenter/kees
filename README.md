@@ -1,15 +1,16 @@
 ![logo](http://linkeddata.center/resources/v4/logo/Logo-colori-trasp_oriz-640x220.png)
 
-Describing knowledge with KEES 
-=======================================
+Describing knowledge with KEES (Knowledge Exchange Engine Specification/Services)
+==================================================================
 
 
-In order to let computers to work for us, they must understand data: 
-not just the grammar and the syntax, but the real meaning of things. 
+> *In order to let computers to work for us, they must understand data: not just the grammar and the syntax, but the real meaning of things.*
 
-KEES (Knowledge Exchange Engine Service) proposes some specifications to describe a *domain knowledge* in order to make it tradeable and shareable. 
+KEES  proposes some specifications to describe a *domain knowledge* in order to **make it tradeable and shareable**. 
 
-KEES allows to formalize and license:
+A *domain knowledg* is something known about a specific argument (e.g. a set of producs, commercial offerings, a social network, etc. etc). Knowledge domains are additive, there is no limit to the knowledge domain perimether.
+
+KEES allows to *formalize* and *license*:
 
 - how to collect the right data, 
 - how much you can trust in your data, 
