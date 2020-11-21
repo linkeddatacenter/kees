@@ -1,6 +1,6 @@
 ![logo](http://linkeddata.center/resources/v4/logo/Logo-colori-trasp_oriz-640x220.png)
 
-Describing knowledge with KEES (Knowledge Exchange Engine Specification/Services)
+Describing knowledge with KEES (Knowledge Exchange Engine Specifications and Services)
 ==================================================================
 
 
