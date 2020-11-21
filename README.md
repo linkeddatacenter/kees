@@ -28,7 +28,7 @@ A lot of concepts used by KEES refer to the well known [Semantic Web Standards](
 
 What is **data**? According to common sense, KEES defines data as words, numbers or in general *any string of symbols*.   Example of data is the strings  `xyz`, `123`, `33.22` or  `http://LinkedData.Center`. Data is usually associated with a  _data type_ that states a set of restrictions on symbols sequence that build up the data For example the number `123`, the float `33.22` or the URI `http://LinkedData.Center`. The _data type_ is not the data meaning.
 
-What is **information**? KEES defines information as *data with a meaning*. The meaning can be learned from the context where a data is found or explicitly defined. KEES adopts the [RDF standards](https://www.w3.org/RDF/) to
+What is **information**? KEES defines informations as *data with a meaning*. The meaning can be learned from the context where a data is found or explicitly defined. KEES adopts the [RDF standards](https://www.w3.org/RDF/) to
 describe information by a tuple of three data, i.e. a _triple_ (also known as an RDF statement): a _subject_, a _predicate_, and an _object_. The data type for the first two elements of a triple (i.e. the subject and the predicate) must be a URIs, the last element of the triple (i.e. the object) can be anything. A triple can be also represented as an [unidirected labeled graph](https://mathinsight.org/definition/undirected_graph)
 
 ![a triple](architecture/triple.jpg)
@@ -62,9 +62,9 @@ It should be able to learn data, reasoning about data and to answer some questio
 
 ## KEES system components
 
-A KEES system is composed by a **Knowledge Graph** that persists the most updated Knowledge Base. The Knowledge Graph adopts [RDF] and provides an interface to query the Knowledge Base (e.g. a SPARQL service)
-
-Some orchestrated software components, interacting with the knowledge graph, ingest new data, reason about existing data and query the knowledge base.
+A KEES system is composed by:
+- a **Knowledge Graph** that persists the most updated Knowledge Base. The Knowledge Graph adopts [RDF] and provides an interface to query the Knowledge Base (e.g. a SPARQL service)
+_ Some orchestrated **software components**, tat interact with the knowledge graph, ingest new data, reason about existing data and query the knowledge 
 
 Example of such components are:
 
@@ -73,7 +73,9 @@ Example of such components are:
 - **reasoners** that make inferences on ABOX using TBOX or rules
 - **api** that perform specific queries to the Knowledge Base in order to answer some question
 
-A KEES agent performs actions on a knowledge base on a logical sequence of four temporal phases called *windows*:
+## KEES ingestion cycle
+
+A KEES agent performs data ingestion on a knowledge base through a logical sequence of four temporal phases called *windows*:
 
 1. a startup  phase (**boot window**)  to initialize the knowledge base
 2. a time slot for the population of the Knowledge Base and to link data (**learning window**). 
