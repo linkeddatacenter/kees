@@ -73,9 +73,9 @@ Example of such components are:
 - **reasoners** that make inferences on ABOX using TBOX or rules
 - **api** that perform specific queries to the Knowledge Base in order to answer some question
 
-## KEES ingestion cycle
+## KEES data ingestion process
 
-A KEES agent performs data ingestion on a knowledge base through a logical sequence of four temporal phases called *windows*:
+A KEES agent performs data ingestion in a knowledge base through a logical sequence of four temporal phases called *windows*:
 
 1. a startup  phase (**boot window**)  to initialize the knowledge base
 2. a time slot for the population of the Knowledge Base and to link data (**learning window**). 
