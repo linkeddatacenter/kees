@@ -1,4 +1,4 @@
-Implementing  KEES 
+Implementing KEES 
 =======================================
 
 **WARNING: WORKING IN PROGRESS**
@@ -81,7 +81,6 @@ The following picture summarizes the main elements of the KEES language profile.
 
 
 ## RDF Store requirement
-
 To Know the **provenance** of each statement, it is of paramount importance to get an idea about data quality. For this reason, KEES requires that all statements must have a fourth element that links to a data source. This means that, for practical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to metadata.
 
 Any RDF Store that provides with a SPARQL endpoint and QUAD support is compliant with KEES. 
@@ -109,8 +108,30 @@ To check if a RDF Store is *safe*:
 ASK { <urn:kees:kb> dct:valid [] }`
 ```
 
-## SPARQL service requirements
+Sometime you need to signal that data in knowledge base needs (or will need) to be update. In this case you **SHOULD** use:
 
+```sparql
+INSERT { <urn:kees:kb> prov:invalidetedAtTime ?invalidationInstant }
+WHERE { 
+    VALUES ?invalidationInstant {"here a date"^^xsd:dateTime }
+    <urn:kees:kb> dct:valid ?validDate;
+    FILTER( ?invalidationIstant > ?validDate )
+}
+```
+
+Note that you **MUST NOT** invalidate knowledge base that was not already valid
+
+To test if you should reboot the knowledge base:
+
+```sparql
+ASK {
+    <urn:kees:kb> prov:invalidetedAtTime ?invalidationInstant;
+    FILTER(  ?invalidationInstant < NOW() )
+}
+```
+
+
+## SPARQL service requirements
 A KEES compliant [SPARQL service](https://www.w3.org/TR/sparql11-service-description/) SHOULD expose the **kees:guard** feature. 
 If this feature is present,
 the SPARQL endpoint MUST return the http *503 Error* when someone tries to query an RDF Store that is not in the *safe* state.  A KEES compliant SPARQL endpoint SHOULD disable the guard feature if the http header "X-KEES-guard: disable" is present in the HTTP request.
@@ -120,8 +141,8 @@ A KEES compliant SPARQL service SHOULD always provide optimized http caching inf
 
 ## KEES agent requirements
 
-### KEES Workflow
 
+### KEES Workflow
 A KEES Agent SHOULD perform actions on a knowledge base on a logical sequence of four temporal phases called *windows*:
 
 1. a startup  phase (**boot window**)  to initialize the knowledge base starting from one or more knowledge base descriptions
@@ -139,8 +160,8 @@ teaching window only when all plans are fulfilled.
 
 The sequence of plan execution is called **KEES workflow** and it is a continuous integration process that starts on a triggered event (e.g change in source data, a user request or a scheduled job) on the knowledge base that is in the teaching windows.
 
-### The Target graph
 
+### The Target graph
 A target graph is a named graph in the knowledge base referenced by the property kees:build. In a KEES knowledge base,
 every named graph should be referenced by exactly one plan through the kees:builds property.
 
@@ -148,7 +169,6 @@ Plans MUST provide to a KEES agent enough information to describe how to build o
 
 
 ### Plan pre-conditions
-
 Plans MUST be evaluated only if all pre-conditions are satisfied. If just one pre-condition fails, the plan execution
 MUST be skipped or postponed without changing the knowledge base.
 
@@ -156,7 +176,6 @@ There are two kinds of preconditions, related to two properties: kees:accualPeri
 
 
 #### kees:requires pre-condition
-
 The **kees:requires** range MUST be a URI that represents a resource in the knowledge base. Multiple kees:requires are allowed.
 
 If no kees:requires is present, then the pre-condition is always satisfied and the rule MUST be executed.
@@ -196,7 +215,6 @@ ASK {
 
 
 #### Accrual periodicity
-
 kees:accualPeriodicity expects exactly a URI that describes an expected frequency (i.e. once a month, once a year) for updating a target graph.
 
 The KEES agent SHOULD recognize at least all concepts in sdmx-code:freq scheme for dct:accrualPeriodicity and use this information to
@@ -212,7 +230,6 @@ If accrual periodicity pre-condition is not satisfied then the rule MUST be skip
 
 
 ### Error conditions and error management
-
 A KEES agent MUST update the RDF store safe statement when it enters or exits the teaching window. 
 
 If a KEES agent was unable to complete successfully a plan, it MUST abort if the target named graph was partially built, otherwise
@@ -232,7 +249,6 @@ A KEES agent MUST abort in case of semantic inconsistencies in *KEES knowledge b
 
 
 ### Plan constructors
-
 A constructor is a resource referenced by the kees:from property that MUST provide enough information to a KEES agent to populate
 the knowledge base. A constructor can be a script in some language (i.e. SPARQL) or a data provider.
 
@@ -252,7 +268,6 @@ recognize and manage at least following kind of constructors:
 
 SPARQL constructors should understand at least the sp:text property as defined in the
 [SPIN W3C Member Submission 22 February 2011, updated 07 November, 2014](http://spinrdf.org/spin.html) .
-
 
 
 For example, suppose that a KEES agent wants to execute this plan:
@@ -303,7 +318,6 @@ graph metadata in a separate named graph.
 
 
 ### Plan destructor
-
 A destructor is a resource referenced by the kees:destructor property that MUST provide enough information to a KEES agent to remove
 from the knowledge created by constructors.
 A destructor can be a script in some language (i.e. SPARQL) 
@@ -320,7 +334,6 @@ If no destructor is specified, as default behavior, all named graph referenced b
 
 
 ### Plan post-conditions
-
 After a plan execution a KEES agent must evaluate the condition referred by the kees:assert property. Multiple kees:assert 
 properties can be defined.
 
@@ -342,7 +355,6 @@ A KEES agent should be able to evaluate post-condition with at least two methods
 
 
 ### Functional property management
-
 A KEES agent MUST be able to infer types from kees ontology functional properties.
 
 ```sparql
@@ -356,7 +368,6 @@ WHERE {
 
 
 ### A plan is alwais attached to a knowledge base
-
 If a stand-alone plan exists, it must be considered part of the kees:shared_knowledge. 
 
 ```sparql
@@ -365,7 +376,6 @@ WHERE {?plan a kees:Plan FILTER NOT EXISTS {  ?x kees:hasPlan ?plan }}
 ```
 
 ### A question is always attached to a knowledge base
-
 If a stand-alone question exists, it must be considered attached to the kees:shared_knowledge. 
 
 ```sparql
@@ -375,7 +385,6 @@ WHERE {?question a kees:Question FILTER NOT EXISTS {  ?x kees:answers ?question 
 
 
 ### Inferred constructor
-
 If exists a plan without kees:from property, a default MUST be provided; e.g.:
 
 ```sparql
@@ -386,8 +395,7 @@ WHERE {
 }
 ```
 
-### Inferred  plan dependencies
-
+### Inferred plan dependencies
 The kees:planSequence propery MUST refer an rdf:list that MUST be considered as a shortcut to specify plan dependencies. 
 
 For example:
@@ -404,8 +412,8 @@ WHERE {
    FILTER NOT EXISTS { ?plan2 kees:requires ?plan1 }
 }
 
-### kees:changes always includes a constructor
 
+### kees:changes always includes a constructor
 The resources referred by kees:from MUST be referenced also by kees:changes
 
 
