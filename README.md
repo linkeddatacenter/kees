@@ -11,10 +11,10 @@ KEES  proposes some specifications to describe a *domain knowledge* in order to 
 A *domain knowledge* is something known about a specific argument (e.g. a set of producs, commercial offerings, a social network, etc. etc). Knowledge domains are additive, there is no limit to the knowledge domain perimeter nor to its size.
 KEES allows you to _formalize_ and *license* all you need to build a knowledge domain, that is:
 
-- how to collect the right data,
-- the meaning of the data,
-- how much you can trust in your information, 
-- what new information you can deduct from the collected data,
+- how to collect the right data
+- the meaning of the data
+- how much you can trust in your information 
+- what new information you can deduct from the collected data
 - how to answer specific questions using information
 
 Both machines and humans can use this *know how* to increase their knowledge. KEES is a Semantic Web Application.
@@ -28,7 +28,7 @@ A lot of concepts used by KEES refer to the well-known [Semantic Web Standards](
 What is **data**? According to common sense, KEES defines data as words, numbers or in general *any string of symbols*. Example of data is the strings `xyz`, `123`, `33.22` or  `http://LinkedData.Center`. Data is usually associated with a  _data type_ that states a set of restrictions on symbols sequence that build up the data For example the number `123`, the float `33.22` or the URI `http://LinkedData.Center`. The _data type_ is not the data meaning.
 
 What is **information**? KEES defines information as *data with meaning*. The meaning can be learned from the context where a data is found or explicitly defined. KEES adopts the [RDF standards](https://www.w3.org/RDF/) to
-describe information by a tuple of three data, i.e. a _triple_ (also known as an RDF statement): a _subject_, a _predicate_, and an _object_. The data type for the first two elements of a triple (i.e. the subject and the predicate) must be a URIs, the last element of the triple (i.e. the object) can be anything. A triple can be also represented as an [unidirected labeled graph](https://mathinsight.org/definition/undirected_graph)
+describe information by a tuple of three data, i.e. a _triple_ (also known as an RDF statement): a _subject_, a _predicate_, and an _object_. The data type for the first two elements of a triple (i.e. the subject and the predicate) must be a URIs, the last element of the triple (i.e. the object) can be anything. A triple can be also represented as an [unidirected labeled graph](https://mathinsight.org/definition/undirected_graph).
 
 ![a triple](architecture/triple.jpg)
 
@@ -49,7 +49,7 @@ as a dataset in a [SPARQL service](https://www.w3.org/TR/sparql11-service-descri
 
 The **Language Profile** (or **Application profile**) is the portion of the TBOX that is recognized by a specific software application.
 
-The language profile can contain *axioms *. An **axiom** describes how to generate/validate knowledge base statements using entailment inferred by language profile semantic and known facts. For example, an axiom can be described with OWL and evaluated by an OWL reasoner or described with SPARQL QUERY constructs or with SPARQL UPDATE scripts and evaluated in a SPARQL service.
+The language profile can contain *axioms*. An **axiom** describes how to generate/validate knowledge base statements using entailment inferred by language profile semantic and known facts. For example, an axiom can be described with OWL and evaluated by an OWL reasoner or described with SPARQL QUERY constructs or with SPARQL UPDATE scripts and evaluated in a SPARQL service.
 
 The **KEES Language Profile** is the set of all terms, rules, and axioms that a software application that wants to use a knowledge base should understand.
 
@@ -62,7 +62,7 @@ It should be able to learn data, reason about data and answer some questions sta
 
 A KEES system is composed by:
 - a **Knowledge Graph** that persists in the most updated Knowledge Base. The Knowledge Graph adopts [RDF] and provides an interface to query the Knowledge Base (e.g. a SPARQL service)
-_ Some orchestrated **software components**, that interact with the knowledge graph, ingest new data, reason about existing data and query the knowledge
+- some orchestrated **software components**, that interact with the knowledge graph, ingest new data, reason about existing data and query the knowledge
 
 Example of such components are:
 
@@ -90,7 +90,7 @@ The sequence of plan execution is called **KEES workflow** and it is a continuou
 
 Here is a [working draft for a KEES implementation proposal](implementation.md)
 
-LinkedData.Center SDaaS product is a commercial early and partial implementation of KEES specifications (also available the Open Source community version)
+LinkedData.Center SDaaS product is a commercial early and partial implementation of KEES specifications (also available the Open Source community version).
 
 
 ## Contributing to this site
@@ -98,7 +98,7 @@ LinkedData.Center SDaaS product is a commercial early and partial implementation
 A great way to contribute to the site is to create an [issue](https://github.com/linkeddatacenter/kees/issues) on GitHub when you encounter a problem or something. We always appreciate it. You can also edit the code by yourself and create a pull request.
 
 
-All stuff here in the Creative Common (unless otherwise noted)
+All stuff here in the Creative Common (unless otherwise noted).
 
 
 [RDF]: https://www.w3.org/TR/rdf11-primer/
