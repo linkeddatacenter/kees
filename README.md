@@ -11,10 +11,10 @@ KEES  proposes some specifications to describe a *domain knowledge* in order to 
 A *domain knowledge* is something known about a specific argument (e.g. a set of producs, commercial offerings, a social network, etc. etc). Knowledge domains are additive, there is no limit to the knowledge domain perimeter nor to its size.
 KEES allows you to _formalize_ and *license* all you need to build a knowledge domain, that is:
 
-- how to collect the right data,
-- the meaning of the data,
-- how much you can trust in your information, 
-- what new information you can deduct from the collected data,
+- how to collect the right data
+- the meaning of the data
+- how much you can trust in your information 
+- what new information you can deduct from the collected data
 - how to answer specific questions using information
 
 Both machines and humans can use this *know how* to increase their knowledge. KEES is a Semantic Web Application.
@@ -49,7 +49,7 @@ as a dataset in a [SPARQL service](https://www.w3.org/TR/sparql11-service-descri
 
 The **Language Profile** (or **Application profile**) is the portion of the TBOX that is recognized by a specific software application.
 
-The language profile can contain *axioms *. An **axiom** describes how to generate/validate knowledge base statements using entailment inferred by language profile semantic and known facts. For example, an axiom can be described with OWL and evaluated by an OWL reasoner or described with SPARQL QUERY constructs or with SPARQL UPDATE scripts and evaluated in a SPARQL service.
+The language profile can contain *axioms*. An **axiom** describes how to generate/validate knowledge base statements using entailment inferred by language profile semantic and known facts. For example, an axiom can be described with OWL and evaluated by an OWL reasoner or described with SPARQL QUERY constructs or with SPARQL UPDATE scripts and evaluated in a SPARQL service.
 
 The **KEES Language Profile** is the set of all terms, rules, and axioms that a software application that wants to use a knowledge base should understand.
 
@@ -62,7 +62,7 @@ It should be able to learn data, reason about data and answer some questions sta
 
 A KEES system is composed by:
 - a **Knowledge Graph** that persists in the most updated Knowledge Base. The Knowledge Graph adopts [RDF] and provides an interface to query the Knowledge Base (e.g. a SPARQL service)
-_ Some orchestrated **software components**, that interact with the knowledge graph, ingest new data, reason about existing data and query the knowledge
+- some orchestrated **software components**, that interact with the knowledge graph, ingest new data, reason about existing data and query the knowledge
 
 Example of such components are:
 
@@ -76,8 +76,8 @@ Example of such components are:
 A KEES agent performs data ingestion in a knowledge base through a logical sequence of four temporal phases called *windows*:
 
 1. a startup phase (**boot window**)  to initialize the knowledge base
-2. a time slot for the population of the Knowledge Base and to link data (**learning window**). 
-3. a time slot for the data inference (**reasoning window**). 
+2. a time slot for the population of the Knowledge Base and to link data (**learning window**) 
+3. a time slot for the data inference (**reasoning window**) 
 4. a time slot to access the Knowledge Base and to answer questions (**teaching window**)
 
 Steps 2, 3 and 4 can be iterated till the system converges in a stable configuration.
@@ -98,7 +98,7 @@ LinkedData.Center SDaaS product is a commercial early and partial implementation
 A great way to contribute to the site is to create an [issue](https://github.com/linkeddatacenter/kees/issues) on GitHub when you encounter a problem or something. We always appreciate it. You can also edit the code by yourself and create a pull request.
 
 
-All stuff here in the Creative Common (unless otherwise noted)
+All stuff here in the Creative Common (unless otherwise noted).
 
 
 [RDF]: https://www.w3.org/TR/rdf11-primer/
