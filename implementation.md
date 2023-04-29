@@ -111,25 +111,15 @@ ASK { <urn:kees:kb> dct:valid [] }`
 Sometime you need to signal that data in knowledge base needs (or will need) to be update. In this case you **SHOULD** use:
 
 ```sparql
-INSERT { <urn:kees:kb> prov:invalidetedAtTime ?invalidationInstant }
-WHERE { 
-    VALUES ?invalidationInstant {"here a date"^^xsd:dateTime }
-    <urn:kees:kb> dct:valid ?validDate;
-    FILTER( ?invalidationIstant > ?validDate )
-}
+INSERT DATA { <urn:kees:kb> prov:invalidetedBy <urn:your_agent:uri> }
 ```
-
-Note that you **MUST NOT** invalidate knowledge base that was not already valid
 
 To test if you should reboot the knowledge base:
-
 ```sparql
-ASK {
-    <urn:kees:kb> prov:invalidetedAtTime ?invalidationInstant;
-    FILTER(  ?invalidationInstant < NOW() )
-}
+ASK { <urn:kees:kb> prov:invalidetedBy [] }
 ```
 
+The kees agent implementations can add restrictions on agent allowed to as KB invalidation.
 
 ## SPARQL service requirements
 A KEES compliant [SPARQL service](https://www.w3.org/TR/sparql11-service-description/) SHOULD expose the **kees:guard** feature. 
@@ -295,7 +285,7 @@ INSERT {
       dct:modified ?now;
       prov:wasGeneratedBy [ a prov:Activity ;
          prov:used <http://example.com/dataset.ttl> ;
-     prov:qualifiedAssociation [ 
+      prov:qualifiedAssociation [ 
             prov:agent [ a prov:SoftwareAgent ] ;
         prov:hadRole kees:namedGraphGenerator ;
         prov:hadPlan ?plan 
@@ -479,7 +469,7 @@ If a terminated prov:activity invalidates a graph, then the graph is invalidated
 ```sparql
 CONSTRUCT  {?graph prov:invalidatedAtTime ?endTime} 
 WHERE {
-      ?activiti a prov:Activity; prov:endedAtTime ?endTime; prov:invalidated ?name.
+      ?activity a prov:Activity; prov:endedAtTime ?endTime; prov:invalidated ?name.
       ?graph sd:name ?name.
       FILTER NOT EXISTS { ?graph prov:invalidatedAtTime ?endTime }
 }
@@ -557,7 +547,7 @@ ex:g1 : {
         dct:created "2019-11-06"^^xsd:date;
         dct:modified "2019-11-06"^^xsd:date;
         prov:wasGeneratedBy [ a prov:Activity ;        
-               kees:used 
+            prov:used 
                 <http://example.com/dataset2.ttl>, 
                 <http://example.com/dataset.ttl> ;
             prov:qualifiedAssociation [
