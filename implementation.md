@@ -85,6 +85,11 @@ To Know the **provenance** of each statement, it is of paramount importance to g
 
 Any RDF Store that provides with a SPARQL endpoint and QUAD support is compliant with KEES. 
 
+## KEES protocol
+KEES application **SHOULD** follow the rules
+
+
+### Knowledge base validity
 During knowledge base building and update the knowledge base could be in an inconsistent state.
 If a statement with the subject <urn:kees:kb> and the predicate *dct:valid* exists, 
 then it means that the Knowledge base is *safe* to be queried. Otherwise queries the knowledge base should be considered *not safe*.
@@ -111,7 +116,7 @@ ASK { <urn:kees:kb> dct:valid [] }`
 Sometime you need to signal that data in knowledge base needs (or will need) to be update. In this case you **SHOULD** use:
 
 ```sparql
-INSERT DATA { <urn:kees:kb> prov:invalidetedBy <urn:your_agent:uri> }
+INSERT DATA { <urn:kees:kb> prov:invalidetedBy <agent_uri> }
 ```
 
 To test if you should reboot the knowledge base:
@@ -120,6 +125,41 @@ ASK { <urn:kees:kb> prov:invalidetedBy [] }
 ```
 
 The kees agent implementations can add restrictions on agent allowed to as KB invalidation.
+
+
+### Locking
+Sometimes multiple process insist on the same knowlege graph. In this case locking can happens. If possible agent holud use OS standard locking mechanism (e.g. flock), but if this is not possible you can use following stop gap solution (warning it is not cmpletelly safe):
+To create an exclusive lock on the knowlegde graph use this pseudo code:
+```bash
+
+function unlock {
+    DELETE  { <urn:kees:kb> <urn:kees:kb:isLockedBy> ?anything }
+    WHERE  { <urn:kees:kb> <urn:kees:kb:isLockedBy> ?anything }
+}
+
+function lock {
+    local UNIQUE_URI="urn:uuid:$(date +%s%N)$(echo $RANDOM)"
+    while : ; do
+        INSERT { <urn:kees:kb> <urn:kees:kb:isLockedBy> <$UNIQUE_URI> } 
+        WHERE { FILTER NOT EXISTS { <urn:kees:kb> <urn:kees:kb:isLockedBy> [] }} 
+        if  ASK {<urn:kees:kb> <urn:kees:kb:isLockedBy> <$UNIQUE_URI>} then
+            break
+        else
+            sleep 10
+        fi 
+    done
+    echo UNIQUE_URI
+}
+
+
+LOCKID=$(lock)
+trap unlock EXIT  # ensure lock is removed also on script exit
+    ... do your jobs
+unlock
+trap '' EXIT
+```
+
+Be sure to delete lock even in case of error or script exit
 
 ## SPARQL service requirements
 A KEES compliant [SPARQL service](https://www.w3.org/TR/sparql11-service-description/) SHOULD expose the **kees:guard** feature. 
