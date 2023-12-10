@@ -8,6 +8,16 @@
 @prefix kees: <http://linkeddata.center/kees/v1#> .
 @prefix sd: <http://www.w3.org/ns/sparql-service-description#> .
 
+<urn:kees:kb> 
+	dct:created "the date of latest knowledge boot";
+	dct:valid "the date ok knowledge stability"; #if stabilized
+	kees:isLockedBy <activity id> # if locked by some activity
+.	
+	
+[]	a sd:Service
+	sd:endpoint <http://www.example/sparql/> ;
+	sd:feature kees:validity, kees:locking
+.
 
 
 [] kees:vocabulary <http://linkeddata.center/kees/v1> .

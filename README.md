@@ -122,7 +122,7 @@ A KEES agent performs data ingestion in a knowledge graph through a logical sequ
 
 Steps 2, 3 and 4 can be iterated till the system converges in a stable configuration.
 
-![KEES cycle](v2/images/cycle.png)
+![KEES cycle](v1/images/cycle.png)
 
 The sequence of plan execution is called **KEES workflow** and it is a continuous integration process that starts on a triggered change in learned facts.
 
