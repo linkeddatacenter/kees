@@ -3,32 +3,31 @@
 Describing knowledge with KEES (Knowledge Exchange Engine Specifications and Services)
 ==================================================================
 
-
 > *In order to let computers to work for us, they must understand data: not just the grammar and the syntax, but the real meaning of things.*
 
-KEES  proposes some specifications to describe a *domain knowledge* in order to **make it tradeable and shareable**. 
+KEES introduces specific requirements for Semantic Web Applications to formally describe *domain knowledge* with the objective of enabling its tradeability and shareability.
 
-A *domain knowledge* is something known about a specific argument (e.g. a set of producs, commercial offerings, a social network, etc. etc). Knowledge domains are additive, there is no limit to the knowledge domain perimeter nor to its size.
-KEES allows you to _formalize_ and *license* all you need to build a knowledge domain, that is:
+Domain knowledge refers to information about a specific subject (e.g., a range of products, commercial offerings, a social network, etc.). Knowledge domains are cumulative, with no defined limits on their scope or size.
 
-- how to collect the right data
-- the meaning of the data
-- how much you can trust in your information 
-- what new information you can deduct from the collected data
-- how to answer specific questions using information
+With KEES, you can formalize and license all the components necessary to construct a knowledge domain. This includes:
 
-Both machines and humans can use this *know how* to increase their knowledge. KEES is a Semantic Web Application.
+- Methods for collecting accurate data.
+- Establishing the context or significance of the data.
+- Determining the reliability of the information.
+- Deriving new insights from gathered data.
+- Guiding the process of using information to address specific queries.
 
-See [KEES presentation slides](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)
+Both machines and humans can leverage this *know-how* to enhance their knowledge. 
+
+For more details, refer to the [KEES presentation slides](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)."
+
 
 ## Definitions
-
 A lot of concepts used by KEES refer to the well-known [Semantic Web Standards](https://www.w3.org/standards/semanticweb/) published by the World Wide Web Consortium ([W3C](https://w3.org/)).
 
-What is **data**? According to common sense, KEES defines data as words, numbers or in general *any string of symbols*. Example of data is the strings `xyz`, `123`, `33.22` or  `http://LinkedData.Center`. Data is usually associated with a  _data type_ that states a set of restrictions on symbols sequence that build up the data For example the number `123`, the float `33.22` or the URI `http://LinkedData.Center`. The _data type_ is not the data meaning.
+**Data**, as per KEES, encompasses any *literal* like words, numbers, or generally, any sequence of symbols. For instance, strings such as `xyz`, `123`, `33.22`, or `http://LinkedData.Center` exemplify *data*. Typically, data is linked with a data type that defines constraints on the sequence of symbols composing the data. For instance, the number `123`, the float `33.22`, or the URI `http://LinkedData.Center` each possess their respective data types, which specify rules regarding the permissible symbols sequence. Importantly, the data type does not inherently convey the meaning of the data itself.
 
-What is **information**? KEES defines information (AKA facts) as *data with meaning*. The meaning can be learned from the context where data is found or explicitly defined. KEES adopts the [RDF standards](https://www.w3.org/RDF/) to
-describe information by a tuple of three data, i.e. a _triple_ (also known as an RDF statement): a _subject_, a _predicate_, and an _object_. The data type for the first two elements of a triple (i.e. the subject and the predicate) must be a URIs, the last element of the triple (i.e. the object) can be anything. A triple can be also represented as an [unidirected labeled graph](https://mathinsight.org/definition/undirected_graph)
+**Information**, as defined in KEES (also known as **facts**), is characterized as *data with meaning*. This meaning can either be inferred from the context where the data is situated or explicitly defined. KEES adopts the [RDF] standard to delineate information through a triplet of three elements, forming an RDF statement, commonly referred to as a _triple_. This triple comprises a _subject_, a _predicate_, and an _object_. Indeed, a triple can be visualized and represented as an [undirected labeled graph](https://mathinsight.org/definition/undirected_graph), and it can be stored within a **Graph Store**. This store serves as a repository for organizing and maintaining collections of these graph-based representations, allowing efficient storage and retrieval of triples.
 
 ![a triple](architecture/triple.jpg)
 
@@ -36,38 +35,38 @@ KEES defines **knowledge** as a graph of linked information (i.e. linked data). 
 
 ![triples](architecture/triples.png)
 
-KEES defines **knowledge base** (or **knowledge graph** ) as a container of *linked data with a purpose*, that is a piece of related information that can be queried to provide answers to some questions. 
+In KEES, a **Knowledge Graph** is characterized as a *Graph Store with a purpose*. It represents a collection of interconnected information (i.e. *Linked Data*) organized in a graph-like structure that's designed specifically to be queried, providing answers to specific questions within its domain of related information.
 
-From a theoretical point of view, a knowledge base is composed by information (i.e. facts), plus a formal system of logic used for knowledge representation, plus the [Open-world assumption](https://en.wikipedia.org/w/index.php?title=Open-world_assumption&oldid=871019791), plus an inference engine that demonstrates theorems. 
+From a theoretical perspective, a knowledge graph comprises information (facts), a formal logic system for knowledge representation, incorporates the [Open-world assumption], and employs an inference engine to demonstrate theorems.
 
-The information is partitioned into two sets: *TBox* and *ABox*. *ABox statements* describe facts,  *TBox statements* describe the terms used to qualify the facts meaning. If you are familiar with the object-oriented paradigm, TBox statements sometimes associate with classes, while ABox associate with individual class instances. 
-*TBox statements* tend to be more permanent within a knowledge base and are often grouped in *ontologies* that describe a specific knowledge domain (e.g. business entities, people, goods, friendship, offering, geocoding, etc, etc). TBOX statements are expressed using an ontology language that provides a formal semantic like the [W3C OWL](https://www.w3.org/OWL/)
-_ABox statements_ are associated with instances of classes defined by TBox statements. ABox statements are much more dynamic in nature and are populated from datasets available on the web or by reasoning. 
 
-KEES assumes that RDF is used for knowledge representation and that the knowledge base is implemented 
-as a dataset in a [SPARQL service](https://www.w3.org/TR/sparql11-service-description).
+In a knowledge graph, information is categorized into two sets: *TBox* and *ABox*. *ABox statements* delineate facts, while *TBox statements* define the terms used to qualify the meaning of those facts. If you're familiar with the object-oriented paradigm, TBox statements can be likened to associations with classes, whereas ABox statements are linked to individual class instances.
 
-The **Language Profile** (or **Application profile**) is the portion of the TBOX that is recognized by a specific software application.
+*TBox statements* are typically more enduring within a knowledge graph and are often organized into *ontologies*, describing specific knowledge domains such as business entities, people, goods, friendships, offerings, geocoding, and more. These statements are expressed using an ontology language that offers a formal semantic, like the [W3C OWL](https://www.w3.org/OWL/).
 
-The language profile can contain *axioms*. An **axiom** describes how to generate/validate knowledge base statements using entailment inferred by language profile semantic and known facts. For example, an axiom can be described with OWL and evaluated by an OWL reasoner or described with SPARQL QUERY constructs or with SPARQL UPDATE scripts and evaluated in a SPARQL service.
+_ABox statements_, on the other hand, are related to instances of classes defined by TBox statements. They possess a much more dynamic nature and are populated from datasets available on the web or through reasoning processes.
 
-The **KEES Language Profile** is the set of all terms, rules, and axioms that a software application that wants to use a knowledge base should understand.
 
-A **KEES Agent** describes a processor that understands the *KEES language profile* and that it can do actions on a knowledge base according to KEES specifications.
+Theorems within a knowledge graph can manifest as *rules* or *axioms*. A *rule* signifies a generalized inference that establishes a logical correlation between propositions. Conversely, an *axiom* embodies a rule accomplished through entailment that is inferred by the semantics of existing factual information. 
+
+> KEES assumes that knowledge graph is implemented by a [SPARQL service ](https://www.w3.org/TR/sparql11-service-description) supporting the [SPARQL protocol](https://www.w3.org/TR/sparql11-protocol/)
+
+For instance, an axiom could be articulated using OWL (Web Ontology Language) and demonstrated through an OWL reasoner. Alternatively, a rule could be formulated using SPARQL QUERY CONSTRUCT and materialized with SPARQL UPDATE operations.
+
+The **Language Profile** (also referred to as the **Application Profile**) forms the section of the TBOX comprising all terms recognized by rules and employed to comprehend and respond to inquiries. This profile defines the scope and vocabulary utilized within a *Semantic Web Application*, outlining the terms essential for understanding and generating responses within its semantic framework.
+
+The **KEES Language Profile** is the set of all terms and rules that a KEES-compliant application should understand.
+
+A **KEES Agent** describes a processor that understands the *KEES language profile* and that it can do actions on a knowledge graph according to KEES specifications.
 It should be able to learn data, reason about data and answer some questions starting from learned facts.
 
-Information in ABOX can be partitioned into:
-- **learned facts**: that contain the information derived from the first-party and second-party data that are annotated with the semantics defined by the language profile
-- **enriched facts**: that contain the information derived from third-party data that enrich the semantic of the **learned fact**.
-- **inferred facts**: that contain information derivable from logic deductions or rules
+**Trust** holds significant importance in KEES due to the [Open-world assumption] and the inherent nature of [RDF], which permits the amalgamation of diverse information, even when it might be incoherent or falsified.
 
-**Trust** is another key concept in KEES because the [Open-world assumption] and RDF allow the mixing any kind of information, even when incoherent or fake.
+In the context of KEES, **trust** serves as metadata linked to each RDF statement, ranging in value from 0 (indicating no trust) to 1 (indicating complete trust). Notably, this concept of *trust* extends to both ABOX and TBOX statements within the knowledge graph.
 
-Trust is a metadata associated with each RDF statement whose value ranges from 0 (no trust) to 1 (complete trust). 
-Please note that _trust_ applies also to ABOX and TBOX statements.
-As a result, the trust of an inferred fact is a function of the trust of all facts and all ontology and rules involved in its production.
+Moreover, the trust assigned to an inferred fact is intricately tied to the trust levels associated with all the involved facts and rules contributing to its derivation. Therefore, the trustworthiness of an inferred fact is contingent upon the collective trust levels of the underlying information and the processes involved in its generation within the knowledge graph.
 
-A fact with a trust value equal to 0 or 1 is a certain fact. The same consideration applies to the ontologies that are part of the language profile.
+The trust value of 0 or 1 signifies certainty in a fact. This principle extends to TBOX statements as well.
 
 Note that the trust of an inferred fact MUST be less or equal to the minimum trust of the involved statements.
 
@@ -76,9 +75,9 @@ Inferred facts can be partitioned into:
 - Not fully trusted  inferred facts (i.e. `0 < trust < 1` ) are called **abdutions**
 
 > **An example**
-> For instance, suppose that an axiom in your knowledge base TBOX states that a property ":hasMom" has a cardinality of 1 (i.e. every person has just one "mom"), your knowledge base could also contain two different facts (:jack :hasMom :Mary) and (:jack :hasMom :Giulia), perhaps extracted from different data sources. In order to decide who is Jack's mom, you need trust in your information. 
+> For instance, suppose that an axiom in your knowledge graph TBOX states that a property ":hasMom" has a cardinality of 1 (i.e. every person has just one "mom"), your knowledge graph could also contain two different facts (:jack :hasMom :Mary) and (:jack :hasMom :Giulia), perhaps extracted from different data sources. In order to decide who is Jack's mom, you need trust in your information. 
 > 
-> If you are sure about the veracity of all data in the knowledge base, you can deduct that: Mary and  Giulia are two names for the same person. If you are not so sure, you have two possibilities: deduct that the one data source is wrong, so you have to choose the most trusted statement concerning some criteria (even casually if both statements have the same trust rank) or change the axiom in TBOX, allowing a person to have more than one mom. In any case, you need to get an idea about _your_ trust in each statement, both in ABox and in Tbox,  in the knowledge base. At least you want to know the **provenance** and all metadata of all information in your knowledge base because the trust in a single data often derives from the trust of its source or in the creator of the data source.
+> If you are sure about the veracity of all data in the knowledge graph, you can deduct that: Mary and  Giulia are two names for the same person. If you are not so sure, you have two possibilities: deduct that the one data source is wrong, so you have to choose the most trusted statement concerning some criteria (even casually if both statements have the same trust rank) or change the axiom in TBOX, allowing a person to have more than one mom. In any case, you need to get an idea about _your_ trust in each statement, both in ABox and in Tbox,  in the knowledge graph. At least you want to know the **provenance** and all metadata of all information in your knowledge graph because the trust in a single data often derives from the trust of its source or in the creator of the data source.
 > 
 > So if: 
 > - fact 1: `:jack :hasMom :Mary`
@@ -100,7 +99,7 @@ Inferred facts can be partitioned into:
 ## KEES system components
 
 A KEES system is composed by:
-- a **Knowledge Graph** that persists in the most updated Knowledge Base. The Knowledge Graph adopts [RDF] and provides an interface to query the Knowledge Base (e.g. a SPARQL service)
+- a **Knowledge Graph** that persists in the most updated knowledge graph. The Knowledge Graph adopts [RDF] and provides an interface to query the knowledge graph (e.g. a SPARQL service)
 - some orchestrated **software components**, that interact with the knowledge graph, ingest new data, reason about existing data and query the knowledge
 
 Example of such components are:
@@ -108,18 +107,18 @@ Example of such components are:
 - **legacy connectors** that extract RAW data from legacy systems preparing data for ingestion
 - **ingestion agents** that translate RAW data into linked data according to language profile
 - **reasoners** that make inferences on ABOX using TBOX or rules
-- **APIs** that perform specific queries to the Knowledge Base to answer questions
+- **APIs** that perform specific queries to the knowledge graph to answer questions
 
 ## KEES data processing
 
-A KEES agent performs data ingestion in a knowledge base through a logical sequence of phases called *windows*:
+A KEES agent performs data ingestion in a knowledge graph through a logical sequence of phases called *windows*:
 
-1. a startup phase (**boot window**)  to initialize an empty knowledge base 
-2. population of the Knowledge Base with the learning facts (**learning window**) 
+1. a startup phase (**boot window**)  to initialize an empty knowledge graph 
+2. population of the knowledge graph with the learning facts (**learning window**) 
 3. inference facts materialization (**reasoning window**) 
 4. enrich facts discovery and ingestion (**enriching window**) 
 5. a slot for optimization, publishing and semantic conflict resolution (**publishing window**)
-6. a time allow the Knowledge Base and to answer questions (**teaching window**)
+6. a time allow the knowledge graph and to answer questions (**teaching window**)
 
 Steps 2, 3 and 4 can be iterated till the system converges in a stable configuration.
 
