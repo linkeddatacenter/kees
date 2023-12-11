@@ -10,11 +10,11 @@ This working draft collects a proposal for a concrete KEES implementation. Have 
 The **KEES vocabulary** defines few new terms in the  http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*). 
 It consists of few terms, mainly derived from existing ontologies: 
 
-"`kees:KnowledgeGraph` is a subclass of [sd:Service](https://www.w3.org/TR/sparql11-service-description/#sd-Service), indicating that the annotated subject represents a service compliant with the KEES protocol. It can offer a variety of optional properties, empowering a KEES-compliant agent to signal the completion of a window within a KEES cycle. `kees:KnowledgeGraph` represents a *singleton*; for each Graph Store, only one `sd:endpoint` can be associated with an instance of this class.
+`kees:KnowledgeGraph`
+: is a subclass of [sd:Service](https://www.w3.org/TR/sparql11-service-description/#sd-Service), indicating that the annotated subject represents a service compliant with the KEES protocol. It can offer a variety of optional properties, empowering a KEES-compliant agent to signal the completion of a window within a KEES cycle. `kees:KnowledgeGraph` represents a *singleton*; for each Graph Store, only one `sd:endpoint` can be associated with an instance of this class.
 
 `kees:Activity`
 : is a subclass of [prov:Activity](https://www.w3.org/TR/prov-o/#Activity) that annotates an action performed by a KEES compliant agent
-
 
 `kees:Boot`, `kees:Ingestion`, `kees:Reasoning`, `kees:Enriching`, `kees:Publishing`, `kees:Versioning`
 : are subclasses of [prov:Activity](https://www.w3.org/TR/prov-o/#Activity) related to specific KEES cycle windows activities
@@ -25,15 +25,11 @@ Besides classes, KEES vocabulary defines some individuals:
 `kees:trustLevel`
 : it is a predefined  instance of [dqv:Metric](https://www.w3.org/TR/vocab-dqv/#dqv:Metric) to be used in a [dqv:QualityMeasurement](https://www.w3.org/TR/vocab-dqv/#dqv:QualityMeasurement) to define a trust level in a [dqv:UserQualityFeedback](https://www.w3.org/TR/vocab-dqv/#dqv:UserQualityFeedback)  according with the [Data Quality Vocabulary](https://www.w3.org/TR/vocab-dqv/). The `dqv:value` property is expected to be a xsd:decimal in the range 0-1
 
-`kees:append` and `kees:replace`
-: state two instances of [dct:AccrualPolicy](https://www.dublincore.org/specifications/dublin-core/collection-description/accrual-policy/): *append* policy affirms that,  if new facts found,
-they are to be appended to existing data. The *replace* policy affirms that new data must replace all existing information.
 
-
-`kees:validity`
+`kees:Status`
 : it is a predefined instance of [sd:Feature](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) that indicates that the annotated service supports the ability to detect if the knowledge graph is stable
 
-`kees:locking`
+`kees:Locking`
 : it is a predefined instance of [sd:Feature](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) that indicates that the annotated service supports locking protocol
 
 
@@ -45,23 +41,18 @@ The whole KEES vocabulary is expressed with OWL RDF and available in [kees.rdf f
 The **KEES Language Profile** reuses some terms from existing vocabularies and adds mappings and restrictions to the KEES ontology.
 In the rest of this document following  namespaces are used:
 
-Absolutely! Here's the Markdown table with the first column ordered alphabetically:
-
 | Prefix   | URL                                              |
 |----------|--------------------------------------------------|
-| dct      | http://purl.org/dc/terms/                         |
-| dqv      | http://www.w3.org/ns/dqv#                         |
-| kees     | http://linkeddata.center/kees/v1#                 |
-| prov     | http://www.w3.org/ns/prov#                        |
-| dqv      | http://www.w3.org/ns/dqv#                         |
-| rdf      | http://www.w3.org/1999/02/22-rdf-syntax-ns        |
-| rdfs     | http://www.w3.org/2000/01/rdf-schema#             |
-| sd       | http://www.w3.org/ns/sparql-service-description   |
-| void     | http://rdfs.org/ns/void                           |
+| dct      | http://purl.org/dc/terms/                        |
+| dqv      | http://www.w3.org/ns/dqv#                        |
+| kees     | http://linkeddata.center/kees/v1#                |
+| prov     | http://www.w3.org/ns/prov#                       |
+| sd       | http://www.w3.org/ns/sparql-service-description# |
+| xsd      | http://www.w3.org/2001/XMLSchema#                |
 
 [Dublin core terms](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) are used to annotate dataset. The properties `dct:modified`, `dct:source` for sd:NamedGraph are part of the KEES Language profile.
 
-From SPARQL service description vocabulary, KEES application should recognize  `sd:endpoint`, `sd:feature`, `sd:NamedGraph`, `sd:name`.
+From [SPARQL service description](https://www.w3.org/TR/sparql11-service-description/) vocabulary, KEES application should recognize  `sd:endpoint`, `sd:feature`, `sd:NamedGraph`, `sd:name`.
 
 Knowledgebase building activities MUST be traced using [PROV ontology](https://www.w3.org/TR/prov-overview/). KEES application should 
 recognize at least on `prov:wasGeneratedBy` sd:namedGraph instances.
