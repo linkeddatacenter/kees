@@ -57,8 +57,7 @@ The **Language Profile** (also referred to as the **Application Profile**) forms
 
 The **KEES Language Profile** is the set of all terms and rules that a KEES-compliant application should understand.
 
-A **KEES Agent** describes a processor that understands the *KEES language profile* and that it can do actions on a knowledge graph according to KEES specifications.
-It should be able to learn data, reason about data and answer some questions starting from learned facts.
+A **KEES Agent** describes a processor that understands the *KEES language profile* and it is compliant with the KEES protocols.
 
 **Trust** holds significant importance in KEES due to the [Open-world assumption] and the inherent nature of [RDF], which permits the amalgamation of diverse information, even when it might be incoherent or falsified.
 
