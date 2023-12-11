@@ -1,18 +1,14 @@
 Implementing KEES 
 =======================================
 
-Please before continue, have a look to the [KEES definitions and principles](README.md)
+This working draft collects a proposal for a concrete KEES implementation. Have a look to the [KEES definitions and principles](README.md)
 
-This working draft collects a proposal for a concrete KEES implementation.
+## The KEES Language profile
 
-
-## KEES Vocabulary
+### the KEES Vocabulary
 
 The **KEES vocabulary** defines few new terms in the  http://linkeddata.center/kees/v1#  namespace ( usual prefix *kees:*). 
 It consists of few terms, mainly derived from existing ontologies: 
-
-![uml](v1/images/uml.png)
-
 
 "`kees:KnowledgeGraph` is a subclass of [sd:Service](https://www.w3.org/TR/sparql11-service-description/#sd-Service), indicating that the annotated subject represents a service compliant with the KEES protocol. It can offer a variety of optional properties, empowering a KEES-compliant agent to signal the completion of a window within a KEES cycle. `kees:KnowledgeGraph` represents a *singleton*; for each Graph Store, only one `sd:endpoint` can be associated with an instance of this class.
 
@@ -45,7 +41,6 @@ they are to be appended to existing data. The *replace* policy affirms that new 
 The whole KEES vocabulary is expressed with OWL RDF and available in [kees.rdf file](v1/kees.rdf).
 
 
-## The KEES Language profile
 
 The **KEES Language Profile** reuses some terms from existing vocabularies and adds mappings and restrictions to the KEES ontology.
 In the rest of this document following  namespaces are used:
@@ -56,10 +51,7 @@ Absolutely! Here's the Markdown table with the first column ordered alphabetical
 |----------|--------------------------------------------------|
 | dct      | http://purl.org/dc/terms/                         |
 | dqv      | http://www.w3.org/ns/dqv#                         |
-| dcterms  | http://purl.org/dc/terms/                         |
 | kees     | http://linkeddata.center/kees/v1#                 |
-| oa       | http://www.w3.org/ns/oa#                          |
-| owl      | http://www.w3.org/2002/07/owl#                    |
 | prov     | http://www.w3.org/ns/prov#                        |
 | dqv      | http://www.w3.org/ns/dqv#                         |
 | rdf      | http://www.w3.org/1999/02/22-rdf-syntax-ns        |
@@ -67,21 +59,19 @@ Absolutely! Here's the Markdown table with the first column ordered alphabetical
 | sd       | http://www.w3.org/ns/sparql-service-description   |
 | void     | http://rdfs.org/ns/void                           |
 
-[Dublin core terms](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) are used to annotate dataset. The properties dct:created, dct:modified, dct:source are part of the KEES Language profile.
+[Dublin core terms](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) are used to annotate dataset. The properties `dct:modified`, `dct:source` for sd:NamedGraph are part of the KEES Language profile.
 
-
-FromSPARQL service description, KEES application should 
-recognize sd:Service, sd:endpoint, sd:feature.
+From SPARQL service description vocabulary, KEES application should recognize  `sd:endpoint`, `sd:feature`, `sd:NamedGraph`, `sd:name`.
 
 Knowledgebase building activities MUST be traced using [PROV ontology](https://www.w3.org/TR/prov-overview/). KEES application should 
-recognize dct:source, prov:wasGeneratedBy, prov:wasAttributedTo.
+recognize at least on `prov:wasGeneratedBy` sd:namedGraph instances.
 
 Trustability is enabled by attaching quality observation to the ingested graph. 
-For this feature KEES language profile reuses the terms in [Data on the Web Best Practices: Data Quality Vocabulary](https://www.w3.org/TR/vocab-dqv/) with dqv:hasQualityAnnotation,  dqv:value, oa:body, oa:motivation
+For this feature KEES language profile reuses the terms in [Data on the Web Best Practices: Data Quality Vocabulary](https://www.w3.org/TR/vocab-dqv/) with `dqv:hasQualityAnnotation`,  `dqv:value`, and `dqv:isMeasurementOf`
 
 The following picture summarizes the main elements of the KEES language profile.
 
-![uml](architecture/uml.png)
+![uml](v1/images/uml.png)
 
 
 ## RDF Store requirement
@@ -95,10 +85,10 @@ KEES application **SHOULD** follow the rules
 
 ### Knowledge Graph status
 
-During knowledge base building and updates, KEES agents can declare the completion of a KEES cycle window
+During knowledge base building and updates, KEES agents SHOULD declare the completion of a KEES cycle window
 
 
-For instance to  declare that a RDF Store is ready to be safely queried, execute following SPARQL UPDATE statement:
+For instance to declare that a RDF Store is ready to be safely queried, execute following SPARQL UPDATE statement:
 
 ```sparql
 INSERT { ?service kees:published ?now }
@@ -108,17 +98,18 @@ WHERE { ?service a kees:KnowledgeGraph BIND( NOW() AS ?now) }
 To check if a RDF Store is *safe*: 
 
 ```sparql
-ASK { ?service kees:published [] }`
+ASK { ?service kees:published|kees:versioned [] }`
 ```
 
-### Get knowledge graph last update
+### Get knowledge graph creation and last update date
 
 ```sparql
-SELECT (MAX(?updated) as ?lastUpdated) WHERE {
+SELECT ?graphName (MIN(?updated) as ?created) (MAX(?updated) as ?lastUpdated) WHERE {
     ?g sd:name ?graphName ;
     dct:modified ?updated
 } GROUP BY ?graphName
 ```
+
 
 
 ### Get the date of the last ingestion
@@ -137,13 +128,13 @@ SELECT (MAX(?updated) as ?lastPublished) WHERE {
 Sometime you need to signal that data in knowledge base needs (or will need) to be update. In this case you **SHOULD** use:
 
 ```sparql
-INSERT { ?service prov:invalidetedBy [ a prov: Agent ] }
+INSERT { ?service prov:invalidatedBy [ a prov: Agent ] }
 WHERE { ?service a kees:KnowledgeGraph }
 ```
 
 To test if you should reboot the knowledge base:
 ```sparql
-ASK { ?service a kees:KnowledgeGraph; prov:invalidetedBy [] }
+ASK { ?service a kees:KnowledgeGraph; prov:invalidatedBy [] }
 ```
 
 The kees agent implementations can add restrictions on agent allowed to as KB invalidation.
@@ -209,13 +200,13 @@ Be sure to delete lock even in case of error or script exit
 }
 
 
-<http:/example.org/.well-known/kees> {
+:98dccee27a081f9cd75d15b8af59a3d6 {
     [] a sd:NamedGraph;
-        sd:name <http:/example.org/.well-known/kees>
+        sd:name :98dccee27a081f9cd75d15b8af59a3d61 ;
         dct:modified "2023-12-10T01:01:02Z"^^xsd:dateTime ;
-        dct:source  <http:/example.org/kees.ttl> ;
+        dct:source  <http:/example.org/resource.ttl> ;
         prov:wasGeneratedBy [ a kees:Ingestion ] ;
-        dqv:hasQualityMeasurement [ dqv:value 0.99 ; dqv:isMeasurementOf kees:trustLevel] .
+        dqv:hasQualityMeasurement [ dqv:value 0.99 ; dqv:isMeasurementOf kees:trustLevel ] .
 }
 
 
@@ -225,7 +216,7 @@ Be sure to delete lock even in case of error or script exit
         dct:modified "2023-12-10T01:02:02Z"^^xsd:dateTime ;
         dct:source  <http:/example.org/void.ttl> ;
         prov:wasGeneratedBy [ a kees:Ingestion ] ;
-        dqv:hasQualityMeasurement [ dqv:value 0.75 ; dqv:isMeasurementOf kees:trustLevel] .
+        dqv:hasQualityMeasurement [ dqv:value 0.75 ; dqv:isMeasurementOf kees:trustLevel ] .
 
     ## here the example triple exposed by http:/example.org/void.ttl
     <http:/example.org/.well-known/void> a kees:KnowledgeBaseDescription ;
