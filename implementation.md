@@ -20,13 +20,11 @@ The Dublin Core terms, accessible at [Dublin Core Terms](https://www.dublincore.
 
 As per the SPARQL service description vocabulary outlined in [SPARQL Service Description](https://www.w3.org/TR/sparql11-service-description/), KEES agent are expected to acknowledge and utilize properties such as `sd:endpoint`, `sd:feature`, `sd:NamedGraph`, and `sd:name`.
 
-Knowledgebase building activities should be traced using [PROV ontology](https://www.w3.org/TR/prov-overview/). KEES agents should 
-recognize at least on `prov:wasGeneratedBy` in named graphs instances.
+Knowledgebase building activities should be traced using [PROV ontology](https://www.w3.org/TR/prov-overview/). KEES agents should recognize at least on `prov:wasGeneratedBy` in named graphs instances and  `prov:invalidatedBy` in knowledge graph
 
 The attainment of trustability is facilitated by associating quality observations with the ingested graph. To support this functionality, the KEES language profile repurposes terms from the [Data on the Web Best Practices: Data Quality Vocabulary](https://www.w3.org/TR/vocab-dqv/) such as `dqv:hasQualityAnnotation`, `dqv:value`, and `dqv:isMeasurementOf`."
 
 When utilized in named graph metadata, a KEES agent is expected to acknowledge the term `void:dataDump` from the [VoID Vocabulary](https://www.w3.org/TR/void/#void-file).
-
 
 Besides well known ontologies, thee KEES langage profile use terms from its own **KEES vocabulary**. These terms are defined within the `http://linkeddata.center/kees/v1#` namespace, commonly referenced using the prefix *kees:*.
 
@@ -37,12 +35,9 @@ Besides well known ontologies, thee KEES langage profile use terms from its own 
 
 The KEES vocabulary encompasses a limited set of terms defined within the `http://linkeddata.center/kees/v1#` namespace, commonly referenced using the prefix *kees:*.  The whole KEES vocabulary is expressed with OWL RDF and available in [kees.rdf file](v1/kees.rdf). A KEES agent should recognize all KEES vocabulary
 
-
-
 The following picture summarizes the main elements of the KEES language profile. 
 
 ![uml](v1/images/uml.png)
-
 
 
 ## RDF Store requirement
@@ -57,13 +52,14 @@ KEES application **SHOULD** follow the rules
 ### Knowledge Graph status
 
 During knowledge base building and updates, KEES agents SHOULD declare the completion of a KEES cycle window
-
-
 For instance to declare that a RDF Store is ready to be safely queried, execute following SPARQL UPDATE statement:
 
 ```sparql
 INSERT { ?service kees:published ?now }
-WHERE { ?service a kees:KnowledgeGraph BIND( NOW() AS ?now) }
+WHERE { 
+    ?service a kees:KnowledgeGraph BIND( NOW() AS ?now) 
+    FILTER NOT EXISTS { ?service kees:published [] }
+}
 ```
 
 To check if a RDF Store is *safe*: 
@@ -72,7 +68,24 @@ To check if a RDF Store is *safe*:
 ASK { ?service kees:published|kees:versioned [] }`
 ```
 
-### Get knowledge graph creation and last update date
+To get the current knowledge graph status:
+
+```sparql
+SELECT ?status
+WHERE{ 
+    VALUES ?status {
+        kees:bootCompleted
+        kees:learningCompleted
+        kees:reasoningCompleted
+        kees:enrichingCompleted
+        kees:published
+        kees:versioned
+    }
+    OPTIONAL { ?service ?status ?on_date }
+} ORDER DESC( ?on_date) LIMIT 1
+```
+
+### knowledge graph creation and last update date
 
 ```sparql
 SELECT ?graphName (MIN(?updated) as ?created) (MAX(?updated) as ?lastUpdated) WHERE {
@@ -81,9 +94,7 @@ SELECT ?graphName (MIN(?updated) as ?created) (MAX(?updated) as ?lastUpdated) WH
 } GROUP BY ?graphName
 ```
 
-
-
-### Get the date of the last ingestion
+### Get the date of the last graph ingestion
 
 ```sparql
 SELECT (MAX(?updated) as ?lastPublished) WHERE {
@@ -92,7 +103,6 @@ SELECT (MAX(?updated) as ?lastPublished) WHERE {
         dct:modified ?updated
 } GROUP BY ?graphName
 ```
-
 
 ### Request s knowledge graph reboot
 
