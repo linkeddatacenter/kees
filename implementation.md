@@ -28,11 +28,6 @@ When utilized in named graph metadata, a KEES agent is expected to acknowledge t
 
 Besides well known ontologies, thee KEES langage profile use terms from its own **KEES vocabulary**. These terms are defined within the `http://linkeddata.center/kees/v1#` namespace, commonly referenced using the prefix *kees:*.
 
-
-
-
-### The KEES vocabulary
-
 The KEES vocabulary encompasses a limited set of terms defined within the `http://linkeddata.center/kees/v1#` namespace, commonly referenced using the prefix *kees:*.  The whole KEES vocabulary is expressed with OWL RDF and available in [kees.rdf file](v1/kees.rdf). A KEES agent should recognize all KEES vocabulary
 
 The following picture summarizes the main elements of the KEES language profile. 
