@@ -55,9 +55,10 @@ For instance, an axiom could be articulated using OWL (Web Ontology Language) an
 
 The **Language Profile** (also referred to as the **Application Profile**) forms the section of the TBOX comprising all terms recognized by rules and employed to comprehend and respond to inquiries. This profile defines the scope and vocabulary utilized within a *Semantic Web Application*, outlining the terms essential for understanding and generating responses within its semantic framework.
 
-The **KEES Language Profile** is the set of all terms and rules that a KEES-compliant application should understand.
-
-A **KEES Agent** describes a processor that understands the *KEES language profile* and it is compliant with the KEES protocols.
+A **KEES Agent** refers to a processor capable of comprehending the *KEES language profile* and adhering to the KEES protocols. There are three primary types of KEES agents:
+- _Ingestor_ agents: These primarily contribute new information to the knowledge graph by extracting facts from external sources, including other knowledge graphs.
+- _Reasoner_ agents: These agents operate within the same knowledge graphs, focusing on applying inference rules while reading and writing data.
+- _Enricher_ agents: These versatile agents act as both ingestors and reasoners. Their primary function involves enhancing existing facts by incorporating third-party data.
 
 **Trust** holds significant importance in KEES due to the [Open-world assumption] and the inherent nature of [RDF], which permits the amalgamation of diverse information, even when it might be incoherent or falsified.
 
