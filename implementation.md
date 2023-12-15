@@ -16,7 +16,7 @@ The KEES Language Profile reuses some terms from existing vocabularies:
 | void     | http://rdfs.org/ns/void#                         |
 | xsd      | http://www.w3.org/2001/XMLSchema#                |
 
-The Dublin Core terms, accessible at [Dublin Core Terms](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/), serve as annotations for named graphs. Specifically, properties like `dct:modified` and `dct:source` are expected to be acknowledged in such instances.
+The Dublin Core terms, accessible at [Dublin Core Terms](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/), serve as annotations for named graphs. Specifically, properties like `dct:created`, `dct:modified` and `dct:source` are expected to be acknowledged in such instances.
 
 As per the SPARQL service description vocabulary outlined in [SPARQL Service Description](https://www.w3.org/TR/sparql11-service-description/), KEES agent are expected to acknowledge and utilize properties such as `sd:endpoint`, `sd:feature`, `sd:NamedGraph`, and `sd:name`.
 
@@ -80,7 +80,15 @@ WHERE{
 } ORDER DESC( ?on_date) LIMIT 1
 ```
 
-### knowledge graph creation and last update date
+### knowledge graph boot date 
+```sparql
+SELECT (MIN(created?) as ?bootDate) WHERE {
+    ?kg a kees:KnowledgeGraph ;
+        dct:created ?created
+}
+```
+
+### named date graph creation and last update date
 
 ```sparql
 SELECT ?graphName (MIN(?updated) as ?created) (MAX(?updated) as ?lastUpdated) WHERE {
@@ -168,7 +176,7 @@ Be sure to delete lock even in case of error or script exit
         sd:endpoint <> ;
         sd:feature kees:Status, kees:Locking ;
         kees:isLockedBy <urn:kees:kb:isLockedBy> [ a kees:Activity ] ;
-        kees:bootCompleted "2023-12-10T01:00:01Z"^^xsd:dateTime ;
+        dct:created "2023-12-10T01:00:01Z"^^xsd:dateTime ;
         kees:learningCompleted "2023-12-10T01:01:01Z"^^xsd:dateTime ;
         kees:reasoningCompleted "2023-12-10T01:02:01Z"^^xsd:dateTime ;
         kees:enrichingCompleted "2023-12-10T01:03:01Z"^^xsd:dateTime ;
