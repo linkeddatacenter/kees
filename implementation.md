@@ -1,7 +1,9 @@
+![logo](http://linkeddata.center/resources/v4/logo/Logo-colori-trasp_oriz-640x220.png)
+
 Implementing KEES 
 =======================================
 
-This working draft collects a proposal for a concrete KEES implementation. Have a look to the [KEES definitions and principles](README.md)
+This working draft collects a proposal for a concrete KEES implementation. This proposal is based on the [KEES definitions and principles](README.md)
 
 ## The KEES Language profile
 
@@ -38,15 +40,59 @@ The following picture summarizes the main elements of the KEES language profile.
 ## RDF Store requirement
 To Know the **provenance** of each statement, it is of paramount importance to get an idea about data quality. For this reason, KEES requires that all statements must have a fourth element that links to a data source. This means that, for practical concerns, the KEES knowledge base is a collection of quads, i.e. a triple plus a link to metadata.
 
-Any RDF Store that provides with a SPARQL endpoint and QUAD support is potentially compliant with KEES. 
+Any RDF Store that provides with a SPARQL endpoint compliant with this service description is potentially compliant with KEES. 
+
+```turtle
+[] a sd:Service ;
+    sd:supportedLanguage sd:SPARQL11Query, sd:SPARQL11Update;
+    sd:resultFormat <http://www.w3.org/ns/formats/RDF_XML>, <http://www.w3.org/ns/formats/Turtle> ;
+    sd:feature sd:UnionDefaultGraph .
+```
 
 
 ## KEES protocol and axioms
-KEES application **SHOULD** follow the rules
+KEES application and agents **SHOULD** follow the rules in this chapter
 
-### Knowledge Graph status
 
-During knowledge base building and updates, KEES agents SHOULD declare the completion of a KEES cycle window
+### Knowledge graph are additive
+A KEES agent never delete information from knowledge graph. Temporary graph are allowed.
+
+
+### Knowledge Graph metadata 
+A KEES application should manage the following knowledge graph metadata:
+
+- `dct:created` with cardinality exactly 1, range xds:dateTime
+- `kees:ingested` with cardinality <= 1, range xds:dateTime
+- `kees:reasoned` with cardinality <= 1, range xds:dateTime
+- `kees:enriched` with cardinality <= 1, range xds:dateTime
+- `kees:published` with cardinality <= 1, range xds:dateTime
+- `kees:versioned` with cardinality <= 1, range xds:dateTime
+- `prov:wasInvalidatedBy` with cardinality >= 0, range prov:Activity
+- `kees:wasLockedBy` with cardinality >= 0,
+
+The boot process, should link:
+- `sd:feature kees:Status` if the application must supports KEES window states protocol
+- `sd:feature kees:Locking` if agents must supports KEES locking protocol
+
+
+### Request s knowledge graph reboot
+Sometime you need to signal that data in knowledge base needs (or will need) to be update. In this case you **SHOULD** use:
+
+```sparql
+INSERT { ?service prov:invalidatedBy [ a prov:Agent ] }
+WHERE { ?service a kees:KnowledgeGraph }
+```
+
+To test if you should reboot the knowledge base:
+```sparql
+ASK { ?service a kees:KnowledgeGraph; prov:invalidatedBy [] }
+```
+
+The kees agent implementations can add restrictions on agents allowed to ask Knowledge Graph invalidation.
+
+
+### Knowledge Graph status 
+During knowledge base building and updates, KEES agents should declare the completion of a KEES cycle window
 For instance to declare that a RDF Store is ready to be safely queried, execute following SPARQL UPDATE statement:
 
 ```sparql
@@ -57,7 +103,7 @@ WHERE {
 }
 ```
 
-To check if a RDF Store is *safe*: 
+To check if a RDF Store is *safe*, use: 
 
 ```sparql
 ASK { ?service kees:published|kees:versioned [] }`
@@ -69,26 +115,24 @@ To get the current knowledge graph status:
 SELECT ?status
 WHERE{ 
     VALUES ?status {
-        kees:bootCompleted
-        kees:learningCompleted
-        kees:reasoningCompleted
-        kees:enrichingCompleted
+        dct:created
+        kees:ingested
+        kees:reasoned
+        kees:enriched
         kees:published
         kees:versioned
     }
-    OPTIONAL { ?service ?status ?on_date }
+    OPTIONAL { ?service a kees:KnowledgeGraph; ?status ?on_date }
 } ORDER DESC( ?on_date) LIMIT 1
 ```
 
-### knowledge graph boot date 
-```sparql
-SELECT (MIN(created?) as ?bootDate) WHERE {
-    ?kg a kees:KnowledgeGraph ;
-        dct:created ?created
-}
-```
+### Named graph metadata
+Named graph created by a KEES agent should expose following metadata:
+- dct:modified with cardinality > 0, range: xsd:dateTime
+- dct:source with cardinality  >= 0, range: owl:Thing
+- prov:wasGeneratedBy with cardinality >= 0, range: kees:Activity
 
-### named date graph creation and last update date
+To check the creation and last update date of named graphs:
 
 ```sparql
 SELECT ?graphName (MIN(?updated) as ?created) (MAX(?updated) as ?lastUpdated) WHERE {
@@ -97,31 +141,11 @@ SELECT ?graphName (MIN(?updated) as ?created) (MAX(?updated) as ?lastUpdated) WH
 } GROUP BY ?graphName
 ```
 
-### Get the date of the last graph ingestion
 
-```sparql
-SELECT (MAX(?updated) as ?lastPublished) WHERE {
-    ?g sd:name ?graphName; 
-        prov:wasGeneratedBy/rdf:type kees:Ingestion ;
-        dct:modified ?updated
-} GROUP BY ?graphName
-```
 
-### Request s knowledge graph reboot
+### Trust management
+Trust is accomplished by annotating a named graph with the property `dqv:hasQualityMeasurement` with cardinality >= 0 , range a measure with `dqv:isMeasurementOf kees:trustLevel` attribute and `dqv:value` in the decimal range 0-1 
 
-Sometime you need to signal that data in knowledge base needs (or will need) to be update. In this case you **SHOULD** use:
-
-```sparql
-INSERT { ?service prov:invalidatedBy [ a prov: Agent ] }
-WHERE { ?service a kees:KnowledgeGraph }
-```
-
-To test if you should reboot the knowledge base:
-```sparql
-ASK { ?service a kees:KnowledgeGraph; prov:invalidatedBy [] }
-```
-
-The kees agent implementations can add restrictions on agent allowed to as KB invalidation.
 
 
 ### Knowledge base locking
@@ -177,9 +201,9 @@ Be sure to delete lock even in case of error or script exit
         sd:feature kees:Status, kees:Locking ;
         kees:isLockedBy <urn:kees:kb:isLockedBy> [ a kees:Activity ] ;
         dct:created "2023-12-10T01:00:01Z"^^xsd:dateTime ;
-        kees:learningCompleted "2023-12-10T01:01:01Z"^^xsd:dateTime ;
-        kees:reasoningCompleted "2023-12-10T01:02:01Z"^^xsd:dateTime ;
-        kees:enrichingCompleted "2023-12-10T01:03:01Z"^^xsd:dateTime ;
+        kees:ingested "2023-12-10T01:01:01Z"^^xsd:dateTime ;
+        kees:reasoned "2023-12-10T01:02:01Z"^^xsd:dateTime ;
+        kees:enriched "2023-12-10T01:03:01Z"^^xsd:dateTime ;
         kees:published "2023-12-10T01:04:01Z"^^xsd:dateTime .
 }
 

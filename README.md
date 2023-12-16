@@ -40,12 +40,11 @@ In KEES, a **Knowledge Graph** is characterized as a *Graph Store with a purpose
 From a theoretical perspective, a knowledge graph comprises information (facts), a formal logic system for knowledge representation, incorporates the [Open-world assumption], and employs an inference engine to demonstrate theorems.
 
 
-In a knowledge graph, information is categorized into two sets: *TBox* and *ABox*. *ABox statements* delineate facts, while *TBox statements* define the terms used to qualify the meaning of those facts. If you're familiar with the object-oriented paradigm, TBox statements can be likened to associations with classes, whereas ABox statements are linked to individual class instances.
+In a knowledge graph, information is partitioned into two datasets: *TBOX* and *ABOX*. *ABOX statements* delineate facts, while *TBOX statements* define the terms used to qualify the meaning of those facts. If you're familiar with the object-oriented paradigm, TBOX statements can be likened to associations with classes, whereas ABOX statements are linked to individual class instances.
 
-*TBox statements* are typically more enduring within a knowledge graph and are often organized into *ontologies*, describing specific knowledge domains such as business entities, people, goods, friendships, offerings, geocoding, and more. These statements are expressed using an ontology language that offers a formal semantic, like the [W3C OWL](https://www.w3.org/OWL/).
+*TBOX statements* are typically more enduring within a knowledge graph and are often organized into *ontologies*, describing specific knowledge domains such as business entities, people, goods, friendships, offerings, geocoding, and more. These statements are expressed using an ontology language that offers a formal semantic, like the [W3C OWL](https://www.w3.org/OWL/).
 
-_ABox statements_, on the other hand, are related to instances of classes defined by TBox statements. They possess a much more dynamic nature and are populated from datasets available on the web or through reasoning processes.
-
+_ABOX statements_, on the other hand, are related to instances of classes defined by TBOX statements. They possess a much more dynamic nature and are populated from datasets available on the web or through reasoning processes.
 
 Theorems within a knowledge graph can manifest as *rules* or *axioms*. A *rule* signifies a generalized inference that establishes a logical correlation between propositions. Conversely, an *axiom* embodies a rule accomplished through entailment that is inferred by the semantics of existing factual information. 
 
@@ -77,7 +76,7 @@ Inferred facts can be partitioned into:
 > **An example**
 > For instance, suppose that an axiom in your knowledge graph TBOX states that a property ":hasMom" has a cardinality of 1 (i.e. every person has just one "mom"), your knowledge graph could also contain two different facts (:jack :hasMom :Mary) and (:jack :hasMom :Giulia), perhaps extracted from different data sources. In order to decide who is Jack's mom, you need trust in your information. 
 > 
-> If you are sure about the veracity of all data in the knowledge graph, you can deduct that: Mary and  Giulia are two names for the same person. If you are not so sure, you have two possibilities: deduct that the one data source is wrong, so you have to choose the most trusted statement concerning some criteria (even casually if both statements have the same trust rank) or change the axiom in TBOX, allowing a person to have more than one mom. In any case, you need to get an idea about _your_ trust in each statement, both in ABox and in Tbox,  in the knowledge graph. At least you want to know the **provenance** and all metadata of all information in your knowledge graph because the trust in a single data often derives from the trust of its source or in the creator of the data source.
+> If you are sure about the veracity of all data in the knowledge graph, you can deduct that: Mary and  Giulia are two names for the same person. If you are not so sure, you have two possibilities: deduct that the one data source is wrong, so you have to choose the most trusted statement concerning some criteria (even casually if both statements have the same trust rank) or change the axiom in TBOX, allowing a person to have more than one mom. In any case, you need to get an idea about _your_ trust in each statement, both in ABOX and in TBOX,  in the knowledge graph. At least you want to know the **provenance** and all metadata of all information in your knowledge graph because the trust in a single data often derives from the trust of its source or in the creator of the data source.
 > 
 > So if: 
 > - fact 1: `:jack :hasMom :Mary`
@@ -100,13 +99,14 @@ Inferred facts can be partitioned into:
 
 A KEES system is composed by:
 - a **Knowledge Graph** that persists in the most updated knowledge graph. The Knowledge Graph adopts [RDF] and provides an interface to query the knowledge graph (e.g. a SPARQL service)
-- some orchestrated **software components**, that interact with the knowledge graph, ingest new data, reason about existing data and query the knowledge
+- some orchestrated **software agents**, that interact with the knowledge graph, ingest new data, reason about existing data and query the knowledge
 
-Example of such components are:
+Example of such agents are:
 
 - **legacy connectors** that extract RAW data from legacy systems preparing data for ingestion
 - **ingestion agents** that translate RAW data into linked data according to language profile
 - **reasoners** that make inferences on ABOX using TBOX or rules
+- **enrichers** that enriches the knowledge graph from 3rd-party information
 - **APIs** that perform specific queries to the knowledge graph to answer questions
 
 ## KEES data processing
@@ -125,7 +125,6 @@ Steps 2, 3 and 4 can be iterated till the system converges in a stable configura
 ![KEES cycle](v1/images/cycle.png)
 
 The sequence of plan execution is called **KEES workflow** and it is a continuous integration process that starts on a triggered change in learned facts.
-
 
 
 ## KEES implementations

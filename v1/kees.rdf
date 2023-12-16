@@ -161,35 +161,22 @@
     
 
 
-    <!-- http://linkeddata.center/kees/v1#bootCompleted -->
+    <!-- http://linkeddata.center/kees/v1#enriched -->
 
-    <owl:DatatypeProperty rdf:about="http://linkeddata.center/kees/v1#bootCompleted">
-        <rdfs:subPropertyOf rdf:resource="http://purl.org/dc/terms/Date"/>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://linkeddata.center/kees/v1#KnowledgeGraph"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
-        <rdfs:comment xml:lang="en">All activities in the coot window of a KEES Cycle was declared as completed</rdfs:comment>
-        <rdfs:label xml:lang="en">boot completed</rdfs:label>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://linkeddata.center/kees/v1#enrichingCompleted -->
-
-    <owl:DatatypeProperty rdf:about="http://linkeddata.center/kees/v1#enrichingCompleted">
+    <owl:DatatypeProperty rdf:about="http://linkeddata.center/kees/v1#enriched">
         <rdfs:subPropertyOf rdf:resource="http://purl.org/dc/terms/Date"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://linkeddata.center/kees/v1#KnowledgeGraph"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
         <rdfs:comment xml:lang="en">all activities in the enriching window of a KEES cycle was declared as completed</rdfs:comment>
-        <rdfs:seeAlso xml:lang="en">enriching completed</rdfs:seeAlso>
+        <rdfs:label xml:lang="en">enriching completed</rdfs:label>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://linkeddata.center/kees/v1#learningCompleted -->
+    <!-- http://linkeddata.center/kees/v1#ingested -->
 
-    <owl:DatatypeProperty rdf:about="http://linkeddata.center/kees/v1#learningCompleted">
+    <owl:DatatypeProperty rdf:about="http://linkeddata.center/kees/v1#ingested">
         <rdfs:subPropertyOf rdf:resource="http://purl.org/dc/terms/Date"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://linkeddata.center/kees/v1#KnowledgeGraph"/>
@@ -213,9 +200,9 @@
     
 
 
-    <!-- http://linkeddata.center/kees/v1#reasoningCompleted -->
+    <!-- http://linkeddata.center/kees/v1#reasoned -->
 
-    <owl:DatatypeProperty rdf:about="http://linkeddata.center/kees/v1#reasoningCompleted">
+    <owl:DatatypeProperty rdf:about="http://linkeddata.center/kees/v1#reasoned">
         <rdfs:subPropertyOf rdf:resource="http://purl.org/dc/terms/Date"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://linkeddata.center/kees/v1#KnowledgeGraph"/>
@@ -300,21 +287,14 @@
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#KnowledgeGraph">
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://linkeddata.center/kees/v1#bootCompleted"/>
+                <owl:onProperty rdf:resource="http://linkeddata.center/kees/v1#enriched"/>
                 <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://linkeddata.center/kees/v1#enrichingCompleted"/>
-                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://linkeddata.center/kees/v1#learningCompleted"/>
+                <owl:onProperty rdf:resource="http://linkeddata.center/kees/v1#ingested"/>
                 <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
             </owl:Restriction>
@@ -328,7 +308,7 @@
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://linkeddata.center/kees/v1#reasoningCompleted"/>
+                <owl:onProperty rdf:resource="http://linkeddata.center/kees/v1#reasoned"/>
                 <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
             </owl:Restriction>
