@@ -25,17 +25,21 @@ For more details, refer to the [KEES presentation slides](https://docs.google.co
 ## Definitions
 A lot of concepts used by KEES refer to the well-known [Semantic Web Standards](https://www.w3.org/standards/semanticweb/) published by the World Wide Web Consortium ([W3C](https://w3.org/)).
 
-**Data**, as per KEES, encompasses any *literal* like words, numbers, or generally, any sequence of symbols. For instance, strings such as `xyz`, `123`, `33.22`, or `http://LinkedData.Center` exemplify *data*. Typically, data is linked with a data type that defines constraints on the sequence of symbols composing the data. For instance, the number `123`, the float `33.22`, or the URI `http://LinkedData.Center` each possess their respective data types, which specify rules regarding the permissible symbols sequence. Importantly, the data type does not inherently convey the meaning of the data itself.
+### Data
+*Data*, as per KEES, encompasses any *literal* like words, numbers, or generally, any sequence of symbols. For instance, strings such as `xyz`, `123`, `33.22`, or `http://LinkedData.Center` exemplify *data*. Typically, data is linked with a data type that defines constraints on the sequence of symbols composing the data. For instance, the number `123`, the float `33.22`, or the URI `http://LinkedData.Center` each possess their respective data types, which specify rules regarding the permissible symbols sequence. Importantly, the data type does not inherently convey the meaning of the data itself.
 
-**Information**, as defined in KEES (also known as **facts**), is characterized as *data with meaning*. This meaning can either be inferred from the context where the data is situated or explicitly defined. KEES adopts the [RDF] standard to delineate information through a triplet of three elements, forming an RDF statement, commonly referred to as a _triple_. This triple comprises a _subject_, a _predicate_, and an _object_. Indeed, a triple can be visualized and represented as an [undirected labeled graph](https://mathinsight.org/definition/undirected_graph), and it can be stored within a **Graph Store**. This store serves as a repository for organizing and maintaining collections of these graph-based representations, allowing efficient storage and retrieval of triples.
+### Information
+*Information*, as defined in KEES (also known as **facts**), is characterized as *data with meaning*. This meaning can either be inferred from the context where the data is situated or explicitly defined. KEES adopts the [RDF] standard to delineate information through a triplet of three elements, forming an RDF statement, commonly referred to as a _triple_. This triple comprises a _subject_, a _predicate_, and an _object_. Indeed, a triple can be visualized and represented as an [undirected labeled graph](https://mathinsight.org/definition/undirected_graph), and it can be stored within a **Graph Store**. This store serves as a repository for organizing and maintaining collections of these graph-based representations, allowing efficient storage and retrieval of triples.
 
 ![a triple](architecture/triple.jpg)
 
-KEES defines **knowledge** as a graph of linked information (i.e. linked data). This graph is possible because, in RDF, any URI can be both the object of a triple and the subject of another one or even the predicate for another.
+### Knowledge
+KEES defines *knowledge* as a graph of linked information (i.e. linked data). This graph is possible because, in RDF, any URI can be both the object of a triple and the subject of another one or even the predicate for another.
 
 ![triples](architecture/triples.png)
 
-In KEES, a **Knowledge Graph** is characterized as a *Graph Store with a purpose*. It represents a collection of interconnected information (i.e. *Linked Data*) organized in a graph-like structure that's designed specifically to be queried, providing answers to specific questions within its domain of related information.
+### Knowledge graph
+In KEES, a *Knowledge Graph* is characterized as a *Graph Store with a purpose*. It represents a collection of interconnected information (i.e. *Linked Data*) organized in a graph-like structure that's designed specifically to be queried, providing answers to specific questions within its domain of related information.
 
 From a theoretical perspective, a knowledge graph comprises information (facts), a formal logic system for knowledge representation, incorporates the [Open-world assumption], and employs an inference engine to demonstrate theorems.
 
@@ -52,16 +56,21 @@ Theorems within a knowledge graph can manifest as *rules* or *axioms*. A *rule* 
 
 For instance, an axiom could be articulated using OWL (Web Ontology Language) and demonstrated through an OWL reasoner. Alternatively, a rule could be formulated using SPARQL QUERY CONSTRUCT and materialized with SPARQL UPDATE operations.
 
-The **Language Profile** (also referred to as the **Application Profile**) forms the section of the TBOX comprising all terms recognized by rules and employed to comprehend and respond to inquiries. This profile defines the scope and vocabulary utilized within a *Semantic Web Application*, outlining the terms essential for understanding and generating responses within its semantic framework.
+### Language profile
+The *Language Profile* (also referred to as  semantic *Application Profile*) forms the section of the TBOX comprising all terms recognized by rules and employed to comprehend and respond to inquiries. This profile defines the scope and vocabulary utilized within a *Semantic Web Application*, outlining the terms essential for understanding and generating responses within its semantic framework.
 
-A **KEES Agent** refers to a processor capable of comprehending the *KEES language profile* and adhering to the KEES protocols. There are three primary types of KEES agents:
-- _Ingestor_ agents: These primarily contribute new information to the knowledge graph by extracting facts from external sources, including other knowledge graphs.
-- _Reasoner_ agents: These agents operate within the same knowledge graphs, focusing on applying inference rules while reading and writing data.
-- _Enricher_ agents: These versatile agents act as both ingestors and reasoners. Their primary function involves enhancing existing facts by incorporating third-party data.
+### KEES Agent
+The term *KEES Agent* refers to a processor capable of understanding the *KEES language profile* and adhering to the KEES protocols. There are four main types of KEES agents:
 
+- _Ingestors_: These are ETL processors that primarily add new information to the knowledge graph by extracting facts from external sources, including other knowledge graphs.
+- _Reasoners_: These agents operate within the same knowledge graphs, focusing on applying inference rules while reading and writing data.
+- _Enrichers_: These versatile agents act as both ingestors and reasoners. They primarily enhance existing facts by integrating third-party data.
+- _Pilots_: These agents don't directly manage data but rather instruct the knowledge base to perform specific actions.
+
+### Trust
 **Trust** holds significant importance in KEES due to the [Open-world assumption] and the inherent nature of [RDF], which permits the amalgamation of diverse information, even when it might be incoherent or falsified.
 
-In the context of KEES, **trust** serves as metadata linked to each RDF statement, ranging in value from 0 (indicating no trust) to 1 (indicating complete trust). Notably, this concept of *trust* extends to both ABOX and TBOX statements within the knowledge graph.
+In the context of KEES, *trust* serves as metadata linked to each RDF statement, ranging in value from 0 (indicating no trust) to 1 (indicating complete trust). Notably, this concept of *trust* extends to both ABOX and TBOX statements within the knowledge graph.
 
 Moreover, the trust assigned to an inferred fact is intricately tied to the trust levels associated with all the involved facts and rules contributing to its derivation. Therefore, the trustworthiness of an inferred fact is contingent upon the collective trust levels of the underlying information and the processes involved in its generation within the knowledge graph.
 
@@ -95,36 +104,24 @@ Inferred facts can be partitioned into:
 > | j < 1           | j < 1           | 1              | N.A.                     | N.A.              |
 
 
-## KEES system components
+### KEES Cycle
+The processing of KEES data involves a sequence of phases, referred to as *windows*, executed by KEES agents within a knowledge graph.ù
 
-A KEES system is composed by:
-- a **Knowledge Graph** that persists in the most updated knowledge graph. The Knowledge Graph adopts [RDF] and provides an interface to query the knowledge graph (e.g. a SPARQL service)
-- some orchestrated **software agents**, that interact with the knowledge graph, ingest new data, reason about existing data and query the knowledge
+The sequence of windows, known as the **KEES cycle**, constitutes a continuous integration workflow. It starts upon a triggered change in learned facts and ends in a fully populated knowledge base ready for application use. The KESS cycle windows are:
 
-Example of such agents are:
+1. **Boot Window (Startup Phase):** This initializes an empty knowledge graph and triggers the KEES data processing when an event indicates the availability of new information.
+2. **Learning Window (Population):** In this phase, the knowledge graph is populated with learning facts.
+3. **Reasoning Window (Inference):** This phase involves materializing inference facts within the knowledge graph.
+4. **Enriching Window (Fact Enhancement):** Here, the agent discovers and ingests enriched facts, enhancing the existing data.
+5. **Publishing Window (Optimization and Publication):** This phase involves optimizing data, publishing it, and resolving semantic conflicts.
+6. **Versioning Window (Snapshot and Versioning):** The stable knowledge graph is snapshot, creating a version for reference.
 
-- **legacy connectors** that extract RAW data from legacy systems preparing data for ingestion
-- **ingestion agents** that translate RAW data into linked data according to language profile
-- **reasoners** that make inferences on ABOX using TBOX or rules
-- **enrichers** that enriches the knowledge graph from 3rd-party information
-- **APIs** that perform specific queries to the knowledge graph to answer questions
-
-## KEES data processing
-
-A KEES agent performs data ingestion in a knowledge graph through a logical sequence of phases called *windows*:
-
-1. a startup phase (**boot window**)  to initialize an empty knowledge graph 
-2. population of the knowledge graph with the learning facts (**learning window**) 
-3. inference facts materialization (**reasoning window**) 
-4. enrich facts discovery and ingestion (**enriching window**) 
-5. a slot for optimization, publishing and semantic conflict resolution (**publishing window**)
-6. a time allow the knowledge graph and to answer questions (**teaching window**)
-
-Steps 2, 3 and 4 can be iterated till the system converges in a stable configuration.
+Steps 2, 3, and 4 can be iterated as needed for the processing of KEES data within the knowledge graph.
 
 ![KEES cycle](v1/images/cycle.png)
 
-The sequence of plan execution is called **KEES workflow** and it is a continuous integration process that starts on a triggered change in learned facts.
+### KEES convergence
+ The duration between the detection of new data and the creation of a new stable version of the knowledge graph is termed *Knowledge Graph Convergence time* or just *convergence*. It's important to note that the *convergence*  is always > 0, defining the duration for the entire KEES data processing, which can be conceptualized as a big ETL (Extract, Transform, Load) process.
 
 
 ## KEES implementations
