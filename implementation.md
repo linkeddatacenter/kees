@@ -75,7 +75,7 @@ The boot process, should link:
 - `sd:feature kees:Locking` if agents must supports KEES locking protocol
 
 
-### Request s knowledge graph reboot
+### Request a knowledge graph reboot
 Sometime you need to signal that data in knowledge base needs (or will need) to be update. In this case you **SHOULD** use:
 
 ```sparql
@@ -89,6 +89,20 @@ ASK { ?service a kees:KnowledgeGraph; prov:invalidatedBy [] }
 ```
 
 The kees agent implementations can add restrictions on agents allowed to ask Knowledge Graph invalidation.
+
+
+### Booting protocol
+A when requested to reboot, a KEES application should erase the entire graph store and produce a default graph equivalent to the following rule:
+
+```sparql
+    DROP SILENT ALL;
+    INSERT DATA {
+        [] a kees:KnowledgeGraph ;
+            sd:endpoint <HERE SPARQL ENDPOINT> ;
+            sd:feature kees:Status, kees:Locking ;
+            dct:created "HERE THE CREATION DATE"^^xsd:dateTime .
+    }
+```
 
 
 ### Knowledge Graph status 
