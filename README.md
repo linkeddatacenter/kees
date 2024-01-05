@@ -84,6 +84,7 @@ Inferred facts can be derived by the following reasoning type:
 - **inductions**: when ABOX facts are more trusted than TBOX facts 
 
 > **An example**
+> 
 > For instance, suppose that an axiom in your knowledge graph TBOX states that a property ":hasMom" has a cardinality of 1 (i.e. every person has just one "mom"), your knowledge graph could also contain two different facts (:jack :hasMom :Mary) and (:jack :hasMom :Giulia), perhaps extracted from different data sources. In order to decide who is Jack's mom, you need trust in your information. 
 > 
 > If you are sure about the veracity of all data in the knowledge graph, you can deduct that: Mary and  Giulia are two names for the same person. If you are not so sure, you have two possibilities: deduct that the one data source is wrong, so you have to choose the most trusted statement concerning some criteria (even casually if both statements have the same trust rank) or change the axiom in TBOX, allowing a person to have more than one mom. In any case, you need to get an idea about _your_ trust in each statement, both in ABOX and in TBOX,  in the knowledge graph. At least you want to know the **provenance** and all metadata of all information in your knowledge graph because the trust in a single data often derives from the trust of its source or in the creator of the data source.
@@ -101,10 +102,10 @@ Inferred facts can be derived by the following reasoning type:
 > | x < 1           | y > x           | y<k<=1         | (:jack :hasMom :Mary) wasInvalidatedBy { ?restriction (:jack :hasMom :Mary) }     | <x                 | abduction      |
 > | x < 1           | y > x           | 1              | (:jack :hasMom :Giulia) wasInvalidatedBy { ?restriction  (:jack :hasMom :Mary)  } | <x                 | abduction      |
 > | k               | k               | k<z<=1         | ?restriction  wasInvalidatedBy { (:jack :hasMom :Mary) (:jack :hasMom :Giulia) }  | <z                 | induction      |
-> | j < z           | j < z           | z<=1           | { (:jack :hasMom [] ) ?restriction } wasInvalidatedBy []                          | ?                  | free will      |
+> | j < z           | j < z           | z<=1           | { (:jack :hasMom :Mary) (:jack :hasMom :Giulia) } wasInvalidatedBy ?restriction   | ?                  | free will      |
 > 
 > Note that the last row in the table is a just subjective illogic paranoic response, you could also decide to:
-> - invalidate only the axiom (i.e. take the risk of fake data)
+> - invalidate the axiom (i.e. take the risk of fake data)
 > - randomly invalidate one of the conflicting facts (i.e, take the risk of wrong rule )
 > - derive that  :jack is not an human and add a restriction on :hasMom property domain ( creative thinking )
 > - ...
@@ -118,9 +119,9 @@ The sequence of windows, known as the **KEES cycle**, constitutes a continuous i
 
 1. **Boot Window (Startup Phase):** This initializes an empty knowledge graph and triggers the KEES data processing when an event indicates the availability of new information.
 2. **Learning Window (Population):** In this phase, the knowledge graph is populated with learning facts.
-3. **Reasoning Window (Inference):** This phase involves materializing inference facts within the knowledge graph.
+3. **Reasoning Sub-Cycle Window (Inference):** This phase involves the incremental materialization of inferences about facts within the knowledge graph.
 4. **Enriching Window (Fact Enhancement):** Here, the agent discovers and ingests enriched facts, enhancing the existing data.
-5. **Publishing Window (Optimization and Publication):** This phase involves optimizing data, publishing it, and resolving semantic conflicts.
+5. **Publishing Sub-Cycle Window (Optimization and Publication):** This phase involves the incremental materialization of data mappings, data cleansing, and semantic conflicts resolution.
 6. **Versioning Window (Snapshot and Versioning):** The stable knowledge graph is snapshot, creating a version for reference.
 
 Steps 2, 3, and 4 can be iterated as needed for the processing of KEES data within the knowledge graph.
