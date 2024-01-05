@@ -50,7 +50,7 @@ In a knowledge graph, information is partitioned into two datasets: *TBOX* and *
 
 _ABOX statements_, on the other hand, are related to instances of classes defined by TBOX statements. They possess a much more dynamic nature and are populated from datasets available on the web or through reasoning processes.
 
-Theorems within a knowledge graph can manifest as *rules* or *axioms*. A *rule* signifies a generalized inference that establishes a logical correlation between propositions. Conversely, an *axiom* embodies a rule accomplished through entailment that is inferred by the semantics of existing factual information. 
+Theorems within a knowledge graph can manifest as *rules* or *axioms*. A *rule* signifies a generalized inference that establishes a logical correlation between propositions. Conversely, an *axiom* embodies a rule accomplished through entailment that is inferred by the semantics of existing factual information. Axioms and rules can implement deductive and abductive reasoning.
 
 > KEES assumes that knowledge graph is implemented by a [SPARQL service ](https://www.w3.org/TR/sparql11-service-description) supporting the [SPARQL protocol](https://www.w3.org/TR/sparql11-protocol/)
 
@@ -78,9 +78,10 @@ The trust value of 0 or 1 signifies certainty in a fact. This principle extends 
 
 Note that the trust of an inferred fact MUST be less or equal to the minimum trust of the involved statements.
 
-Inferred facts can be partitioned into:
-- Fully trusted  inferred facts (i.e. trust=1) are called **deductions**
-- Not fully trusted  inferred facts (i.e. `0 < trust < 1` ) are called **abdutions**
+Inferred facts can be derived by the following reasoning type:
+- **deductions**: when ABOX and TBOX facts are equally trusted
+- **abdutions**: when TBOX facts are more trusted than ABOX facts 
+- **inductions**: when ABOX facts are more trusted than TBOX facts 
 
 > **An example**
 > For instance, suppose that an axiom in your knowledge graph TBOX states that a property ":hasMom" has a cardinality of 1 (i.e. every person has just one "mom"), your knowledge graph could also contain two different facts (:jack :hasMom :Mary) and (:jack :hasMom :Giulia), perhaps extracted from different data sources. In order to decide who is Jack's mom, you need trust in your information. 
@@ -90,18 +91,24 @@ Inferred facts can be partitioned into:
 > So if: 
 > - fact 1: `:jack :hasMom :Mary`
 > - fact 2: `:jack :hasMom :Giulia`
-> - axiom : `cardinality(person:hasMom)=1`
-
-> The trust helps to solve potential conflict according to this table
+> - axiom : `?restriction owl:qualifiedCardinality=1; owl:onProperty :hasMom`
+>
+> The trust helps to solve potential conflict according to this table:
 > 
-> | trust in fact 1 | trust in fact 2 | trust in axiom | derived fact             | derived fact trust|
-> |-----------------|-----------------|----------------|--------------------------|-------------------|
-> | 1               | 1               | 1              | :Mary owl:sameAs :Giulia | 1 (deduction)     |
-> | x < 1           | y > x           | 1              | :Giulia :isMomOf :jack   | <x (abduction)    |
-> | x < 1           | y < x           | 1              | :Mary :isMomOf :jack     | <y (abduction)    |
-> | 1               | 1               | z < 1          | {:Mary :Giulia} :isMomOf :jack | <z (abduction) |
-> | k < 1           | k < 1           | k < 1          | :Mary owl:sameAs :Giulia | <k (abduction)    |
-> | j < 1           | j < 1           | 1              | N.A.                     | N.A.              |
+> | trust in fact 1 | trust in fact 2 | trust in axiom | derived facts                                                                     | derived fact trust | reasoning type |
+> |-----------------|-----------------|----------------|-----------------------------------------------------------------------------------|--------------------|----------------|
+> | k <= 1          | k <= 1          | k <= 1         | (:Mary owl:sameAs :Giulia)                                                        | k                  | deduction      |
+> | x < 1           | y > x           | y<k<=1         | (:jack :hasMom :Mary) wasInvalidatedBy { ?restriction (:jack :hasMom :Mary) }     | <x                 | abduction      |
+> | x < 1           | y > x           | 1              | (:jack :hasMom :Giulia) wasInvalidatedBy { ?restriction  (:jack :hasMom :Mary)  } | <x                 | abduction      |
+> | k               | k               | k<z<=1         | ?restriction  wasInvalidatedBy { (:jack :hasMom :Mary) (:jack :hasMom :Giulia) }  | <z                 | induction      |
+> | j < z           | j < z           | z<=1           | { (:jack :hasMom [] ) ?restriction } wasInvalidatedBy []                          | ?                  | free will      |
+> 
+> Note that the last row in the table is a just subjective illogic paranoic response, you could also decide to:
+> - invalidate only the axiom (i.e. take the risk of fake data)
+> - randomly invalidate one of the conflicting facts (i.e, take the risk of wrong rule )
+> - derive that  :jack is not an human and add a restriction on :hasMom property domain ( creative thinking )
+> - ...
+> Resolving the trust conflict it depends from your risk appetite and from your free will.
 
 
 ### KEES Cycle
