@@ -178,7 +178,7 @@ function lock {
     local UNIQUE_URI=${1:-"urn:uuid:$(date +%s%N)$(echo $RANDOM)"}
     while : ; do
         INSERT { ?service kees:isLockedBy <$UNIQUE_URI> } 
-        WHERE { FILTER NOT EXISTS { ?service a kees:KnowledgeGraph; kees:isLockedBy [] } } 
+        WHERE { FILTER ! EXISTS { ?service a kees:KnowledgeGraph; kees:isLockedBy [] } } 
         if  ASK { ?service  a kees:KnowledgeGraph;  kees:isLockedBy <$UNIQUE_URI>}; then
             break
         else
