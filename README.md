@@ -60,12 +60,15 @@ For instance, an axiom could be articulated using OWL (Web Ontology Language) an
 The *Language Profile* (also referred to as  semantic *Application Profile*) forms the section of the TBOX comprising all terms recognized by rules and employed to comprehend and respond to inquiries. This profile defines the scope and vocabulary utilized within a *Semantic Web Application*, outlining the terms essential for understanding and generating responses within its semantic framework.
 
 ### KEES Agent
-The term *KEES Agent* refers to a processor capable of understanding the *KEES language profile* and adhering to the KEES protocols. There are four main types of KEES agents:
+The term *KEES Agent* refers to a processor capable of understanding the *KEES language profile* and adhering to the KEES protocols. There are seven types of KEES agents:
 
-- _Ingestors_: These are ETL processors that primarily add new information to the knowledge graph by extracting facts from external sources, including other knowledge graphs.
-- _Reasoners_: These agents operate within the same knowledge graphs, focusing on applying inference rules while reading and writing data.
+- _Data providers_: processors that provide Linked Data. They does not interface the Knowledge graph.
+- _Ingestors_: processors that loads linked data into a Graph Store. They access the Knowledge graph in write only.
+- _Solvers_: processors that query the knowledge graph. They access the Knowledge graph in read only.
+- _Learning Agents_: ETL processors that acts both as Data Providers and Ingestors.
+- _Reasoners_: processors that operate within the same knowledge graphs, focusing on applying inference rules while reading and writing data. They access the Knowledge graph in read/write.
 - _Enrichers_: These versatile agents act as both ingestors and reasoners. They primarily enhance existing facts by integrating third-party data.
-- _Pilots_: These agents don't directly manage data but rather instruct the knowledge base to perform specific actions.
+- _Orchestrators_: processors that coordinate the agent execution.
 
 ### Trust
 **Trust** holds significant importance in KEES due to the [Open-world assumption] and the inherent nature of [RDF], which permits the amalgamation of diverse information, even when it might be incoherent or falsified.
