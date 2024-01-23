@@ -99,13 +99,13 @@ Inferred facts can be derived by the following reasoning type:
 >
 > The trust helps to solve potential conflict according to this table:
 > 
-> | trust in fact 1 | trust in fact 2 | trust in axiom | derived facts                                                                     | derived fact trust | reasoning type |
-> |-----------------|-----------------|----------------|-----------------------------------------------------------------------------------|--------------------|----------------|
-> | k <= 1          | k <= 1          | k <= 1         | (:Mary owl:sameAs :Giulia)                                                        | k                  | deduction      |
-> | x < 1           | y > x           | y<k<=1         | (:jack :hasMom :Mary) wasInvalidatedBy { ?restriction (:jack :hasMom :Mary) }     | <x                 | abduction      |
-> | x < 1           | y > x           | 1              | (:jack :hasMom :Giulia) wasInvalidatedBy { ?restriction  (:jack :hasMom :Mary)  } | <x                 | abduction      |
-> | k               | k               | k<z<=1         | ?restriction  wasInvalidatedBy { (:jack :hasMom :Mary) (:jack :hasMom :Giulia) }  | <z                 | induction      |
-> | j < z           | j < z           | z<=1           | { (:jack :hasMom :Mary) (:jack :hasMom :Giulia) } wasInvalidatedBy ?restriction   | ?                  | free will      |
+> | trust in fact 1 | trust in fact 2 | trust in axiom | derived facts                                | derived fact trust | reasoning type |
+> |-----------------|-----------------|----------------|----------------------------------------------|--------------------|----------------|
+> | k <= 1          | k <= 1          | k <= 1         | new fact (:Mary owl:sameAs :Giulia)          | k                  | deduction      |
+> | x < 1           | y > x           | y<=k<=1        | fact1 wasInvalidatedBy (axiom + fact 2)      | <=y                | abduction      |
+> | x < 1           | y < x           | x<=k<=1        | fact2  wasInvalidatedBy (axiom + fact 1)     | <=x                | abduction      |
+> | k               | k               | k<=z<=1        | axiom wasInvalidatedBy ( fact 1 + fact 2)    | <=z                | induction      |
+> | j < z           | j < z           | z<=1           | ( fact 1 + fact 2) wasInvalidatedBy axiom    | z                  | free will      |
 > 
 > Note that the last row in the table is a just subjective illogic paranoic response, you could also decide to:
 > - invalidate the axiom (i.e. take the risk of fake data)
