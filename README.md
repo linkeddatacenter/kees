@@ -5,7 +5,7 @@ Describing knowledge with KEES (Knowledge Exchange Engine Specifications and Ser
 
 > *In order to let computers to work for us, they must understand data: not just the grammar and the syntax, but the real meaning of things.*
 
-KEES introduces specific requirements for Semantic Web Applications to formally describe *domain knowledge* with the objective of enabling its tradeability and shareability.
+KEES is an architectural design pattern that establishes specific requirements for Semantic Web Applications. Its purpose is to formally describe *domain knowledge* with the goal of making it tradeable and shareable.
 
 Domain knowledge refers to information about a specific subject (e.g., a range of products, commercial offerings, a social network, etc.). Knowledge domains are cumulative, with no defined limits on their scope or size.
 
