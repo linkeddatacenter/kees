@@ -59,15 +59,20 @@ For instance, an axiom could be articulated using OWL (Web Ontology Language) an
 ### Language profile
 The *Language Profile* (also referred to as  semantic *Application Profile*) forms the section of the TBOX comprising all terms recognized by rules and employed to comprehend and respond to inquiries. This profile defines the scope and vocabulary utilized within a *Semantic Web Application*, outlining the terms essential for understanding and generating responses within its semantic framework.
 
+### Linked Data lake
+The internet is full of open data resources. Unfortunately, these resources very often have no SLA. So, when a business requires high data availability, it is best practice to mirror such resources in a data lake. During this download, some ETL processes may occur: for example, transforming raw data into Linked Data according to a defined language profile, adding provenance metadata, ACL, etc.
+
+KEES does not concern the implementation of a Linked Data Lake, but this concept is very useful in any real-world application that uses Semantic Web Technologies.
+
 ### KEES Agent
 The term *KEES Agent* refers to a processor capable of understanding the *KEES language profile* and adhering to the KEES protocols. There are seven types of KEES agents:
 
-- _Data providers_: processors that provide Linked Data. They does not interface the Knowledge graph.
-- _Ingestors_: processors that loads linked data into a Graph Store. They access the Knowledge graph in write only.
-- _Solvers_: processors that query the knowledge graph. They access the Knowledge graph in read only.
-- _Learning Agents_: ETL processors that acts both as Data Providers and Ingestors.
+- _Fact providers_: processors that provide Linked Data transforming raw data or mapping different ontologies. They does not interface the Knowledge graph, but ofte are used to feed the Linked Data Lake.
+- _loaders_: processors that loads linked data into a Graph Store. They access the Knowledge graph in write only.
+- _Publisher_: processors that access the Knowledge graph in read only organizing queries and producing data according different ontologies outside the knowledge graph
+- _Learning Agents_: ETL processors that acts both as Data Providers and Loaders.
 - _Reasoners_: processors that operate within the same knowledge graphs, focusing on applying inference rules while reading and writing data. They access the Knowledge graph in read/write.
-- _Enrichers_: These versatile agents act as both ingestors and reasoners. They primarily enhance existing facts by integrating third-party data.
+- _Enrichers_: These versatile agents act as both learning agents and reasoners. They primarily enhance existing facts by integrating third-party data.
 - _Orchestrators_: processors that coordinate the agent execution.
 
 ### Trust
@@ -105,7 +110,7 @@ Inferred facts can be derived by the following reasoning type:
 > | x < 1           | y > x           | y<=k<=1        | fact1 wasInvalidatedBy (axiom + fact 2)      | <=y                | abduction      |
 > | x < 1           | y < x           | x<=k<=1        | fact2  wasInvalidatedBy (axiom + fact 1)     | <=x                | abduction      |
 > | k               | k               | z<=k<=1        | axiom wasInvalidatedBy ( fact 1 + fact 2)    | <=z                | induction      |
-> | j < z           | j < z           | z<=1           | ( fact 1 + fact 2) wasInvalidatedBy axiom    | z                  | free will      |
+> | j < z           | j < z           | z<=1           | fact 1 and fact 2 wasInvalidatedBy axiom     |  z                  | free will      |
 > 
 > Note that the last row in the table is a just subjective illogic paranoic response, you could also decide to:
 > - invalidate the axiom (i.e. take the risk of fake data)
@@ -121,18 +126,17 @@ The processing of KEES data involves a sequence of phases, referred to as *windo
 The sequence of windows, known as the **KEES cycle**, constitutes a continuous integration workflow. It starts upon a triggered change in learned facts and ends in a fully populated knowledge base ready for application use. The KESS cycle windows are:
 
 1. **Boot Window (Startup Phase):** This initializes an empty knowledge graph and triggers the KEES data processing when an event indicates the availability of new information.
-2. **Learning Window (Population):** In this phase, the knowledge graph is populated with learning facts.
-3. **Reasoning Sub-Cycle Window (Inference):** This phase involves the incremental materialization of inferences about facts within the knowledge graph.
-4. **Enriching Window (Fact Enhancement):** Here, the agent discovers and ingests enriched facts, enhancing the existing data.
-5. **Publishing Sub-Cycle Window (Optimization and Publication):** This phase involves the incremental materialization of data mappings, data cleansing, and semantic conflicts resolution.
-6. **Versioning Window (Snapshot and Versioning):** The stable knowledge graph is snapshot, creating a version for reference.
+2. **Learning Window (Population):** In this phase, the knowledge graph is populated with known facts (usually extracted from the linked data lake).
+3. **Reasoning Window (Inference):** This phase involves the production materialization of inferences about facts within the knowledge graph.
+4. **Enriching Window (Fact Enhancement):** Here, the agents discover new 3rd-party facts, enriching the known data data.
+5. **Publishing Window (Optimization and Publication):** This phase involves data cleansing, and semantic conflicts resolution, versioning, and application ontology mappings
 
-Steps 2, 3, and 4 can be iterated as needed for the processing of KEES data within the knowledge graph.
+Steps 1-4 can be iterated as needed for the processing of KEES data within the knowledge graph.
 
 ![KEES cycle](v1/images/cycle.png)
 
 ### KEES convergence
- The duration between the detection of new data and the creation of a new stable version of the knowledge graph is termed *Knowledge Graph Convergence time* or just *convergence*. It's important to note that the *convergence*  is always > 0, defining the duration for the entire KEES data processing, which can be conceptualized as a big ETL (Extract, Transform, Load) process.
+ The duration between the detection of new data and the creation of a new stable version of the knowledge graph is termed *Knowledge Graph Convergence time* or just *convergence*. It's important to note that the *convergence*  is always > 0, defining the duration for the entire KEES data processing, which can be conceptualized as a big ETL (Extract, Transform, Load) process that produces an eventually consistent mirror of all the data needed by an application.
 
 
 ## KEES implementations
