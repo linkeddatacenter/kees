@@ -67,12 +67,12 @@ KEES does not concern the implementation of a Linked Data Lake, but this concept
 ### KEES Agent
 The term *KEES Agent* refers to a processor capable of understanding the *KEES language profile* and adhering to the KEES protocols. There are seven types of KEES agents:
 
-- _Fact providers_: processors that provide Linked Data transforming raw data or mapping different ontologies. They does not interface the Knowledge graph, but ofte are used to feed the Linked Data Lake.
+- _Fact providers_: processors that provide Linked Data transforming raw data or mapping different ontologies. They do not interface the Knowledge graph, but often are used to feed a Linked Data Lake.
 - _loaders_: processors that loads linked data into a Graph Store. They access the Knowledge graph in write only.
 - _Publisher_: processors that access the Knowledge graph in read only organizing queries and producing data according different ontologies outside the knowledge graph
-- _Learning Agents_: ETL processors that acts both as Data Providers and Loaders.
+- _Learning Agents_: ETL processors that acts both as *fact providers* and *loaders*.
 - _Reasoners_: processors that operate within the same knowledge graphs, focusing on applying inference rules while reading and writing data. They access the Knowledge graph in read/write.
-- _Enrichers_: These versatile agents act as both learning agents and reasoners. They primarily enhance existing facts by integrating third-party data.
+- _Enrichers_: special *fact providers* that enhance existing facts by discovering and integrating third-party data as linked data. They access the knowlege graph in read only.
 - _Orchestrators_: processors that coordinate the agent execution.
 
 ### Trust
@@ -140,14 +140,11 @@ Steps 1-4 can be iterated as needed for the processing of KEES data within the k
 
 
 ## KEES implementations
-
-Here is a [working draft for a KEES implementation proposal](implementation.md)
-
-LinkedData.Center SDaaS product is a commercial early and partial implementation of KEES specifications (also available the Open Source community version)
+Here is a [working draft for a KEES implementation proposal](v1/implementation.md).
+LinkedData.Center [SDaaS product](https://linkeddata.center/sdaas) is a commercial implementation of this specifications (also available with  Open Source license)
 
 
 ## Contributing to this site
-
 A great way to contribute to the site is to create an [issue](https://github.com/linkeddatacenter/kees/issues) on GitHub when you encounter a problem or something. We always appreciate it. You can also edit the code by yourself and create a pull request.
 
 
