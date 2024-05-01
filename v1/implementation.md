@@ -34,7 +34,7 @@ The KEES vocabulary encompasses a limited set of terms defined within the `http:
 
 The following picture summarizes the main elements of the KEES language profile. 
 
-![uml](v1/images/uml.png)
+![uml](images/uml.png)
 
 
 ## RDF Store requirement
@@ -156,10 +156,8 @@ SELECT ?graphName (MIN(?updated) as ?created) (MAX(?updated) as ?lastUpdated) WH
 ```
 
 
-
 ### Trust management
 Trust is accomplished by annotating a named graph with the property `dqv:hasQualityMeasurement` with cardinality >= 0 , range a measure with `dqv:isMeasurementOf kees:trustLevel` attribute and `dqv:value` in the decimal range 0-1 
-
 
 
 ### Knowledge base locking
