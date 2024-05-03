@@ -3,11 +3,11 @@
 Implementing KEES 
 =======================================
 
-This working draft collects a proposal for a concrete KEES implementation. This proposal is based on the [KEES definitions and principles](README.md)
+This working draft collects a proposal for a concrete KEES implementation.
 
 ## The KEES Language profile
 
-The KEES Language Profile reuses some terms from existing vocabularies:
+The KEES Language Profile reuses some terms from existing, well known vocabularies:
 
 | Prefix   | URL                                              |
 |----------|--------------------------------------------------|
@@ -22,15 +22,13 @@ The Dublin Core terms, accessible at [Dublin Core Terms](https://www.dublincore.
 
 As per the SPARQL service description vocabulary outlined in [SPARQL Service Description](https://www.w3.org/TR/sparql11-service-description/), KEES agent are expected to acknowledge and utilize properties such as `sd:endpoint`, `sd:feature`, `sd:NamedGraph`, and `sd:name`.
 
-Knowledgebase building activities should be traced using [PROV ontology](https://www.w3.org/TR/prov-overview/). KEES agents should recognize at least on `prov:wasGeneratedBy` in named graphs instances and  `prov:invalidatedBy` in knowledge graph
+Knowledg graph building activities should be traced using [PROV ontology](https://www.w3.org/TR/prov-overview/). KEES agents should recognize at least on `prov:wasGeneratedBy` in named graphs instances and  `prov:invalidatedBy` in knowledge graph
 
 The attainment of trustability is facilitated by associating quality observations with the ingested graph. To support this functionality, the KEES language profile repurposes terms from the [Data on the Web Best Practices: Data Quality Vocabulary](https://www.w3.org/TR/vocab-dqv/) such as `dqv:hasQualityAnnotation`, `dqv:value`, and `dqv:isMeasurementOf`."
 
 When utilized in named graph metadata, a KEES agent is expected to acknowledge the term `void:dataDump` from the [VoID Vocabulary](https://www.w3.org/TR/void/#void-file).
 
-Besides well known ontologies, thee KEES langage profile use terms from its own **KEES vocabulary**. These terms are defined within the `http://linkeddata.center/kees/v1#` namespace, commonly referenced using the prefix *kees:*.
-
-The KEES vocabulary encompasses a limited set of terms defined within the `http://linkeddata.center/kees/v1#` namespace, commonly referenced using the prefix *kees:*.  The whole KEES vocabulary is expressed with OWL RDF and available in [kees.rdf file](v1/kees.rdf). A KEES agent should recognize all KEES vocabulary
+The KEES vocabulary encompasses a limited set of terms defined within the `http://linkeddata.center/kees/v1#` namespace, commonly referenced using the prefix *kees:*.  The whole KEES vocabulary is expressed with OWL RDF and available in [kees.rdf file](kees.rdf). A KEES agent should recognize all KEES vocabulary.
 
 The following picture summarizes the main elements of the KEES language profile. 
 
