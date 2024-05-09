@@ -64,16 +64,14 @@ The internet is full of open data resources. Unfortunately, these resources very
 
 KEES does not concern the implementation of a Linked Data Lake, but this concept is very useful in any real-world application that uses Semantic Web Technologies.
 
-### KEES Agent
-The term *KEES Agent* refers to a processor capable of understanding the *KEES language profile* and adhering to the KEES protocols. There are seven types of KEES agents:
+### Reasoning types
+In semiotics, there are three types of reasoning:
+- Deductive reasoning
+- Abductive reasoning
+- Inductive reasoning
 
-- _Fact providers_: processors that provide Linked Data transforming raw data or mapping different ontologies. They do not interface the Knowledge graph, but often are used to feed a Linked Data Lake.
-- _loaders_: processors that loads linked data into a Graph Store. They access the Knowledge graph in write only.
-- _Publisher_: processors that access the Knowledge graph in read only organizing queries and producing data according different ontologies outside the knowledge graph
-- _Learning Agents_: ETL processors that acts both as *fact providers* and *loaders*.
-- _Reasoners_: processors that operate within the same knowledge graphs, focusing on applying inference rules while reading and writing data. They access the Knowledge graph in read/write.
-- _Enrichers_: special *fact providers* that enhance existing facts by discovering and integrating third-party data as linked data. They access the knowlege graph in read only.
-- _Orchestrators_: processors that coordinate the agent execution.
+KEES supports only the first two types of reasoning. Deductive reasoning involves computing axioms to generate new facts from existing ones through theorem demonstration based on the semantic properties of the Language Profile. Abductive reasoning, on the other hand, is achieved through rule computation.
+
 
 ### Trust
 **Trust** holds significant importance in KEES due to the [Open-world assumption] and the inherent nature of [RDF], which permits the amalgamation of diverse information, even when it might be incoherent or falsified.
@@ -120,20 +118,43 @@ Inferred facts can be derived by the following reasoning type:
 > Resolving the trust conflict it depends from your risk appetite and from your free will.
 
 
+### KEES activities
+The creation of knowledge requires the execution of certain activities. KEES distinguishes between:
+- **Booting Activities**: which initialize an empty knowledge graph with the language profile.
+- **Ingestion Activities**: which ingest facts and compute axioms.
+- **Reasoning Activities**: which compute rules and abductive reasoning.
+- **Enriching Activities**: which discover and inject new facts by leveraging existing facts, deductions, and abductions.
+- **Publishing Activities**: which map the language profile into other ontologies (typically ontologies recognized by applications).
+- **Versioning Activities**: which create a snapshot of a knowledge graph.
+
+
 ### KEES Cycle
-The processing of KEES data involves a sequence of phases, referred to as *windows*, executed by KEES agents within a knowledge graph.ù
+The generation of a knowledge graph involves a sequence of KEES activities organized into phases known as _KEES windows_, forming a workflow called the **KEES cycle**.
 
-The sequence of windows, known as the **KEES cycle**, constitutes a continuous integration workflow. It starts upon a triggered change in learned facts and ends in a fully populated knowledge base ready for application use. The KESS cycle windows are:
+The KEES Cycle begins with an empty knowledge graph and provided facts, culminating in a fully populated knowledge base ready for application use. The KEES cycle windows are:
+1. **Boot Window** (Startup Phase):  triggers KEES data processing upon specific events indicating new information availability.
+2. **Learning Window** (Population): Populates the knowledge graph with known facts, often extracted from the linked data lake. It computes Axioms
+3. **Reasoning Window**(Inference): Produces inferences about facts within the knowledge graph, utilizing specific reasoning rules. Reasoning could need to be recomputed on data changes.
+4. **Enriching Window** (Fact Enhancement):  discover new third-party facts, enriching the existing data.
+5. **Publishing Window** (Optimization and Publication): Involves data cleansing, semantic conflicts resolution, versioning, and mapping to application ontologies.
 
-1. **Boot Window (Startup Phase):** This initializes an empty knowledge graph and triggers the KEES data processing when an event indicates the availability of new information.
-2. **Learning Window (Population):** In this phase, the knowledge graph is populated with known facts (usually extracted from the linked data lake).
-3. **Reasoning Window (Inference):** This phase involves the production materialization of inferences about facts within the knowledge graph.
-4. **Enriching Window (Fact Enhancement):** Here, the agents discover new 3rd-party facts, enriching the known data data.
-5. **Publishing Window (Optimization and Publication):** This phase involves data cleansing, and semantic conflicts resolution, versioning, and application ontology mappings
-
-Steps 1-4 can be iterated as needed for the processing of KEES data within the knowledge graph.
+Note that the step 4 may produce new facts and trigger a new boot of the knowledge graph, this is an interactive process that concludes only when no new data or inferences are discovered.
 
 ![KEES cycle](v1/images/cycle.png)
+
+
+### KEES Agent
+The term *KEES Agent* refers to a processor capable of understanding the *KEES language profile* and able to compute some reasoning. One or more KEES agents are involved in the execution of a KEES cycle
+
+There are seven types of KEES agents:
+- _Orchestrators_: processors that directly support all the activities required to complete a KEES cycle, Could be orchestrator of other KEES agent
+- _Fact providers_: processors that provide Linked Data transforming raw data or mapping different ontologies. They do not interface the Knowledge graph, but often are used to feed a Linked Data Lake.
+- _loaders_: processors that loads linked data into a Graph Store. They access the Knowledge graph in write only.
+- _Publisher_: processors that access the Knowledge graph in read only organizing queries and producing data according different ontologies outside the knowledge graph
+- _Learning Agents_: ETL processors that acts both as *fact providers* and *loaders*.
+- _Reasoners_: processors that operate within the same knowledge graphs, focusing on applying inference rules while reading and writing data. They access the Knowledge graph in read/write.
+- _Enrichers_: special *fact providers* that enhance existing facts by discovering and integrating third-party data as linked data. They access the knowlege graph in read only.
+
 
 ### KEES convergence
  The duration between the detection of new data and the creation of a new stable version of the knowledge graph is termed *Knowledge Graph Convergence time* or just *convergence*. It's important to note that the *convergence*  is always > 0, defining the duration for the entire KEES data processing, which can be conceptualized as a big ETL (Extract, Transform, Load) process that produces an eventually consistent mirror of all the data needed by an application.
