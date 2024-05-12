@@ -23,7 +23,7 @@ For more details, refer to the [KEES presentation slides](https://docs.google.co
 
 
 ## Definitions
-A lot of concepts used by KEES refer to the well-known [Semantic Web Standards](https://www.w3.org/standards/semanticweb/) published by the World Wide Web Consortium ([W3C](https://w3.org/)).
+KEES is mainly a matter of definitions. A lot of concepts used by KEES refer to the well-known [Semantic Web Standards](https://www.w3.org/standards/semanticweb/) published by the World Wide Web Consortium ([W3C](https://w3.org/)).
 
 ### Data
 *Data*, as per KEES, encompasses any *literal* like words, numbers, or generally, any sequence of symbols. For instance, strings such as `xyz`, `123`, `33.22`, or `http://LinkedData.Center` exemplify *data*. Typically, data is linked with a data type that defines constraints on the sequence of symbols composing the data. For instance, the number `123`, the float `33.22`, or the URI `http://LinkedData.Center` each possess their respective data types, which specify rules regarding the permissible symbols sequence. Importantly, the data type does not inherently convey the meaning of the data itself.
@@ -38,7 +38,8 @@ KEES defines *knowledge* as a graph of linked information (i.e. linked data). Th
 
 ![triples](architecture/triples.png)
 
-### Knowledge graph
+
+### Knowledge Graph
 In KEES, a *Knowledge Graph* is characterized as a *Graph Store with a purpose*. It represents a collection of interconnected information (i.e. *Linked Data*) organized in a graph-like structure that's designed specifically to be queried, providing answers to specific questions within its domain of related information.
 
 From a theoretical perspective, a knowledge graph comprises information (facts), a formal logic system for knowledge representation, incorporates the [Open-world assumption], and employs an inference engine to demonstrate theorems.
@@ -56,21 +57,31 @@ Theorems within a knowledge graph can manifest as *rules* or *axioms*. A *rule* 
 
 For instance, an axiom could be articulated using OWL (Web Ontology Language) and demonstrated through an OWL reasoner. Alternatively, a rule could be formulated using SPARQL QUERY CONSTRUCT and materialized with SPARQL UPDATE operations.
 
-### Language profile
+
+### Language Profile
 The *Language Profile* (also referred to as  semantic *Application Profile*) forms the section of the TBOX comprising all terms recognized by rules and employed to comprehend and respond to inquiries. This profile defines the scope and vocabulary utilized within a *Semantic Web Application*, outlining the terms essential for understanding and generating responses within its semantic framework.
 
-### Linked Data lake
+
+### Linked Data Lake
 The internet is full of open data resources. Unfortunately, these resources very often have no SLA. So, when a business requires high data availability, it is best practice to mirror such resources in a data lake. During this download, some ETL processes may occur: for example, transforming raw data into Linked Data according to a defined language profile, adding provenance metadata, ACL, etc.
 
 KEES does not concern the implementation of a Linked Data Lake, but this concept is very useful in any real-world application that uses Semantic Web Technologies.
 
-### Reasoning types
-In semiotics, there are three types of reasoning:
-- Deductive reasoning
-- Abductive reasoning
-- Inductive reasoning
 
-KEES supports only the first two types of reasoning. Deductive reasoning involves computing axioms to generate new facts from existing ones through theorem demonstration based on the semantic properties of the Language Profile. Abductive reasoning, on the other hand, is achieved through rule computation.
+### Reasonings Classification
+In KEES , there are two types of reasoning:
+- Deductive reasoning: A logical process in which conclusions are drawn from premises or general principles. Deductive reasoning involves computing axioms to generate new facts from existing ones through theorem demonstration based on the semantic properties of the Language Profile.
+- Abductive reasoning: A form of reasoning where the best explanation or hypothesis for a set of observations or phenomena is inferred. Abductive reasoning is achieved through rule computation.
+
+Note that in semiotics there is a third reasoning type: the _Inductive reasoning_ that involves making generalizations based on specific observations or patterns. KEES does not jet able to support _Inductive reasoning_.
+
+
+### Facts Classification
+It is common practice to classify data into categories that aid in distinguishing the sources and ownership of the data, as well as the context in which it is collected and used:
+
+- First-party data: Information collected directly from individuals or users by the entity that owns the data, typically through interactions with their own website, app, or services.
+- Second-party data: Data that is obtained directly from another organization, often through a mutually beneficial partnership or collaboration, where the data is shared directly between the two parties involved. In KEES second-party data ar use to classify deductions derived by semantic rules derived only by first-party data. 
+- Third-party data: Data collected or obtained from external sources or entities that are not directly affiliated with the organization using the data. This data is often purchased or obtained from data brokers, aggregators, or other external sources.
 
 
 ### Trust
@@ -121,8 +132,13 @@ Inferred facts can be derived by the following reasoning type:
 ### KEES activities
 The creation of knowledge requires the execution of certain activities. KEES distinguishes between:
 - **Booting Activities**: which initialize an empty knowledge graph with the language profile.
-- **Ingestion Activities**: which ingest facts and compute axioms.
-- **Reasoning Activities**: which compute rules and abductive reasoning.
+- **Ingestion Activities**: which ingest facts and compute axioms. Ingestion activity are further classified in:
+    - **1st-party data learning**
+    - **2st-party data learning**
+    - **3st-party data learning**
+- **Reasoning Activities**: which infer facts.  Reasoning  activities are further classified in:
+    - **Deductions** 
+    - **Abductions** 
 - **Enriching Activities**: which discover and inject new facts by leveraging existing facts, deductions, and abductions.
 - **Publishing Activities**: which map the language profile into other ontologies (typically ontologies recognized by applications).
 - **Versioning Activities**: which create a snapshot of a knowledge graph.
