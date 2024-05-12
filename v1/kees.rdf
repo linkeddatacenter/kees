@@ -21,7 +21,7 @@
         <dc:title xml:lang="en">The KEES Vocabulary</dc:title>
         <dcterms:license rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
         <rdfs:label xml:lang="en">KEES Ontology</rdfs:label>
-        <owl:versionInfo>V 1.3.0 Release 2023-12-12</owl:versionInfo>
+        <owl:versionInfo>V 1.4.0 Release 2024-12-05</owl:versionInfo>
         <foaf:homepage rdf:resource="http://linkeddata.center/kees/"/>
     </owl:Ontology>
     
@@ -262,12 +262,42 @@
     
 
 
+    <!-- http://linkeddata.center/kees/v1#Deduction -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#Deduction">
+        <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Reasoning"/>
+        <rdfs:comment xml:lang="en">a reasoning that infers new fact from existing facts using the Language Profile Semantic</rdfs:comment>
+        <rdfs:label xml:lang="en">deduction</rdfs:label>
+    </owl:Class>
+    
+
+
     <!-- http://linkeddata.center/kees/v1#Enriching -->
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#Enriching">
         <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Activity"/>
         <rdfs:comment xml:lang="en">The annotated activity adds 3rd party data known facts to the knowledge base</rdfs:comment>
         <rdfs:label xml:lang="en">Enriching activity</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#FirstPartyData -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#FirstPartyData">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
+        <rdfs:comment xml:lang="en">a named graph containing data provided by the data owner</rdfs:comment>
+        <rdfs:label xml:lang="en">1st-party data</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#Induction -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#Induction">
+        <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Reasoning"/>
+        <rdfs:label xml:lang="en">a reasoning that infers new fact from existing facts from euristic rules</rdfs:label>
+        <rdfs:label xml:lang="en">induction</rdfs:label>
     </owl:Class>
     
 
@@ -326,6 +356,14 @@
     
 
 
+    <!-- http://linkeddata.center/kees/v1#Locking -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#Locking">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#Feature"/>
+    </owl:Class>
+    
+
+
     <!-- http://linkeddata.center/kees/v1#Publishing -->
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#Publishing">
@@ -342,6 +380,42 @@
         <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Activity"/>
         <rdfs:comment xml:lang="en">The annotated activity makes abductions and/or deductions to the knowledge base</rdfs:comment>
         <rdfs:label xml:lang="en">Reasoning activity</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#SecondPartyData -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#SecondPartyData">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
+        <rdfs:comment xml:lang="en">a named graph containing  data provided by a parner of the data owner</rdfs:comment>
+        <rdfs:label xml:lang="en">2nd-party data</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#Status -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#Status">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#Feature"/>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#ThirdPartyData -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#ThirdPartyData">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
+        <rdfs:comment xml:lang="en">a named graph containing data provider by a third party</rdfs:comment>
+        <rdfs:label xml:lang="en">3rd-party data</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://linkeddata.center/kees/v1#TrustLevel -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#TrustLevel">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/dqv#Metric"/>
     </owl:Class>
     
 
@@ -374,6 +448,12 @@
     
 
 
+    <!-- http://www.w3.org/ns/sparql-service-description#NamedGraph -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
+    
+
+
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -387,19 +467,13 @@
 
     <!-- http://linkeddata.center/kees/v1#Locking -->
 
-    <owl:NamedIndividual rdf:about="http://linkeddata.center/kees/v1#Locking">
-        <rdfs:comment xml:lang="en">it is a predefined instance of [sd:Feature](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) that indicates that the annotated service supports locking protocol</rdfs:comment>
-        <rdfs:label xml:lang="en">Locking</rdfs:label>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://linkeddata.center/kees/v1#Locking"/>
     
 
 
     <!-- http://linkeddata.center/kees/v1#Status -->
 
-    <owl:NamedIndividual rdf:about="http://linkeddata.center/kees/v1#Status">
-        <rdfs:comment xml:lang="en">Status</rdfs:comment>
-        <rdfs:comment xml:lang="en">it is a predefined instance of [sd:Feature](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) that indicates that the annotated service supports the ability to detect if the knowledge graph cycle status</rdfs:comment>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://linkeddata.center/kees/v1#Status"/>
     
 
 
@@ -407,8 +481,6 @@
 
     <owl:NamedIndividual rdf:about="http://linkeddata.center/kees/v1#TrustLevel">
         <rdf:type rdf:resource="http://www.w3.org/ns/dqv#Metric"/>
-        <rdfs:comment xml:lang="en">it is a predefined  instance of [dqv:Metric](https://www.w3.org/TR/vocab-dqv/#dqv:Metric) to be used in a [dqv:QualityMeasurement](https://www.w3.org/TR/vocab-dqv/#dqv:QualityMeasurement) to define a trust level in a [dqv:UserQualityFeedback](https://www.w3.org/TR/vocab-dqv/#dqv:UserQualityFeedback)  according with the [Data Quality Vocabulary](https://www.w3.org/TR/vocab-dqv/). The `dqv:value` property is expected to be a xsd:decimal in the range 0-1</rdfs:comment>
-        <rdfs:label xml:lang="en">Trust Level</rdfs:label>
     </owl:NamedIndividual>
     
 
@@ -421,6 +493,18 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
+    <rdf:Description rdf:about="http://linkeddata.center/kees/v1#Locking">
+        <rdfs:comment xml:lang="en">a predefined instance of [sd:Feature](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) that indicates that the annotated service supports locking protocol</rdfs:comment>
+        <rdfs:label xml:lang="en">Locking</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://linkeddata.center/kees/v1#Status">
+        <rdfs:comment xml:lang="en">Status</rdfs:comment>
+        <rdfs:comment xml:lang="en">a predefined instance of [sd:Feature](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) that indicates that the annotated service supports the ability to detect if the knowledge graph cycle status</rdfs:comment>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://linkeddata.center/kees/v1#TrustLevel">
+        <rdfs:comment xml:lang="en">a predefined  instance of [dqv:Metric](https://www.w3.org/TR/vocab-dqv/#dqv:Metric) to be used in a [dqv:QualityMeasurement](https://www.w3.org/TR/vocab-dqv/#dqv:QualityMeasurement) to define a trust level in a [dqv:UserQualityFeedback](https://www.w3.org/TR/vocab-dqv/#dqv:UserQualityFeedback)  according with the [Data Quality Vocabulary](https://www.w3.org/TR/vocab-dqv/). The `dqv:value` property is expected to be a xsd:decimal in the range 0-1</rdfs:comment>
+        <rdfs:label xml:lang="en">Trust Level</rdfs:label>
+    </rdf:Description>
     <rdf:Description rdf:about="http://www.w3.org/2001/XMLSchema#success">
         <rdfs:label xml:lang="en">has input</rdfs:label>
         <owl:priorVersion xml:lang="en">task  processor input as a json structure.</owl:priorVersion>
