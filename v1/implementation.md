@@ -66,7 +66,6 @@ A KEES application should manage the following knowledge graph metadata:
 - `kees:reasoned` with cardinality <= 1, range xds:dateTime
 - `kees:enriched` with cardinality <= 1, range xds:dateTime
 - `kees:published` with cardinality <= 1, range xds:dateTime
-- `kees:versioned` with cardinality <= 1, range xds:dateTime
 - `prov:wasInvalidatedBy` with cardinality >= 0, range prov:Activity
 - `kees:wasLockedBy` with cardinality >= 0,
 

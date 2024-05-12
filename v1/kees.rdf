@@ -282,12 +282,12 @@
     
 
 
-    <!-- http://linkeddata.center/kees/v1#FirstPartyData -->
+    <!-- http://linkeddata.center/kees/v1#FirstPartyDataset -->
 
-    <owl:Class rdf:about="http://linkeddata.center/kees/v1#FirstPartyData">
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#FirstPartyDataset">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
         <rdfs:comment xml:lang="en">a named graph containing data provided by the data owner</rdfs:comment>
-        <rdfs:label xml:lang="en">1st-party data</rdfs:label>
+        <rdfs:label xml:lang="en">1st-party dataset</rdfs:label>
     </owl:Class>
     
 
@@ -384,12 +384,12 @@
     
 
 
-    <!-- http://linkeddata.center/kees/v1#SecondPartyData -->
+    <!-- http://linkeddata.center/kees/v1#SecondPartyDataset -->
 
-    <owl:Class rdf:about="http://linkeddata.center/kees/v1#SecondPartyData">
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#SecondPartyDataset">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
         <rdfs:comment xml:lang="en">a named graph containing  data provided by a parner of the data owner</rdfs:comment>
-        <rdfs:label xml:lang="en">2nd-party data</rdfs:label>
+        <rdfs:label xml:lang="en">2nd-party dataset</rdfs:label>
     </owl:Class>
     
 
@@ -402,12 +402,12 @@
     
 
 
-    <!-- http://linkeddata.center/kees/v1#ThirdPartyData -->
+    <!-- http://linkeddata.center/kees/v1#ThirdPartyDataset -->
 
-    <owl:Class rdf:about="http://linkeddata.center/kees/v1#ThirdPartyData">
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#ThirdPartyDataset">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
         <rdfs:comment xml:lang="en">a named graph containing data provider by a third party</rdfs:comment>
-        <rdfs:label xml:lang="en">3rd-party data</rdfs:label>
+        <rdfs:label xml:lang="en">3rd-party dataset</rdfs:label>
     </owl:Class>
     
 
