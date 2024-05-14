@@ -299,11 +299,11 @@
     
 
 
-    <!-- http://linkeddata.center/kees/v1#FirstParty -->
+    <!-- http://linkeddata.center/kees/v1#FirstPartyData -->
 
-    <owl:Class rdf:about="http://linkeddata.center/kees/v1#FirstParty">
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#FirstPartyData">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
-        <rdfs:label xml:lang="en">1st-party</rdfs:label>
+        <rdfs:label xml:lang="en">1st-party data</rdfs:label>
         <skos:description xml:lang="en">a named graph containing data provided by the data owner</skos:description>
     </owl:Class>
     
@@ -401,11 +401,11 @@
     
 
 
-    <!-- http://linkeddata.center/kees/v1#SecondParty -->
+    <!-- http://linkeddata.center/kees/v1#SecondPartyData -->
 
-    <owl:Class rdf:about="http://linkeddata.center/kees/v1#SecondParty">
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#SecondPartyData">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
-        <rdfs:label xml:lang="en">2nd-party</rdfs:label>
+        <rdfs:label xml:lang="en">2nd-party data</rdfs:label>
         <skos:description xml:lang="en">a named graph containing  data provided by a parner of the data owner</skos:description>
     </owl:Class>
     
@@ -419,11 +419,11 @@
     
 
 
-    <!-- http://linkeddata.center/kees/v1#ThirdParty -->
+    <!-- http://linkeddata.center/kees/v1#ThirdPartyData -->
 
-    <owl:Class rdf:about="http://linkeddata.center/kees/v1#ThirdParty">
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#ThirdPartyData">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
-        <rdfs:label xml:lang="en">3rd-party</rdfs:label>
+        <rdfs:label xml:lang="en">3rd-party data</rdfs:label>
         <skos:description xml:lang="en">a named graph containing data provider by a third party</skos:description>
     </owl:Class>
     
