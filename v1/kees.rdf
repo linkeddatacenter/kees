@@ -11,6 +11,7 @@
      xmlns:foaf="http://xmlns.com/foaf/0.1/"
      xmlns:prov="http://www.w3.org/ns/prov#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
      xmlns:void="http://rdfs.org/ns/void#"
      xmlns:dcterms="http://purl.org/dc/terms/">
     <owl:Ontology rdf:about="http://linkeddata.center/kees/v1">
@@ -89,6 +90,12 @@
     <!-- http://www.w3.org/2002/07/owl#deprecated -->
 
     <owl:AnnotationProperty rdf:about="http://www.w3.org/2002/07/owl#deprecated"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#description -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#description"/>
     
 
 
@@ -252,12 +259,22 @@
     
 
 
+    <!-- http://linkeddata.center/kees/v1#Axiom -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#Axiom">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
+        <rdfs:label xml:lang="en">axiom</rdfs:label>
+        <skos:description xml:lang="en">a named graph containing information that is considered self-evident or universally accepted as true without requiring proof or validation</skos:description>
+    </owl:Class>
+    
+
+
     <!-- http://linkeddata.center/kees/v1#Boot -->
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#Boot">
         <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Activity"/>
-        <rdfs:comment xml:lang="en">The annotated activity erased and rebuildd knowledge base</rdfs:comment>
         <rdfs:label xml:lang="en">Boot activity</rdfs:label>
+        <skos:description xml:lang="en">The annotated activity erased and rebuildd knowledge base</skos:description>
     </owl:Class>
     
 
@@ -266,8 +283,8 @@
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#Deduction">
         <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Reasoning"/>
-        <rdfs:comment xml:lang="en">a reasoning that infers new fact from existing facts using the Language Profile Semantic</rdfs:comment>
         <rdfs:label xml:lang="en">deduction</rdfs:label>
+        <skos:description xml:lang="en">a reasoning that infers new fact from existing facts using the Language Profile Semantic</skos:description>
     </owl:Class>
     
 
@@ -276,18 +293,18 @@
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#Enriching">
         <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Activity"/>
-        <rdfs:comment xml:lang="en">The annotated activity adds 3rd party data known facts to the knowledge base</rdfs:comment>
         <rdfs:label xml:lang="en">Enriching activity</rdfs:label>
+        <skos:description xml:lang="en">The annotated activity adds 3rd party data known facts to the knowledge base</skos:description>
     </owl:Class>
     
 
 
-    <!-- http://linkeddata.center/kees/v1#FirstPartyDataset -->
+    <!-- http://linkeddata.center/kees/v1#FirstParty -->
 
-    <owl:Class rdf:about="http://linkeddata.center/kees/v1#FirstPartyDataset">
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#FirstParty">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
-        <rdfs:comment xml:lang="en">a named graph containing data provided by the data owner</rdfs:comment>
-        <rdfs:label xml:lang="en">1st-party dataset</rdfs:label>
+        <rdfs:label xml:lang="en">1st-party</rdfs:label>
+        <skos:description xml:lang="en">a named graph containing data provided by the data owner</skos:description>
     </owl:Class>
     
 
@@ -296,8 +313,8 @@
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#Induction">
         <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Reasoning"/>
-        <rdfs:label xml:lang="en">a reasoning that infers new fact from existing facts from euristic rules</rdfs:label>
         <rdfs:label xml:lang="en">induction</rdfs:label>
+        <skos:description xml:lang="en">a reasoning that infers new fact from existing facts from euristic rules</skos:description>
     </owl:Class>
     
 
@@ -306,8 +323,8 @@
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#Ingestion">
         <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Activity"/>
-        <rdfs:comment xml:lang="en">The annotated activity learns facts into knowledge base</rdfs:comment>
         <rdfs:label xml:lang="en">Ingestion activity</rdfs:label>
+        <skos:description xml:lang="en">The annotated activity learns facts into knowledge base</skos:description>
     </owl:Class>
     
 
@@ -368,8 +385,8 @@
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#Publishing">
         <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Activity"/>
-        <rdfs:comment xml:lang="en">The annotated activity finalizes the building of the knowledge base by adding ontology mappings, linkeddata sets  and specific application information</rdfs:comment>
         <rdfs:label xml:lang="en">Publishing activity</rdfs:label>
+        <skos:description xml:lang="en">The annotated activity finalizes the building of the knowledge base by adding ontology mappings, linkeddata sets  and specific application information</skos:description>
     </owl:Class>
     
 
@@ -378,18 +395,18 @@
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#Reasoning">
         <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Activity"/>
-        <rdfs:comment xml:lang="en">The annotated activity makes abductions and/or deductions to the knowledge base</rdfs:comment>
         <rdfs:label xml:lang="en">Reasoning activity</rdfs:label>
+        <skos:description xml:lang="en">The annotated activity makes abductions and/or deductions to the knowledge base</skos:description>
     </owl:Class>
     
 
 
-    <!-- http://linkeddata.center/kees/v1#SecondPartyDataset -->
+    <!-- http://linkeddata.center/kees/v1#SecondParty -->
 
-    <owl:Class rdf:about="http://linkeddata.center/kees/v1#SecondPartyDataset">
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#SecondParty">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
-        <rdfs:comment xml:lang="en">a named graph containing  data provided by a parner of the data owner</rdfs:comment>
-        <rdfs:label xml:lang="en">2nd-party dataset</rdfs:label>
+        <rdfs:label xml:lang="en">2nd-party</rdfs:label>
+        <skos:description xml:lang="en">a named graph containing  data provided by a parner of the data owner</skos:description>
     </owl:Class>
     
 
@@ -402,12 +419,12 @@
     
 
 
-    <!-- http://linkeddata.center/kees/v1#ThirdPartyDataset -->
+    <!-- http://linkeddata.center/kees/v1#ThirdParty -->
 
-    <owl:Class rdf:about="http://linkeddata.center/kees/v1#ThirdPartyDataset">
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#ThirdParty">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
-        <rdfs:comment xml:lang="en">a named graph containing data provider by a third party</rdfs:comment>
-        <rdfs:label xml:lang="en">3rd-party dataset</rdfs:label>
+        <rdfs:label xml:lang="en">3rd-party</rdfs:label>
+        <skos:description xml:lang="en">a named graph containing data provider by a third party</skos:description>
     </owl:Class>
     
 
@@ -424,8 +441,9 @@
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#Versioning">
         <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Activity"/>
-        <rdfs:comment xml:lang="en">The annotated activity creates a snapshot of all knowledge graph and assign a versiion identifier to it</rdfs:comment>
         <rdfs:label xml:lang="en">Versioning activity</rdfs:label>
+        <owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
+        <skos:description xml:lang="en">The annotated activity creates a snapshot of all knowledge graph and assign a versiion identifier to it</skos:description>
     </owl:Class>
     
 
@@ -494,12 +512,12 @@
      -->
 
     <rdf:Description rdf:about="http://linkeddata.center/kees/v1#Locking">
-        <rdfs:comment xml:lang="en">a predefined instance of [sd:Feature](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) that indicates that the annotated service supports locking protocol</rdfs:comment>
+        <skos:description xml:lang="en">a predefined instance of [sd:Feature](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) that indicates that the annotated service supports locking protocol</skos:description>
         <rdfs:label xml:lang="en">Locking</rdfs:label>
     </rdf:Description>
     <rdf:Description rdf:about="http://linkeddata.center/kees/v1#Status">
         <rdfs:comment xml:lang="en">Status</rdfs:comment>
-        <rdfs:comment xml:lang="en">a predefined instance of [sd:Feature](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) that indicates that the annotated service supports the ability to detect if the knowledge graph cycle status</rdfs:comment>
+        <skos:description xml:lang="en">a predefined instance of [sd:Feature](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) that indicates that the annotated service supports the ability to detect if the knowledge graph cycle status</skos:description>
     </rdf:Description>
     <rdf:Description rdf:about="http://linkeddata.center/kees/v1#TrustLevel">
         <rdfs:comment xml:lang="en">a predefined  instance of [dqv:Metric](https://www.w3.org/TR/vocab-dqv/#dqv:Metric) to be used in a [dqv:QualityMeasurement](https://www.w3.org/TR/vocab-dqv/#dqv:QualityMeasurement) to define a trust level in a [dqv:UserQualityFeedback](https://www.w3.org/TR/vocab-dqv/#dqv:UserQualityFeedback)  according with the [Data Quality Vocabulary](https://www.w3.org/TR/vocab-dqv/). The `dqv:value` property is expected to be a xsd:decimal in the range 0-1</rdfs:comment>

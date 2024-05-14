@@ -10,7 +10,6 @@ KEES is an architectural design pattern that establishes specific requirements f
 Domain knowledge refers to information about a specific subject (e.g., a range of products, commercial offerings, a social network, etc.). Knowledge domains are cumulative, with no defined limits on their scope or size.
 
 With KEES, you can formalize and license all the components necessary to construct a knowledge domain. This includes:
-
 - Methods for collecting accurate data.
 - Establishing the context or significance of the data.
 - Determining the reliability of the information.
@@ -43,7 +42,6 @@ KEES defines *knowledge* as a graph of linked information (i.e. linked data). Th
 In KEES, a *Knowledge Graph* is characterized as a *Graph Store with a purpose*. It represents a collection of interconnected information (i.e. *Linked Data*) organized in a graph-like structure that's designed specifically to be queried, providing answers to specific questions within its domain of related information.
 
 From a theoretical perspective, a knowledge graph comprises information (facts), a formal logic system for knowledge representation, incorporates the [Open-world assumption], and employs an inference engine to demonstrate theorems.
-
 
 In a knowledge graph, information is partitioned into two datasets: *TBOX* and *ABOX*. *ABOX statements* delineate facts, while *TBOX statements* define the terms used to qualify the meaning of those facts. If you're familiar with the object-oriented paradigm, TBOX statements can be likened to associations with classes, whereas ABOX statements are linked to individual class instances.
 
@@ -79,6 +77,7 @@ Note that in semiotics there is a third reasoning type: the _Inductive reasoning
 ### Facts Classification
 It is common practice to classify data into categories that aid in distinguishing the sources and ownership of the data, as well as the context in which it is collected and used:
 
+- Axiomatic data:  information that is considered self-evident or universally accepted as true without requiring proof or validation
 - First-party data: Information collected directly from individuals or users by the entity that owns the data, typically through interactions with their own website, app, or services.
 - Second-party data: Data that is obtained directly from another organization, often through a mutually beneficial partnership or collaboration, where the data is shared directly between the two parties involved. In KEES second-party data ar use to classify deductions derived by semantic rules derived only by first-party data. 
 - Third-party data: Data collected or obtained from external sources or entities that are not directly affiliated with the organization using the data. This data is often purchased or obtained from data brokers, aggregators, or other external sources.
