@@ -61,11 +61,6 @@ A KEES agent never delete information from knowledge graph. Temporary graph are 
 ### Knowledge Graph metadata 
 A KEES application should manage the following knowledge graph metadata:
 
-- `dct:created` with cardinality exactly 1, range xds:dateTime
-- `kees:ingested` with cardinality <= 1, range xds:dateTime
-- `kees:reasoned` with cardinality <= 1, range xds:dateTime
-- `kees:enriched` with cardinality <= 1, range xds:dateTime
-- `kees:published` with cardinality <= 1, range xds:dateTime
 - `prov:wasInvalidatedBy` with cardinality >= 0, range prov:Activity
 - `kees:wasLockedBy` with cardinality >= 0,
 

@@ -140,7 +140,25 @@ The creation of knowledge requires the execution of certain activities. KEES dis
     - **Abductions** 
 - **Enriching Activities**: which discover and inject new facts by leveraging existing facts, deductions, and abductions.
 - **Publishing Activities**: which map the language profile into other ontologies (typically ontologies recognized by applications).
-- **Versioning Activities**: which create a snapshot of a knowledge graph.
+
+The life cycle of a KEES activity is based on three states:
+- *pending*: when an activity is defined but not yet started
+- *running*: when an activity is started but not finished
+- *completed*: when an activity is started and finished (with or without errors)
+  
+
+### KEES knowledge graph state
+Taking into account the KEES activities it is possible to define the following states for a knowledge graph:
+- *created* this is the initial state of a any existing booted knowledge graph
+- *stable* this is a state where there are no pending or running activities
+
+More specific states may be defined, for example:
+- *ingested*: when all ingestion activities are completed
+- *reasoned*: when all reasoning activities are completed
+- *enriched*: when all enriching activities are completed
+- *published*: when all publishing activities are completed
+- etc,etc.
+
 
 
 ### KEES Cycle
@@ -158,8 +176,12 @@ Note that the step 4 may produce new facts and trigger a new boot of the knowled
 ![KEES cycle](v1/images/cycle.png)
 
 
+### KEES Cycle Convergence
+The *KEES Cycle Convergence* (or just *convergence*) is defined as the interactive process that, starting from initial facts, executes the KEES cycle until the knowledge graph reaches a *stable* state. The duration between the detection of new data and the reaching of a stable state is termed *convergence time*. It's important to note that the *convergence time* is always greater than zero; this means that the entire KEES cycle can be conceptualized as a big ETL (Extract, Transform, Load) process that produces an eventually consistent mirror of all the ingested data.
+
+
 ### KEES Agent
-The term *KEES Agent* refers to a processor capable of understanding the *KEES language profile* and able to compute some reasoning. One or more KEES agents are involved in the execution of a KEES cycle
+The term *KEES Agent* refers to a processor capable of understanding the *KEES language profile* . One or more KEES agents may be involved in the execution of a KEES cycle
 
 There are seven types of KEES agents:
 - _Orchestrators_: processors that directly support all the activities required to complete a KEES cycle, Could be orchestrator of other KEES agent
@@ -170,9 +192,6 @@ There are seven types of KEES agents:
 - _Reasoners_: processors that operate within the same knowledge graphs, focusing on applying inference rules while reading and writing data. They access the Knowledge graph in read/write.
 - _Enrichers_: special *fact providers* that enhance existing facts by discovering and integrating third-party data as linked data. They access the knowlege graph in read only.
 
-
-### KEES convergence
- The duration between the detection of new data and the creation of a new stable version of the knowledge graph is termed *Knowledge Graph Convergence time* or just *convergence*. It's important to note that the *convergence*  is always > 0, defining the duration for the entire KEES data processing, which can be conceptualized as a big ETL (Extract, Transform, Load) process that produces an eventually consistent mirror of all the data needed by an application.
 
 
 ## KEES implementations

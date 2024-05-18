@@ -177,6 +177,7 @@
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
         <rdfs:comment xml:lang="en">all activities in the enriching window of a KEES cycle was declared as completed</rdfs:comment>
         <rdfs:label xml:lang="en">enriching completed</rdfs:label>
+        <owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
     </owl:DatatypeProperty>
     
 
@@ -190,6 +191,7 @@
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
         <rdfs:comment xml:lang="en">All activities in the learning window of a KEES cycle was declared as completed</rdfs:comment>
         <rdfs:label xml:lang="en">learning complete</rdfs:label>
+        <owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
     </owl:DatatypeProperty>
     
 
@@ -203,6 +205,7 @@
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
         <rdfs:comment xml:lang="en">the knowledge base was declared as safe and completed</rdfs:comment>
         <rdfs:label xml:lang="en">published</rdfs:label>
+        <owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
     </owl:DatatypeProperty>
     
 
@@ -216,6 +219,7 @@
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
         <rdfs:comment xml:lang="en">all activities in the reasoning window of a KEES cycle was declared as completed</rdfs:comment>
         <rdfs:label xml:lang="en">reasoning completed</rdfs:label>
+        <owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
     </owl:DatatypeProperty>
     
 
@@ -228,6 +232,7 @@
         <rdfs:domain rdf:resource="http://linkeddata.center/kees/v1#KnowledgeGraph"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
         <rdfs:comment xml:lang="en">the knowledge base was safe and versioned</rdfs:comment>
+        <owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
     </owl:DatatypeProperty>
     
 
@@ -253,8 +258,8 @@
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#Activity">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Activity"/>
-        <rdfs:comment xml:lang="en">a KEES agent Activity</rdfs:comment>
         <rdfs:label xml:lang="en">Activity</rdfs:label>
+        <skos:description xml:lang="en">a KEES agent Activity</skos:description>
     </owl:Class>
     
 
@@ -262,18 +267,18 @@
     <!-- http://linkeddata.center/kees/v1#Axiom -->
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#Axiom">
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
+        <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#FactGraph"/>
         <rdfs:label xml:lang="en">axiom</rdfs:label>
         <skos:description xml:lang="en">a named graph containing information that is considered self-evident or universally accepted as true without requiring proof or validation</skos:description>
     </owl:Class>
     
 
 
-    <!-- http://linkeddata.center/kees/v1#Boot -->
+    <!-- http://linkeddata.center/kees/v1#Booting -->
 
-    <owl:Class rdf:about="http://linkeddata.center/kees/v1#Boot">
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#Booting">
         <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#Activity"/>
-        <rdfs:label xml:lang="en">Boot activity</rdfs:label>
+        <rdfs:label xml:lang="en">Booting activity</rdfs:label>
         <skos:description xml:lang="en">The annotated activity erased and rebuildd knowledge base</skos:description>
     </owl:Class>
     
@@ -299,10 +304,20 @@
     
 
 
+    <!-- http://linkeddata.center/kees/v1#FactGraph -->
+
+    <owl:Class rdf:about="http://linkeddata.center/kees/v1#FactGraph">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
+        <rdfs:label xml:lang="en">fact graph</rdfs:label>
+        <skos:description xml:lang="en">a named graph built according KEES specifications</skos:description>
+    </owl:Class>
+    
+
+
     <!-- http://linkeddata.center/kees/v1#FirstPartyData -->
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#FirstPartyData">
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
+        <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#FactGraph"/>
         <rdfs:label xml:lang="en">1st-party data</rdfs:label>
         <skos:description xml:lang="en">a named graph containing data provided by the data owner</skos:description>
     </owl:Class>
@@ -367,8 +382,8 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
             </owl:Restriction>
         </rdfs:subClassOf>
-        <rdfs:comment xml:lang="en">a subclass of [sd:Service](https://www.w3.org/TR/sparql11-service-description/#sd-Service), indicating that the annotated subject represents a service compliant with the KEES protocol. It can offer a variety of optional properties, empowering a KEES-compliant agent to signal the completion of a window within a KEES cycle. `kees:KnowledgeGraph` represents a *singleton*; for each Graph Store, only one `sd:endpoint` can be associated with an instance of this class.</rdfs:comment>
         <rdfs:label xml:lang="en">Knowledge Graph</rdfs:label>
+        <skos:description xml:lang="en">a subclass of [sd:Service](https://www.w3.org/TR/sparql11-service-description/#sd-Service), indicating that the annotated subject represents a service compliant with the KEES protocol. It can offer a variety of optional properties, empowering a KEES-compliant agent to signal the completion of a window within a KEES cycle. `kees:KnowledgeGraph` represents a *singleton*; for each Graph Store, only one `sd:endpoint` can be associated with an instance of this class.</skos:description>
     </owl:Class>
     
 
@@ -404,7 +419,7 @@
     <!-- http://linkeddata.center/kees/v1#SecondPartyData -->
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#SecondPartyData">
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
+        <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#FactGraph"/>
         <rdfs:label xml:lang="en">2nd-party data</rdfs:label>
         <skos:description xml:lang="en">a named graph containing  data provided by a parner of the data owner</skos:description>
     </owl:Class>
@@ -422,7 +437,7 @@
     <!-- http://linkeddata.center/kees/v1#ThirdPartyData -->
 
     <owl:Class rdf:about="http://linkeddata.center/kees/v1#ThirdPartyData">
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sparql-service-description#NamedGraph"/>
+        <rdfs:subClassOf rdf:resource="http://linkeddata.center/kees/v1#FactGraph"/>
         <rdfs:label xml:lang="en">3rd-party data</rdfs:label>
         <skos:description xml:lang="en">a named graph containing data provider by a third party</skos:description>
     </owl:Class>
@@ -520,7 +535,7 @@
         <skos:description xml:lang="en">a predefined instance of [sd:Feature](https://www.w3.org/TR/sparql11-service-description/#sd-Feature) that indicates that the annotated service supports the ability to detect if the knowledge graph cycle status</skos:description>
     </rdf:Description>
     <rdf:Description rdf:about="http://linkeddata.center/kees/v1#TrustLevel">
-        <rdfs:comment xml:lang="en">a predefined  instance of [dqv:Metric](https://www.w3.org/TR/vocab-dqv/#dqv:Metric) to be used in a [dqv:QualityMeasurement](https://www.w3.org/TR/vocab-dqv/#dqv:QualityMeasurement) to define a trust level in a [dqv:UserQualityFeedback](https://www.w3.org/TR/vocab-dqv/#dqv:UserQualityFeedback)  according with the [Data Quality Vocabulary](https://www.w3.org/TR/vocab-dqv/). The `dqv:value` property is expected to be a xsd:decimal in the range 0-1</rdfs:comment>
+        <skos:description xml:lang="en">a predefined  instance of [dqv:Metric](https://www.w3.org/TR/vocab-dqv/#dqv:Metric) to be used in a [dqv:QualityMeasurement](https://www.w3.org/TR/vocab-dqv/#dqv:QualityMeasurement) to define a trust level in a [dqv:UserQualityFeedback](https://www.w3.org/TR/vocab-dqv/#dqv:UserQualityFeedback)  according with the [Data Quality Vocabulary](https://www.w3.org/TR/vocab-dqv/). The `dqv:value` property is expected to be a xsd:decimal in the range 0-1</skos:description>
         <rdfs:label xml:lang="en">Trust Level</rdfs:label>
     </rdf:Description>
     <rdf:Description rdf:about="http://www.w3.org/2001/XMLSchema#success">
