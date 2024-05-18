@@ -90,48 +90,35 @@ A when requested to reboot, a KEES application should erase the entire graph sto
 
 ```sparql
     DROP SILENT ALL;
-    INSERT DATA {
+    INSERT {
         [] a kees:KnowledgeGraph ;
             sd:endpoint <HERE SPARQL ENDPOINT> ;
             sd:feature kees:Status, kees:Locking ;
-            dct:created "HERE THE CREATION DATE"^^xsd:dateTime .
-    }
+            dct:created ?now .
+    } WHERE { BIND( NOW() AS ?now)}
 ```
 
 
 ### Knowledge Graph status 
-During knowledge base building and updates, KEES agents should declare the completion of a KEES cycle window
-For instance to declare that a RDF Store is ready to be safely queried, execute following SPARQL UPDATE statement:
+
+To check if a KEES compliant  graph store is *created*, use:
+```sparql
+ASK {  ?service a kees:KnowledgeGraph; sd:feature kees:Status; dct:created  [] }
+``` 
+
+To check if a graph store is *stable*, use: 
 
 ```sparql
-INSERT { ?service kees:published ?now }
-WHERE { 
-    ?service a kees:KnowledgeGraph BIND( NOW() AS ?now) 
-    FILTER NOT EXISTS { ?service kees:published [] }
-}
+ASK { 
+	FILTER NOT EXISTS {
+		?activity a prov:Activity.
+		OPTIONAL { ?activity prov:startedAtTime ?started }
+		OPTIONAL { ?activity prov:endedAtTime ?endeded }
+		FILTER( !BOUND(?started) || !BOUND(?ended))
+	}
+}`
 ```
 
-To check if a RDF Store is *safe*, use: 
-
-```sparql
-ASK { ?service kees:published|kees:versioned [] }`
-```
-
-To get the current knowledge graph status:
-
-```sparql
-SELECT ?status
-WHERE{ 
-    VALUES ?status {
-        dct:created
-        kees:ingested
-        kees:reasoned
-        kees:enriched
-        kees:published
-        kees:versioned
-    }
-    OPTIONAL { ?service a kees:KnowledgeGraph; ?status ?on_date }
-} ORDER DESC( ?on_date) LIMIT 1
 ```
 
 ### Named graph metadata
