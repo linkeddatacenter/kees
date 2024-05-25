@@ -77,10 +77,11 @@ Note that in semiotics there is a third reasoning type: the _Inductive reasoning
 ### Facts Classification
 It is common practice to classify data into categories that aid in distinguishing the sources and ownership of the data, as well as the context in which it is collected and used:
 
-- Axiomatic data:  information that is considered self-evident or universally accepted as true without requiring proof or validation
-- First-party data: Information collected directly from individuals or users by the entity that owns the data, typically through interactions with their own website, app, or services.
-- Second-party data: Data that is obtained directly from another organization, often through a mutually beneficial partnership or collaboration, where the data is shared directly between the two parties involved. In KEES second-party data ar use to classify deductions derived by semantic rules derived only by first-party data. 
-- Third-party data: Data collected or obtained from external sources or entities that are not directly affiliated with the organization using the data. This data is often purchased or obtained from data brokers, aggregators, or other external sources.
+- **Axioms**:  information that is considered self-evident or universally accepted as true without requiring proof or validation
+- **First-party data**: Information collected directly from individuals or users by the entity that owns the data, typically through interactions with their own website, app, or services.
+- **Second-party data**: Data that is obtained directly from another organization, often through a mutually beneficial partnership or collaboration, where the data is shared directly between the two parties involved. In KEES second-party data ar use to classify deductions derived by semantic rules derived only by first-party data. 
+- **Third-party data**: Data collected or obtained from external sources or entities that are not directly affiliated with the organization using the data. This data is often purchased or obtained from data brokers, aggregators, or other external sources.
+- **Inferences**: information resulting from a [materialization](https://www.oxfordsemantic.tech/glossary/materialisation) of some reasoning about existing data
 
 
 ### Trust
@@ -149,8 +150,8 @@ The life cycle of a KEES activity is based on three states:
 
 ### KEES knowledge graph state
 Taking into account the KEES activities it is possible to define the following states for a knowledge graph:
-- *created* this is the initial state of a any existing booted knowledge graph
-- *stable* this is a state where there are no pending or running activities
+- *created* this is the initial state of a any existing booted knowledge graph;
+- *stable* this is a state where there are no pending or running activities.
 
 More specific states may be defined, for example:
 - *ingested*: when all ingestion activities are completed
@@ -185,7 +186,7 @@ The term *KEES Agent* refers to a processor capable of understanding the *KEES l
 
 There are seven types of KEES agents:
 - _Orchestrators_: processors that directly support all the activities required to complete a KEES cycle, Could be orchestrator of other KEES agent
-- _Fact providers_: processors that provide Linked Data transforming raw data or mapping different ontologies. They do not interface the Knowledge graph, but often are used to feed a Linked Data Lake.
+- _Autonomous agents_: processors that directly provide Linked Data in a language profile transforming raw data or mapping different ontologies. They do not interface the Knowledge graph, but often are used to feed a Linked Data Lake.
 - _loaders_: processors that loads linked data into a Graph Store. They access the Knowledge graph in write only.
 - _Publisher_: processors that access the Knowledge graph in read only organizing queries and producing data according different ontologies outside the knowledge graph
 - _Learning Agents_: ETL processors that acts both as *fact providers* and *loaders*.
