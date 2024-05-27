@@ -144,8 +144,9 @@ The creation of knowledge requires the execution of certain activities. KEES dis
 
 The life cycle of a KEES activity is based on three states:
 - *pending*: when an activity is defined but not yet started
-- *running*: when an activity is started but not finished
-- *completed*: when an activity is started and finished (with or without errors)
+- *started*: when an activity is started but not finished
+- *ended*: when an activity finished (with or without errors)
+
   
 
 ### KEES knowledge graph state
@@ -154,10 +155,10 @@ Taking into account the KEES activities it is possible to define the following s
 - *stable* this is a state where there are no pending or running activities.
 
 More specific states may be defined, for example:
-- *ingested*: when all ingestion activities are completed
-- *reasoned*: when all reasoning activities are completed
-- *enriched*: when all enriching activities are completed
-- *published*: when all publishing activities are completed
+- *ingested*: when all ingestion activities are ended
+- *reasoned*: when all reasoning activities are ended
+- *enriched*: when all enriching activities are ended
+- *published*: when all publishing activities are ended
 - etc,etc.
 
 
