@@ -24,6 +24,31 @@ For more details, refer to the [KEES presentation slides](https://docs.google.co
 ## Definitions
 KEES is mainly a matter of definitions. A lot of concepts used by KEES refer to the well-known [Semantic Web Standards](https://www.w3.org/standards/semanticweb/) published by the World Wide Web Consortium ([W3C](https://w3.org/)).
 
+### Architecture and application
+“Application” and  “architecture” terms refer to vague concepts that need further clarification in the KEES context.
+
+The first problem with defining the architecture of an application is that there is no clear definition of what an application is. Our opinion is that applications are a social construction, i.e.:
+- a block of code that is seen by developers as a single product;
+- a group of features that is made available to the customer;
+- a set of functional requirements, with the related cost.
+
+All very different - but all valid - points of view, which make the definition very broad.
+
+People in the IT world have long argued about a precise definition of architecture. For some, it’s something like organizing and planning a system or how higher-level components tie together. Probably the definition that comes closest to capturing the full meaning of the term is the following:
+
+> An architecture is the shared understanding that developers have about the design of the system.
+
+A second common style of definition for architecture is that it is
+
+> The design decisions that must be made at the beginning of a project
+
+in short,
+
+> Architecture is about the important things. Whatever they are.
+
+At first glance, this seems like a trivial statement, but it actually brings a lot of richness: the heart of thinking architecturally about software is deciding what’s important, (i.e., what’s architectural), and spending energy maintaining those elements in good condition. For a developer to become an architect, he must be able to recognize which elements are important, recognizing which ones can cause serious problems if they are not properly controlled.
+Important decisions in software development vary depending on the scale of context we are thinking about. A common scale is that of an application, hence “application architecture”.
+
 ### Data
 *Data*, as per KEES, encompasses any *literal* like words, numbers, or generally, any sequence of symbols. For instance, strings such as `xyz`, `123`, `33.22`, or `http://LinkedData.Center` exemplify *data*. Typically, data is linked with a data type that defines constraints on the sequence of symbols composing the data. For instance, the number `123`, the float `33.22`, or the URI `http://LinkedData.Center` each possess their respective data types, which specify rules regarding the permissible symbols sequence. Importantly, the data type does not inherently convey the meaning of the data itself.
 
