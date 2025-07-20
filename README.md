@@ -3,7 +3,7 @@
 Describing knowledge with KEES (Knowledge Exchange Engine Specifications and Services)
 ==================================================================
 
-> *In order to let computers to work for us, they must understand data: not just the grammar and the syntax, but the real meaning of things.*
+> *In order to let computers work for us, they must understand data: not just the grammar and the syntax, but the real meaning of things.*
 
 KEES is an architectural design pattern that establishes specific requirements for Semantic Web Applications. Its purpose is to formally describe *domain knowledge* with the goal of making it tradeable and shareable.
 
@@ -25,16 +25,16 @@ Both machines and humans can leverage this *know-how* to enhance their knowledge
 KEES is mainly a matter of definitions. A lot of concepts used by KEES refer to the well-known [Semantic Web Standards](https://www.w3.org/standards/semanticweb/) published by the World Wide Web Consortium ([W3C](https://w3.org/)).
 
 ### Architecture and application
-“Application” and  “architecture” terms refer to vague concepts that need further clarification in the KEES context.
+The terms “Application” and  “architecture”  refer to vague concepts that need further clarification in the KEES context.
 
-The first problem with defining the architecture of an application is that there is no clear definition of what an application is. Our opinion is that applications are a social construction, i.e.:
+The first problem with defining the architecture of an application is that there is no clear definition of what an application is. Our opinion is that applications are social constructions, i.e.:
 - a block of code that is seen by developers as a single product;
 - a group of features that is made available to the customer;
 - a set of functional requirements, with the related cost.
 
 All very different - but all valid - points of view, which make the definition very broad.
 
-People in the IT world have long argued about a precise definition of architecture. For some, it’s something like organizing and planning a system or how higher-level components tie together. Probably the definition that comes closest to capturing the full meaning of the term is the following:
+People in the IT world have long argued about a precise definition of architecture. For some, it’s something like organizing and planning a system, or how higher-level components tie together. Probably the definition that comes closest to capturing the full meaning of the term is the following:
 
 > An architecture is the shared understanding that developers have about the design of the system.
 
@@ -46,7 +46,7 @@ in short,
 
 > Architecture is about the important things. Whatever they are.
 
-At first glance, this seems like a trivial statement, but it actually brings a lot of richness: the heart of thinking architecturally about software is deciding what’s important, (i.e., what’s architectural), and spending energy maintaining those elements in good condition. For a developer to become an architect, he must be able to recognize which elements are important, recognizing which ones can cause serious problems if they are not properly controlled.
+At first glance, this seems like a trivial statement, but it actually brings a lot of richness: the heart of thinking architecturally about software is deciding what’s important, (i.e., what’s architectural), and spending energy maintaining those elements in good condition. For a developer to become an architect, he must be able to recognize which elements are important and which ones can cause serious problems if they are not properly controlled.
 Important decisions in software development vary depending on the scale of context we are thinking about. A common scale is that of an application, hence “application architecture”.
 
 ### Data
@@ -76,7 +76,7 @@ _ABOX statements_, on the other hand, are related to instances of classes define
 
 Theorems within a knowledge graph can manifest as *rules* or *axioms*. A *rule* signifies a generalized inference that establishes a logical correlation between propositions. Conversely, an *axiom* embodies a rule accomplished through entailment that is inferred by the semantics of existing factual information. Axioms and rules can implement deductive and abductive reasoning.
 
-> KEES assumes that knowledge graph is implemented by a [SPARQL service ](https://www.w3.org/TR/sparql11-service-description) supporting the [SPARQL protocol](https://www.w3.org/TR/sparql11-protocol/)
+> KEES assumes that the knowledge graph is implemented by a [SPARQL service ](https://www.w3.org/TR/sparql11-service-description) supporting the [SPARQL protocol](https://www.w3.org/TR/sparql11-protocol/)
 
 For instance, an axiom could be articulated using OWL (Web Ontology Language) and demonstrated through an OWL reasoner. Alternatively, a rule could be formulated using SPARQL QUERY CONSTRUCT and materialized with SPARQL UPDATE operations.
 
@@ -92,12 +92,12 @@ KEES does not concern the implementation of a Linked Data Lake, but this concept
 
 
 ### Reasonings Classification
-In KEES , there are two types of reasoning:
+In KEES, there are two types of reasoning:
 - Deductive reasoning: A logical process in which conclusions are drawn from premises or general principles. Deductive reasoning involves computing axioms to generate new facts from existing ones through theorem demonstration based on the semantic properties of the Language Profile.
 - Abductive reasoning: A form of reasoning where the best explanation or hypothesis for a set of observations or phenomena is inferred. Abductive reasoning is achieved through rule computation.
 
 
-Note that in semiotics there is a third type of reasoning: _inductive reasoning_, which involves making generalizations based on specific observations or patterns. KEES is not yet able to support inductive reasoning.
+Note that, in semiotics there is a third type of reasoning: _inductive reasoning_, which involves making generalizations based on specific observations or patterns. KEES is not yet able to support inductive reasoning.
 
 > **Understanding Reasoning in Large Language Models vs. KEES**
 > 
@@ -133,14 +133,14 @@ Note that the trust of an inferred fact MUST be less or equal to the minimum tru
 
 Inferred facts can be derived by the following reasoning type:
 - **deductions**: when ABOX and TBOX facts are equally trusted
-- **abdutions**: when TBOX facts are more trusted than ABOX facts 
+- **abductions**: when TBOX facts are more trusted than ABOX facts 
 - **inductions**: when ABOX facts are more trusted than TBOX facts 
 
 > **An example**
 > 
 > For instance, suppose that an axiom in your knowledge graph TBOX states that a property ":hasMom" has a cardinality of 1 (i.e. every person has just one "mom"), your knowledge graph could also contain two different facts (:jack :hasMom :Mary) and (:jack :hasMom :Giulia), perhaps extracted from different data sources. In order to decide who is Jack's mom, you need trust in your information. 
 > 
-> If you are sure about the veracity of all data in the knowledge graph, you can deduct that: Mary and  Giulia are two names for the same person. If you are not so sure, you have two possibilities: deduct that the one data source is wrong, so you have to choose the most trusted statement concerning some criteria (even casually if both statements have the same trust rank) or change the axiom in TBOX, allowing a person to have more than one mom. In any case, you need to get an idea about _your_ trust in each statement, both in ABOX and in TBOX,  in the knowledge graph. At least you want to know the **provenance** and all metadata of all information in your knowledge graph because the trust in a single data often derives from the trust of its source or in the creator of the data source.
+> If you are sure about the veracity of all data in the knowledge graph, you can deduce that: Mary and  Giulia are two names for the same person. If you are not so sure, you have two possibilities: deduce that the one data source is wrong, so you have to choose the most trusted statement concerning some criteria (even casually if both statements have the same trust rank) or change the axiom in TBOX to allow a person to have more than one mom. In any case, you need to get an idea about _your_ trust in each statement, both in ABOX and in TBOX,  in the knowledge graph. At least, you want to know the **provenance** and all metadata of all information in your knowledge graph because trust in a single datum often derives from the trust in its source or in the creator of the data source.
 > 
 > So if: 
 > - fact 1: `:jack :hasMom :Mary`
@@ -170,9 +170,9 @@ The creation of knowledge requires the execution of certain activities. KEES dis
 - **Booting Activities**: which initialize an empty knowledge graph with the language profile.
 - **Ingestion Activities**: which ingest facts and compute axioms. Ingestion activity are further classified in:
     - **1st-party data learning**
-    - **2st-party data learning**
-    - **3st-party data learning**
-- **Reasoning Activities**: which infer facts.  Reasoning  activities are further classified in:
+    - **2nd-party data learning**
+    - **3rd-party data learning**
+- **Reasoning Activities**: which infer facts.  Reasoning  activities are further classified into:
     - **Deductions** 
     - **Abductions** 
 - **Enriching Activities**: which discover and inject new facts by leveraging existing facts, deductions, and abductions.
@@ -238,13 +238,16 @@ LinkedData.Center [SDaaS product](https://linkeddata.center/sdaas) is a commerci
 
 
 ## Contributing to this site
-A great way to contribute to the site is to create an [issue](https://github.com/linkeddatacenter/kees/issues) on GitHub when you encounter a problem or something. We always appreciate it. You can also edit the code by yourself and create a pull request.
+A great way to contribute to the site is to create an [issue](https://github.com/linkeddatacenter/kees/issues) on GitHub when you encounter a problem. We always appreciate it. You can also edit the code by yourself and create a pull request.
 
 
 ## License
-KEES is an ongoing research project by [LinkedData.Center]. It is released as open-source and can be used free of charge for non-commercial and private purposes. See our license page for details.
+KEES is an ongoing research project by [LinkedData.Center] authored by Enrico Fagnoni. It is released as open-source and can be used free of charge for non-commercial and private purposes.
 
 [![Creative Commons License](https://licensebuttons.net/l/by-nc/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc/4.0/)
+
+
+Fill free to contact me on signal (@hdtwin.83) or email (enrico@fagnoni.it)
 
 
 
