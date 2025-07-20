@@ -18,7 +18,7 @@ With KEES, you can formalize and license all the components necessary to constru
 
 Both machines and humans can leverage this *know-how* to enhance their knowledge. 
 
-For more details, refer to the [KEES presentation slides](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000)."
+**For more details, refer to the [KEES presentation slides](https://docs.google.com/presentation/d/1mv9XO0Q9QFxSphWzT_68Q4aXd9sgqWoY7njomH8eaPQ/pub?start=false&loop=false&delayms=5000).**
 
 
 ## Definitions
@@ -96,7 +96,18 @@ In KEES , there are two types of reasoning:
 - Deductive reasoning: A logical process in which conclusions are drawn from premises or general principles. Deductive reasoning involves computing axioms to generate new facts from existing ones through theorem demonstration based on the semantic properties of the Language Profile.
 - Abductive reasoning: A form of reasoning where the best explanation or hypothesis for a set of observations or phenomena is inferred. Abductive reasoning is achieved through rule computation.
 
-Note that in semiotics there is a third reasoning type: the _Inductive reasoning_ that involves making generalizations based on specific observations or patterns. KEES does not jet able to support _Inductive reasoning_.
+
+Note that in semiotics there is a third type of reasoning: _inductive reasoning_, which involves making generalizations based on specific observations or patterns. KEES is not yet able to support inductive reasoning.
+
+> **Understanding Reasoning in Large Language Models vs. KEES**
+> 
+> Large Language Models (LLMs) today are capable of *simulating* reasoning by performing complex statistical computations at the language level. Although they do not possess true understanding of the shared semantics behind phrases, their exposure to vast amounts of textual data allows them to generate coherent and plausible discourse. This often mimics human-like reasoning with remarkable fluency, even if occasionally the logic behind their responses may be flawed or inconsistent.
+> 
+> This kind of simulated reasoning is fundamentally different from the formal logical reasoning used in  Knowledge-Based Systems, such as those described in KEES. LLMs rely on black-box neural network algorithms trained on massive datasets, and their internal decision-making processes are not directly traceable back to the original training data.
+> 
+> There is, however, an emerging approach called *neuro-symbolic AI*, which seeks to combine the strengths of both LLMs and formal logic-based knowledge systems. While LLMs offer a general-purpose, text-driven simulated reasoning capability learned from extensive prior written documents, logic-based systems typically operate within well-defined, narrow domains where shared human-understandable semantics are essential.
+> 
+
 
 
 ### Facts Classification
