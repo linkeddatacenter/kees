@@ -1,6 +1,6 @@
 ![logo](https://linkeddata.center/resources/v4/logo/Logo-colori-trasp_oriz-640x220.png)
 
-Describing knowledge with KEES (Knowledge Exchange Engine Specifications and Services)
+Describing knowledge with KEES (Knowledge Exchange Engine Specifications)
 ==================================================================
 
 > *In order to let computers work for us, they must understand data: not just the grammar and the syntax, but the real meaning of things.*
