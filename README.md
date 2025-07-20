@@ -230,8 +230,13 @@ LinkedData.Center [SDaaS product](https://linkeddata.center/sdaas) is a commerci
 A great way to contribute to the site is to create an [issue](https://github.com/linkeddatacenter/kees/issues) on GitHub when you encounter a problem or something. We always appreciate it. You can also edit the code by yourself and create a pull request.
 
 
-All stuff here in the Creative Common (unless otherwise noted).
+## License
+KEES is an ongoing research project by [LinkedData.Center]. It is released as open-source and can be used free of charge for non-commercial and private purposes. See our license page for details.
+
+[![Creative Commons License](https://licensebuttons.net/l/by-nc/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc/4.0/)
 
 
+
+[LinkedData.Center]: https://LinkedData.Center
 [RDF]: https://www.w3.org/TR/rdf11-primer/
 [Open-world assumption]: https://en.wikipedia.org/w/index.php?title=Open-world_assumption&oldid=871019791
