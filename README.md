@@ -42,12 +42,20 @@ A second common style of definition for architecture is that it is
 
 > The design decisions that must be made at the beginning of a project
 
+According to Grady Booch, architetture is:
+
+> the significant design decisions that shape a system, measured by the cost of change.
+
 in short,
 
 > Architecture is about the important things. Whatever they are.
 
 At first glance, this seems like a trivial statement, but it actually brings a lot of richness: the heart of thinking architecturally about software is deciding what’s important, (i.e., what’s architectural), and spending energy maintaining those elements in good condition. For a developer to become an architect, he must be able to recognize which elements are important and which ones can cause serious problems if they are not properly controlled.
 Important decisions in software development vary depending on the scale of context we are thinking about. A common scale is that of an application, hence “application architecture”.
+
+Beside definition iimportant to state that the final scope of architecture is:
+> To meet the needs of users and stakeholders while minimizing the human effort required to build and maintain the system.
+
 
 ### Data
 *Data*, as per KEES, encompasses any *literal* like words, numbers, or generally, any sequence of symbols. For instance, strings such as `xyz`, `123`, `33.22`, or `http://LinkedData.Center` exemplify *data*. Typically, data is linked with a data type that defines constraints on the sequence of symbols composing the data. For instance, the number `123`, the float `33.22`, or the URI `http://LinkedData.Center` each possess their respective data types, which specify rules regarding the permissible symbols sequence. Importantly, the data type does not inherently convey the meaning of the data itself.
