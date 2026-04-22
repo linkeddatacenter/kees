@@ -217,9 +217,9 @@ The KEES Cycle begins with an empty knowledge graph and provided facts, culminat
 4. **Enriching Window** (Fact Enhancement):  discover new third-party facts, enriching the existing data.
 5. **Publishing Window** (Optimization and Publication): Involves data cleansing, semantic conflicts resolution, versioning, and mapping to application ontologies.
 
-Note that the step 4 may produce new facts and trigger a new boot of the knowledge graph, this is an interactive process that concludes only when no new data or inferences are discovered.
+Note that the reasoning window (step 4) may produce new facts and trigger a reasoning of the knowledge graph - the enriching cycle -; this is an interactive process that concludes only when no new data or inferences are discovered. Enriched data can be cached and provided as additional input to the learning window (step 2)
 
-![KEES cycle](v1/images/cycle.png)
+![KEES cycle](v1/images/cycle.drawio.png)
 
 
 ### KEES Cycle Convergence
